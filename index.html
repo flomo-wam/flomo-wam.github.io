@@ -1,10 +1,408 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Website</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FloMo: 3D Scene Flow as a World-Action Model Intermediate</title>
+  <meta name="description" content="FloMo: 3D Scene Flow as a World-Action Model Intermediate for Learning from Human Video. Anonymous CoRL 2026 submission.">
+  <!-- No author / institution metadata: anonymous submission -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="static/images/favicon.png">
+  <link rel="apple-touch-icon" href="static/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <p>This is my GitHub website.</p>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero-flomo has-text-centered">
+  <div class="container">
+    <img class="flomo-logo" src="static/images/flomo_logo.png" alt="FloMo">
+    <h1 class="paper-title">
+      3D Scene Flow as a World-Action Model Intermediate<br>for Learning from Human Video
+    </h1>
+    <div class="venue-pill">Anonymous Submission &middot; CoRL 2026 (under review)</div>
+    <p class="author-line">Authors omitted for double-blind review</p>
+
+    <div class="link-buttons">
+      <span class="button is-flomo is-medium is-disabled" title="Released upon acceptance">
+        <span class="icon"><i class="fab fa-github"></i></span><span>Code (coming soon)</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEASER / TL;DR ===================== -->
+<section class="section" style="padding-top:1.5rem;">
+  <div class="container">
+    <div class="tldr">
+      <h3>TL;DR</h3>
+      <p>World-action models usually predict <b>future video</b>. We argue the right target is <b>3D motion</b>.
+      <b>FloMo</b> renders 3D scene flow into the latent space of a pretrained video generator and fine-tunes a single
+      backbone to predict motion <em>and</em> action. Predicting motion instead of pixels gives better in-distribution
+      success, far stronger out-of-distribution generalization, and higher sample efficiency.</p>
+    </div>
+
+    <div class="fig-wrap" style="margin-top:2.2rem;">
+      <figure class="fig-card">
+        <img src="static/images/figure_arch.png" alt="FloMo architecture">
+        <figcaption class="figure-caption">
+          <b>FloMo architecture.</b> Given an image and a text prompt, FloMo jointly predicts dense 3D motion (scene flow)
+          and robot actions with a pretrained video-generation backbone (Wan&nbsp;2.2 5B DiT) using flow-matching. To
+          tokenize scene flow, instantaneous 3D velocities are rendered as RGB videos and encoded by the pretrained
+          video backbone's VAE, so motion shares the video latent space and needs no new tokenizer.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABSTRACT ===================== -->
+<section class="section has-soft-bg">
+  <div class="container">
+    <p class="section-kicker">Abstract</p>
+    <h2 class="section-title">Motion mediates the transfer from video to action</h2>
+    <div class="content-narrow content" style="margin-top:1.4rem;">
+      <p>Pretrained video generation models distill internet-scale motion priors into robot policies, but full video is a
+      redundant signal for action prediction. We argue that dense 3D motion is the medium through which video pretraining
+      best transfers to robot actions, and that predicting motion rather than video affords better sample-efficiency for
+      action prediction. <b>FloMo</b> is a 5B video-generation model fine-tuned to predict 3D scene-flow and action tokens.
+      Rendering scene flow as RGB and encoding it into the same latent space as video enables a pretrained video generation
+      backbone to efficiently adapt to predict 3D scene flow. Co-trained on action-free human video and action-labeled
+      robot teleoperation data, our model benefits from human-video pretraining and generalizes to unseen objects, motion
+      primitives, and tasks.</p>
+      <p>Removing the scene flow prediction objective degrades out-of-distribution generalization, while adding a video
+      prediction target alongside motion lowers policy success rather than improving it. When motion, video, and action
+      are predicted jointly, action tokens attend far more to motion than to video, suggesting that predicting video
+      wastes model capacity. Together, these results indicate that <b>motion mediates the transfer from video pretraining
+      to action.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTRIBUTIONS ===================== -->
+<section class="section">
+  <div class="container">
+    <p class="section-kicker">Contributions</p>
+    <h2 class="section-title">What we show</h2>
+    <div class="columns is-variable is-5" style="margin-top:1.2rem;">
+      <div class="column">
+        <div class="contrib-card">
+          <span class="num">1</span>
+          <h4>Motion as the WAM prediction target</h4>
+          <p>We render 3D scene flow as RGB and encode it with a frozen video VAE, so motion tokens share the video latent
+          space. A single backbone flow-matches motion and action, with no new tokenizer, and the video priors live in the
+          pretrained weights, not the prediction target.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="contrib-card">
+          <span class="num">2</span>
+          <h4>Motion is the most effective target</h4>
+          <p>Across real-robot manipulation, predicting motion yields higher in-distribution success and stronger OOD
+          generalization than predicting video or jointly predicting video and motion. Adding a video target
+          <em>interferes</em> with action learning rather than complementing it.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="contrib-card">
+          <span class="num">3</span>
+          <h4>Generalization from human video</h4>
+          <p>FloMo transfers to objects, motion primitives, and tasks seen <em>only</em> in action-free human video,
+          such as pulling a string, a primitive never present in robot training data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== METHOD ===================== -->
+<section class="section has-soft-bg">
+  <div class="container">
+    <p class="section-kicker">Method</p>
+    <h2 class="section-title">3D scene flow as the <span class="accent">video-action intermediate</span></h2>
+
+    <div class="content-narrow content" style="margin-top:1.4rem;">
+      <p>The action that produces a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. 2D optical
+      flow captures motion but conflates camera ego-motion with task-relevant motion, so FloMo predicts <b>3D scene flow</b>
+      in a canonical frame: the cumulative 3D displacement of each tracked point, expressed in the first frame's camera, which
+      isolates object and hand motion while discarding appearance.</p>
+      <p>We render this 3D vector field as an RGB video and encode it with the <b>frozen Wan&nbsp;2.2 VAE</b>. Because rendered
+      scene flow lands in the same latent distribution as video, the pretrained DiT operates on it without re-training the
+      tokenizer; we fine-tune only the backbone (LoRA, rank 64) and keep the VAE and text encoder frozen.</p>
+    </div>
+
+    <div class="fig-wrap" style="margin-top:1.8rem;">
+      <figure class="fig-card">
+        <img src="static/images/figure_qualitative.png" alt="Scene-flow tokenization">
+        <figcaption class="figure-caption">
+          <b>Scene-flow tokenization.</b> Each row is a timestep from human video. FloMo recovers the dominant
+          task-relevant 3D motion field (rendered as RGB) while staying invariant to texture changes that confound
+          pixel-space predictors.
+        </figcaption>
+      </figure>
+    </div>
+
+    <h3 class="video-grid-title" style="margin-top:2.4rem;">Two-stage co-training</h3>
+    <p class="content-narrow has-text-centered" style="color:var(--muted); margin-top:-.5rem;">
+      FloMo is co-trained on a mixture of egocentric human video and bimanual robot teleoperation.
+    </p>
+    <div class="columns is-vcentered content-narrow" style="margin-top:1rem; max-width:880px;">
+      <div class="column">
+        <div class="stage-card">
+          <span class="stage-num">Stage 1</span>
+          <h5>Mid-training</h5>
+          <p>Train on the full mixture. Human video supervises the scene-flow head only; robot data supervises
+          both scene flow and action. This builds a broad motion prior at scale before any action-specific tuning.</p>
+        </div>
+      </div>
+      <div class="column is-narrow stage-arrow">
+        <span class="icon is-large"><i class="fas fa-arrow-right fa-lg"></i></span>
+      </div>
+      <div class="column">
+        <div class="stage-card s2">
+          <span class="stage-num">Stage 2</span>
+          <h5>Fine-tuning</h5>
+          <p>Train on robot data only, dropping the human-video stream. This sharpens action prediction without
+          diluting the gradient with action-free samples.</p>
+        </div>
+      </div>
+    </div>
+    <div class="content" style="max-width:980px; margin:1.2rem auto 0;">
+      <p><b>At inference</b>, given an initial image and a language instruction, FloMo jointly denoises its output heads
+      for 10 UniPC steps, then executes the full predicted chunk of 16 actions before re-planning from the next observation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RESULTS ===================== -->
+<section class="section">
+  <div class="container">
+    <p class="section-kicker">Results</p>
+    <h2 class="section-title">Predicting motion beats predicting pixels</h2>
+
+    <!-- In-distribution -->
+    <div class="columns is-vcentered" style="margin-top:1.6rem;">
+      <div class="column is-half">
+        <figure class="fig-card">
+          <img src="static/images/figure_policy_indist.png" alt="In-distribution success rates">
+          <figcaption class="figure-caption">
+            <b>In-distribution success.</b> Predicting motion (ours) is the best target on every task; predicting only
+            video or video&nbsp;+&nbsp;motion lowers success.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="column is-half">
+        <div class="content">
+          <h4 class="title is-5">In-distribution real-robot evaluation</h4>
+          <p>On three contact-rich bimanual tasks (<em>Oven</em>, <em>Toolbox</em>, <em>Corn</em>), FloMo achieves the highest
+          success on every task, averaging <b>87%</b>, versus <b>47%</b> for Joint Video-Action, <b>40%</b> for
+          FloMo&nbsp;w/&nbsp;Video, and <b>7%</b> for a from-scratch behavior-cloning baseline.</p>
+          <p>The gap is largest on <em>Oven</em>, where success hinges on precisely aligning the gripper with the handle:
+          3D motion supervision targets the geometry of that contact directly, whereas a video target must also reconstruct
+          task-irrelevant reflections and textures.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OOD table -->
+    <div style="margin-top:2.6rem;">
+      <h4 class="title is-5 has-text-centered">Out-of-distribution generalization</h4>
+      <p class="content-narrow has-text-centered" style="color:var(--muted);">
+        FloMo outperforms every baseline across all three OOD axes: an unseen motion primitive (<em>Close Cabinet</em>),
+        an unseen task (<em>Pull String</em>), and an unseen object (<em>Highlighter</em>). Every method that predicts pixels
+        degrades sharply.
+      </p>
+      <div class="results-table table-container" style="margin-top:1rem; max-width:820px;">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th rowspan="2" style="text-align:left;">Method</th>
+              <th colspan="2">Close Cabinet</th>
+              <th colspan="2">Pull String</th>
+              <th colspan="2">Highlighter</th>
+            </tr>
+            <tr>
+              <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
+              <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
+              <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="text-align:left;">BC (no pretraining)</td><td>3/5</td><td>80</td><td>0/5</td><td>0</td><td>1/5</td><td>50</td></tr>
+            <tr><td style="text-align:left;">Joint Video-Action</td><td>0/5</td><td>40</td><td>1/5</td><td>20</td><td>2/5</td><td>40</td></tr>
+            <tr><td style="text-align:left;">FloMo w/ Video</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td></tr>
+            <tr><td style="text-align:left;">AMPLIFY</td><td>2/5</td><td>60</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td></tr>
+            <tr><td style="text-align:left;">DreamZero</td><td>2/5</td><td>80</td><td>1/5</td><td>30</td><td>1/5</td><td>30</td></tr>
+            <tr class="ours"><td style="text-align:left;">FloMo (ours)</td><td>5/5</td><td>100</td><td>3/5</td><td>60</td><td>4/5</td><td>80</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="figure-caption">SR = successful rollouts / total &nbsp;&middot;&nbsp; TP = avg. fraction of subtasks completed (%).</p>
+    </div>
+
+    <!-- ID scaling + attention -->
+    <div class="columns" style="margin-top:2.6rem;">
+      <div class="column is-half">
+        <figure class="fig-card" style="height:100%;">
+          <img src="static/images/figure_id_scaling.png" alt="Inverse-dynamics scaling">
+          <figcaption class="figure-caption">
+            <b>Sample efficiency.</b> Held-out action error vs. action-data scale for two <em>ground-truth</em> conditioning
+            signals (log-log). Recovering actions from motion is more sample-efficient than from video, with ~22% lower
+            error at 1% of the data.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="column is-half">
+        <figure class="fig-card" style="height:100%;">
+          <img src="static/images/figure_attention_share.png" alt="Action attention by modality">
+          <figcaption class="figure-caption">
+            <b>Action attention concentrates on motion.</b> Share of action-query attention to each input modality across
+            DiT layers. Attention to motion rises through the trunk and dominates; action queries attend to motion roughly
+            <b>3&times;</b> more than to video.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== GENERALIZATION FROM HUMAN VIDEO ===================== -->
+<section class="section has-soft-bg">
+  <div class="container">
+    <p class="section-kicker">Generalization from human video</p>
+    <h2 class="section-title">Scene flow transfers from human video</h2>
+    <p class="content-narrow has-text-centered" style="color:var(--muted); margin-top:.6rem;">
+      3D scene flow is an embodiment-agnostic representation: a human hand and a robot gripper produce a similar motion
+      field. FloMo learns motions from action-free human video and carries them to the robot, generalizing to objects,
+      motion primitives, and tasks seen only in human data.
+    </p>
+
+    <div class="stat-callout">
+      <div class="stat"><div class="big good">80%</div><div class="lbl">avg. OOD success<br>with human video</div></div>
+      <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="stat"><div class="big bad">7%</div><div class="lbl">avg. OOD success<br>without human video</div></div>
+    </div>
+
+    <div class="results-table table-container" style="margin-top:1rem; max-width:780px;">
+      <table class="table is-fullwidth is-hoverable">
+        <thead>
+          <tr>
+            <th rowspan="2" style="text-align:left;">Training data</th>
+            <th colspan="2">Close Cabinet</th>
+            <th colspan="2">Pull String</th>
+            <th colspan="2">Highlighter</th>
+            <th colspan="2">Average</th>
+          </tr>
+          <tr>
+            <th>SR</th><th>TP</th><th>SR</th><th>TP</th><th>SR</th><th>TP</th><th>SR</th><th>TP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ours"><td style="text-align:left;">FloMo</td><td>5/5</td><td>100</td><td>3/5</td><td>60</td><td>4/5</td><td>80</td><td>80%</td><td>80</td></tr>
+          <tr><td style="text-align:left;">FloMo (no human video)</td><td>0/5</td><td>20</td><td>1/5</td><td>50</td><td>0/5</td><td>20</td><td>7%</td><td>30</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="figure-caption">Both models predict 3D motion and differ only in whether the ~81h EgoVerse human-video subset is in training. SR = successful rollouts / total; TP = avg. fraction of subtasks completed (%).</p>
+
+    <div class="content-narrow content" style="margin-top:1.2rem;">
+      <p>Holding the model and the motion-prediction target fixed and removing only the ~81h EgoVerse human-video subset
+      drops average out-of-distribution success from 80% to 7%. The generalization is inherited from the human video, made
+      transferable by the embodiment-agnostic motion representation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ROLLOUT VIDEOS ===================== -->
+<section class="section">
+  <div class="container">
+    <p class="section-kicker">Rollouts</p>
+    <h2 class="section-title">Real-robot rollouts</h2>
+    <p class="content-narrow has-text-centered" style="color:var(--muted); margin-top:.6rem;">
+      Bimanual YAM rollouts on in-distribution and out-of-distribution tasks.
+    </p>
+
+    <!-- FloMo rollouts: 3 ID + 3 OOD -->
+    <h3 class="video-grid-title">FloMo successes: in-distribution and out-of-distribution</h3>
+    <div class="columns is-multiline">
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/oven.mp4" poster="static/images/posters/oven.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><br>Open the oven, retrieve the croissant, place it on a plate.</div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/toolbox.mp4" poster="static/images/posters/toolbox.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/corn.mp4" poster="static/images/posters/corn.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><br>Grasp the corn cob and place it in the bowl.</div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/highlighter.mp4" poster="static/images/posters/highlighter.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">OOD &middot; unseen object</span><br>Place the unseen highlighter in the bowl.</div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">OOD &middot; unseen task</span><br>Pull the hanging string, a primitive seen only in human video.</div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/door.mp4" poster="static/images/posters/door.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">OOD &middot; unseen primitive</span><br>Push the cabinet door shut.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pull String comparison: FloMo vs baselines -->
+    <h3 class="video-grid-title">Pull String (OOD): FloMo vs. baselines</h3>
+    <p class="content-narrow has-text-centered" style="color:var(--muted); margin-top:-.5rem;">
+      The same unseen task, same conditions. FloMo succeeds where pixel-predicting baselines fail.
+    </p>
+    <div class="columns is-multiline" style="margin-top:.6rem;">
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">FloMo</span><span class="vbadge ok">Success</span></div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">DreamZero</span><span class="vbadge fail">Failure</span></div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="video-card">
+          <video src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg" autoplay muted loop playsinline preload="none"></video>
+          <div class="vcap"><span class="task">BC (no pretraining)</span><span class="vbadge fail">Failure</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer-flomo has-text-centered">
+  <div class="container">
+    <p>Anonymous CoRL 2026 submission. This page intentionally omits author and institution information for double-blind review.</p>
+    <p style="margin-top:.4rem;">Page built on the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page</a> style.</p>
+  </div>
+</footer>
+
 </body>
 </html>

@@ -1,0 +1,16 @@
+# Paper LaTeX source
+corl_2026/
+logo/
+supplement-todos.tex
+
+# Extracted supplementary bundle (huge + internal); web copies live in static/
+supplementary 2/
+__MACOSX/
+
+# Build/scratch
+.venv-web/
+*.zip
+
+# OS cruft
+.DS_Store
+Thumbs.db
