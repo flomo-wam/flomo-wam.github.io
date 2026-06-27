@@ -1,0 +1,30 @@
+[
+  {
+    "stem": 103,
+    "caption": "open kitchen cabinet",
+    "video": "sceneflow_0103.mp4",
+    "poster": "sceneflow_0103.jpg",
+    "frames": 13
+  },
+  {
+    "stem": 104,
+    "caption": "dry pink devices and place in drawer",
+    "video": "sceneflow_0104.mp4",
+    "poster": "sceneflow_0104.jpg",
+    "frames": 13
+  },
+  {
+    "stem": 305,
+    "caption": "place wound fabric scrap on table",
+    "video": "sceneflow_0305.mp4",
+    "poster": "sceneflow_0305.jpg",
+    "frames": 13
+  },
+  {
+    "stem": 108,
+    "caption": "move jar and cup to kitchen counter",
+    "video": "sceneflow_0108.mp4",
+    "poster": "sceneflow_0108.jpg",
+    "frames": 13
+  }
+]
