@@ -105,7 +105,7 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 /* --------------------------------------------------------------- HERO ---- */
 .hero { padding: 3.2rem 0 2.6rem; }
 .hero-grid {
-  display: grid; grid-template-columns: 1.35fr .85fr; gap: 2.4rem; align-items: center;
+  display: block; max-width: 47rem;
 }
 .venue-pill {
   display: inline-block; background: var(--soft-orange); color: var(--flomo-orange-dark);
@@ -154,6 +154,21 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .key-sw { width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--line-strong); flex: 0 0 auto; box-shadow: var(--shadow-sm); }
 .key-list code { margin-left: auto; font-family: var(--font-mono); font-size: .76rem; color: var(--muted); }
 .key-foot { margin: .95rem 0 0; font-size: .82rem; color: var(--muted); }
+
+/* wide 3-panel scene-flow clips: an inline auto-looping video on white */
+.flow-stage { max-width: 940px; margin: 1.4rem auto 0; }
+.flow-video {
+  display: block; width: 100%; aspect-ratio: 974 / 354; object-fit: contain;
+  background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.flow-legend {
+  display: flex; gap: 1.1rem; justify-content: center; flex-wrap: wrap;
+  margin-top: .85rem; color: var(--muted); font-size: .82rem;
+}
+.flow-legend span { display: inline-flex; align-items: center; gap: .35rem; }
+.flow-legend b { color: var(--ink); font-weight: 600; }
+.flow-thumb { width: 148px; aspect-ratio: 974 / 354; }
 
 /* --------------------------------------------------------------- BANDS --- */
 .band { padding: 3.4rem 0; border-top: 1px solid var(--line); }

@@ -62,24 +62,9 @@
         <span class="btn btn-dark is-disabled" title="Released upon acceptance" aria-disabled="true">
           <span class="btn-ico" aria-hidden="true">&#9676;</span> Code (coming soon)
         </span>
-        <a class="btn btn-ghost" href="#method">See the encoding</a>
+        <a class="btn btn-ghost" href="#method">See the method</a>
       </div>
     </div>
-
-    <!-- motion -> colour key: the ownable hook, stated up front -->
-    <aside class="hero-key" aria-label="Motion to colour key">
-      <div class="key-head">
-        <span class="key-eyebrow">The encoding</span>
-        <span class="key-eq">(&Delta;X,&Delta;Y,&Delta;Z) &rarr; (R,G,B)</span>
-      </div>
-      <ul class="key-list">
-        <li><span class="key-sw" style="background:rgb(128,128,128)"></span><span>no motion</span><code>128,128,128</code></li>
-        <li><span class="key-sw" style="background:rgb(235,128,128)"></span><span>+X &rarr; red</span><code>235,128,128</code></li>
-        <li><span class="key-sw" style="background:rgb(128,235,128)"></span><span>+Y &rarr; green</span><code>128,235,128</code></li>
-        <li><span class="key-sw" style="background:rgb(128,128,235)"></span><span>+Z &rarr; blue</span><code>128,128,235</code></li>
-      </ul>
-      <p class="key-foot">Motion fields become colour fields &mdash; the same token the frozen video VAE reads.</p>
-    </aside>
   </div>
 </section>
 
@@ -88,7 +73,7 @@
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Live demo</p>
-      <h2 class="band-title">Drive a real-robot rollout</h2>
+      <h2 class="band-title">Real-robot rollouts</h2>
       <p class="band-sub">Pick a task. In-distribution and out-of-distribution rollouts from the same FloMo policy.</p>
     </header>
 
@@ -155,16 +140,9 @@
   </div>
 </section>
 
-<!-- ===================== TL;DR + ANNOTATED ARCHITECTURE ===================== -->
+<!-- ===================== ANNOTATED ARCHITECTURE ===================== -->
 <section class="band band-soft" id="tldr">
   <div class="wrap">
-    <div class="tldr">
-      <span class="tldr-tag">TL;DR</span>
-      <p>Most world-action models predict <b>future video</b>. We show the better target is <b>3D motion</b>.
-      <b>FloMo</b> fine-tunes a pretrained video model to predict 3D scene flow and robot actions together &mdash;
-      beating pixel prediction on success, generalization, and sample efficiency.</p>
-    </div>
-
     <figure class="panel arch-panel">
       <div class="panel-tab">Architecture &middot; hover the <span class="dot">+</span> hotspots</div>
       <div class="arch-wrap">
@@ -256,15 +234,17 @@
       (LoRA, rank 64).</p>
     </div>
 
-    <!-- ===== SIGNATURE 1: BEFORE/AFTER WIPE over scene-flow clips ===== -->
-    <h3 class="feature-title">Pixels vs. motion <span class="try-pill">drag to compare</span></h3>
+    <!-- ===== SIGNATURE 1: scene-flow tokenization gallery (driven by index.js #flowVideo) ===== -->
+    <h3 class="feature-title">Pixels vs. motion</h3>
     <p class="feature-sub">
-      Grab the handle and wipe between the <b>raw RGB observation</b> and the same frame rendered as a
-      <b>3D scene-flow colour field</b>. The texture-heavy pixels on the left collapse to the clean, low-entropy motion token on the right.
+      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, the recovered <b>one-step 3D motion field</b> as
+      colour-coded arrows, and that flow rendered as an <b>RGB token</b>. The arrows track the moving hand and object,
+      staying invariant to the texture changes that confuse pixel-space predictors.
     </p>
 
+    <!-- JS-powered explorer -->
     <div class="js-only">
-      <div class="chip-row" id="cwChips" role="tablist" aria-label="Scene-flow sample selector">
+      <div class="chip-row" id="flowChips" role="tablist" aria-label="Scene-flow sample selector">
         <button class="task-chip active" role="tab" aria-selected="true" data-sample="cabinet"
           data-video="static/videos/sceneflow/sceneflow_0103.mp4" data-poster="static/videos/sceneflow/sceneflow_0103.jpg"
           data-caption="&ldquo;Open kitchen cabinet&rdquo; &mdash; the cabinet door and hand sweep out a coherent green motion field.">Open cabinet</button>
@@ -279,24 +259,29 @@
           data-caption="&ldquo;Move jar and cup to kitchen counter&rdquo; &mdash; a large bimanual reach produces a dense, fast motion field.">Move dishes</button>
       </div>
 
-      <div class="cw" id="cwWipe"
-           data-video="static/videos/sceneflow/sceneflow_0103.mp4"
-           data-poster="static/videos/sceneflow/sceneflow_0103.jpg">
-        <div class="cw-window" id="cwWindow">
-          <div class="cw-layer cw-before" id="cwBefore"><!-- panel 1: RGB observation --></div>
-          <div class="cw-layer cw-after" id="cwAfter"><!-- panel 3: scene flow as RGB --></div>
-          <span class="cw-tag cw-tag-l">RGB observation</span>
-          <span class="cw-tag cw-tag-r">scene flow as RGB</span>
-          <div class="cw-handle" id="cwHandle" aria-hidden="true"><span class="cw-grip"></span></div>
-          <input class="cw-range" id="cwRange" type="range" min="0" max="100" value="52"
-                 aria-label="Wipe between RGB observation and scene-flow colour rendering">
-        </div>
+      <div class="flow-stage">
+        <video id="flowVideo" class="flow-video" autoplay muted loop playsinline controls preload="auto"
+          poster="static/videos/sceneflow/sceneflow_0103.jpg"
+          src="static/videos/sceneflow/sceneflow_0103.mp4"
+          aria-label="Scene-flow tokenization clip"></video>
       </div>
-      <p class="cw-caption" id="cwCaption">&ldquo;Open kitchen cabinet&rdquo; &mdash; the cabinet door and hand sweep out a coherent green motion field.</p>
-      <p class="feature-foot">
-        Both halves are the <b>same clip at the same instant</b>: left is what a pixel predictor must reconstruct,
-        right is what FloMo predicts instead. The middle panel of each source clip shows the underlying one-step 3D flow arrows.
-      </p>
+
+      <div class="flow-legend" aria-hidden="true">
+        <span><b>RGB</b> observation</span>
+        <span><b>One-step 3D flow</b> (arrows on the scene, colour = direction)</span>
+        <span><b>Scene flow as RGB</b> (R,G,B = dx,dy,dz)</span>
+      </div>
+
+      <div class="demo-meta">
+        <p class="demo-caption" id="flowCaption">&ldquo;Open kitchen cabinet&rdquo; &mdash; the cabinet door and hand sweep out a coherent green motion field.</p>
+      </div>
+
+      <div class="thumb-strip" id="flowThumbs" aria-hidden="true">
+        <button class="thumb flow-thumb active" data-sample="cabinet" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0103.jpg" alt=""></button>
+        <button class="thumb flow-thumb" data-sample="dry" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0104.jpg" alt=""></button>
+        <button class="thumb flow-thumb" data-sample="fabric" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0305.jpg" alt=""></button>
+        <button class="thumb flow-thumb" data-sample="dishes" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0108.jpg" alt=""></button>
+      </div>
     </div>
 
     <!-- No-JS fallback: plain video grid -->
