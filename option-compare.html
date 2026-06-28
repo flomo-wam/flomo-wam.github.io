@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FloMo: 3D Scene Flow as a World-Action Model Intermediate</title>
+  <meta name="description" content="FloMo: 3D Scene Flow as a World-Action Model Intermediate for Learning from Human Video. Anonymous CoRL 2026 submission.">
+  <!-- No author / institution metadata: anonymous submission -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="static/images/favicon.png">
+  <link rel="apple-touch-icon" href="static/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/option-compare.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script defer src="static/js/index.js"></script>
+  <script defer src="static/js/option-compare.js"></script>
+</head>
+<body>
+
+<!-- skip link for keyboard users -->
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ===================== STICKY NAV ===================== -->
+<nav class="flomo-nav" aria-label="Section navigation">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#hero" aria-label="FloMo home">
+      <img src="static/images/flomo_logo.png" alt="FloMo">
+      <span class="nav-mark">Compare&nbsp;Engine</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#live-demo">Rollouts</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#generalization">Human&nbsp;video</a></li>
+      <li><a href="#comparison">Duels</a></li>
+      <li><a class="nav-code" href="#code">Code (soon)</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="venue-pill">Anonymous Submission &middot; CoRL 2026 (under review)</div>
+      <img class="flomo-logo" src="static/images/flomo_logo.png" alt="FloMo">
+      <h1 class="paper-title">
+        3D Scene&nbsp;Flow as a World-Action&nbsp;Model Intermediate
+        <span>for Learning from Human&nbsp;Video</span>
+      </h1>
+      <p class="hero-thesis">
+        Most world-action models predict <b>future pixels</b>. We predict <b>3D motion</b> instead &mdash;
+        and motion is what actually carries the transfer from video to action.
+      </p>
+      <p class="author-line">Authors omitted for double-blind review</p>
+      <div class="hero-actions">
+        <span class="btn btn-dark is-disabled" title="Released upon acceptance" aria-disabled="true">
+          <span class="btn-ico" aria-hidden="true">&#9676;</span> Code (coming soon)
+        </span>
+        <a class="btn btn-ghost" href="#method">See the encoding</a>
+      </div>
+    </div>
+
+    <!-- motion -> colour key: the ownable hook, stated up front -->
+    <aside class="hero-key" aria-label="Motion to colour key">
+      <div class="key-head">
+        <span class="key-eyebrow">The encoding</span>
+        <span class="key-eq">(&Delta;X,&Delta;Y,&Delta;Z) &rarr; (R,G,B)</span>
+      </div>
+      <ul class="key-list">
+        <li><span class="key-sw" style="background:rgb(128,128,128)"></span><span>no motion</span><code>128,128,128</code></li>
+        <li><span class="key-sw" style="background:rgb(235,128,128)"></span><span>+X &rarr; red</span><code>235,128,128</code></li>
+        <li><span class="key-sw" style="background:rgb(128,235,128)"></span><span>+Y &rarr; green</span><code>128,235,128</code></li>
+        <li><span class="key-sw" style="background:rgb(128,128,235)"></span><span>+Z &rarr; blue</span><code>128,128,235</code></li>
+      </ul>
+      <p class="key-foot">Motion fields become colour fields &mdash; the same token the frozen video VAE reads.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================== LIVE DEMO: ROLLOUT EXPLORER ===================== -->
+<section class="band" id="live-demo">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Live demo</p>
+      <h2 class="band-title">Drive a real-robot rollout</h2>
+      <p class="band-sub">Pick a task. In-distribution and out-of-distribution rollouts from the same FloMo policy.</p>
+    </header>
+
+    <!-- Enhanced, JS-powered explorer -->
+    <div class="js-only panel">
+      <div class="chip-row" id="taskChips" role="tablist" aria-label="Rollout task selector">
+        <button class="task-chip active" role="tab" aria-selected="true" data-task="oven"
+          data-video="static/videos/oven.mp4" data-poster="static/images/posters/oven.jpg"
+          data-badge="id" data-badge-text="In-distribution"
+          data-caption="Open the oven, retrieve the croissant, place it on a plate.">Oven</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="toolbox"
+          data-video="static/videos/toolbox.mp4" data-poster="static/images/posters/toolbox.jpg"
+          data-badge="id" data-badge-text="In-distribution"
+          data-caption="Open the hinged lid, grasp the screwdriver, place it inside.">Toolbox</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="corn"
+          data-video="static/videos/corn.mp4" data-poster="static/images/posters/corn.jpg"
+          data-badge="id" data-badge-text="In-distribution"
+          data-caption="Grasp the corn cob and place it in the bowl.">Corn</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="highlighter"
+          data-video="static/videos/highlighter.mp4" data-poster="static/images/posters/highlighter.jpg"
+          data-badge="ood" data-badge-text="OOD &middot; unseen object"
+          data-caption="Place the unseen highlighter in the bowl.">Highlighter</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="string"
+          data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
+          data-badge="ood" data-badge-text="OOD &middot; unseen task"
+          data-caption="Pull the hanging string, a primitive seen only in human video.">Pull String</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="door"
+          data-video="static/videos/door.mp4" data-poster="static/images/posters/door.jpg"
+          data-badge="ood" data-badge-text="OOD &middot; unseen primitive"
+          data-caption="Push the cabinet door shut.">Close Cabinet</button>
+      </div>
+
+      <div class="demo-stage" id="demoStage" data-video="static/videos/oven.mp4">
+        <img class="stage-poster" src="static/images/posters/oven.jpg" alt="Selected rollout poster">
+        <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
+      </div>
+
+      <div class="demo-meta">
+        <span class="vbadge id demo-status" id="demoStatus">In-distribution</span>
+        <p class="demo-caption" id="demoCaption">Open the oven, retrieve the croissant, place it on a plate.</p>
+      </div>
+
+      <div class="thumb-strip" id="taskThumbs" aria-hidden="true">
+        <button class="thumb active" data-task="oven" tabindex="-1"><img src="static/images/posters/oven.jpg" alt=""></button>
+        <button class="thumb" data-task="toolbox" tabindex="-1"><img src="static/images/posters/toolbox.jpg" alt=""></button>
+        <button class="thumb" data-task="corn" tabindex="-1"><img src="static/images/posters/corn.jpg" alt=""></button>
+        <button class="thumb" data-task="highlighter" tabindex="-1"><img src="static/images/posters/highlighter.jpg" alt=""></button>
+        <button class="thumb" data-task="string" tabindex="-1"><img src="static/images/posters/string.jpg" alt=""></button>
+        <button class="thumb" data-task="door" tabindex="-1"><img src="static/images/posters/door.jpg" alt=""></button>
+      </div>
+    </div>
+
+    <!-- No-JS fallback: plain rollout grid -->
+    <div class="nojs-fallback">
+      <div class="vid-grid">
+        <div class="video-card"><video src="static/videos/oven.mp4" poster="static/images/posters/oven.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><br>Open the oven, retrieve the croissant, place it on a plate.</div></div>
+        <div class="video-card"><video src="static/videos/toolbox.mp4" poster="static/images/posters/toolbox.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div></div>
+        <div class="video-card"><video src="static/videos/corn.mp4" poster="static/images/posters/corn.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><br>Grasp the corn cob and place it in the bowl.</div></div>
+        <div class="video-card"><video src="static/videos/highlighter.mp4" poster="static/images/posters/highlighter.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">OOD &middot; unseen object</span><br>Place the unseen highlighter in the bowl.</div></div>
+        <div class="video-card"><video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">OOD &middot; unseen task</span><br>Pull the hanging string, a primitive seen only in human video.</div></div>
+        <div class="video-card"><video src="static/videos/door.mp4" poster="static/images/posters/door.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">OOD &middot; unseen primitive</span><br>Push the cabinet door shut.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TL;DR + ANNOTATED ARCHITECTURE ===================== -->
+<section class="band band-soft" id="tldr">
+  <div class="wrap">
+    <div class="tldr">
+      <span class="tldr-tag">TL;DR</span>
+      <p>Most world-action models predict <b>future video</b>. We show the better target is <b>3D motion</b>.
+      <b>FloMo</b> fine-tunes a pretrained video model to predict 3D scene flow and robot actions together &mdash;
+      beating pixel prediction on success, generalization, and sample efficiency.</p>
+    </div>
+
+    <figure class="panel arch-panel">
+      <div class="panel-tab">Architecture &middot; hover the <span class="dot">+</span> hotspots</div>
+      <div class="arch-wrap">
+        <img src="static/images/figure_arch.png" alt="FloMo architecture">
+        <button class="hotspot" style="top:18%;left:50%;" aria-label="Backbone detail">+
+          <span class="tip">Wan&nbsp;2.2 5B DiT backbone</span></button>
+        <button class="hotspot" style="top:60%;left:14%;" aria-label="Frozen encoders detail">+
+          <span class="tip">Frozen Wan&nbsp;2.2 VAE / UMT5 text encoder</span></button>
+        <button class="hotspot" style="top:78%;left:38%;" aria-label="Scene-flow tokenization detail">+
+          <span class="tip">Scene-flow rendered as RGB &rarr; shared video latent</span></button>
+        <button class="hotspot" style="top:40%;left:84%;" aria-label="Output heads detail">+
+          <span class="tip">Flow-matching heads: motion + action</span></button>
+        <button class="hotspot" style="top:30%;left:66%;" aria-label="Fine-tuning detail">+
+          <span class="tip">LoRA rank 64 (backbone only)</span></button>
+      </div>
+      <figcaption class="figure-caption">
+        <b>FloMo architecture.</b> From an image and a text prompt, a pretrained video backbone (Wan&nbsp;2.2 5B DiT)
+        flow-matches dense 3D motion and robot actions. 3D velocities are rendered as RGB and encoded by the backbone's
+        VAE, so motion shares the video latent space &mdash; no new tokenizer.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== ABSTRACT ===================== -->
+<section class="band" id="abstract">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Abstract</p>
+      <h2 class="band-title">Motion mediates the transfer from video to action</h2>
+    </header>
+    <div class="prose">
+      <p>Pretrained video models carry internet-scale motion priors, but predicting full video is wasteful for action.
+      We argue dense <b>3D motion</b> is how that prior best transfers to action. <b>FloMo</b> is a 5B video model
+      fine-tuned to predict 3D scene flow and actions jointly: scene flow is rendered as RGB and encoded into the
+      video latent space, so no new tokenizer is needed. Co-trained on action-free human video and robot teleoperation,
+      it generalizes to unseen objects, motion primitives, and tasks.</p>
+      <p>Removing the motion objective hurts generalization; adding a video objective hurts success. Action tokens
+      attend roughly <b>3&times;</b> more to motion than to video &mdash; <b>motion mediates the transfer from video
+      to action.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTRIBUTIONS ===================== -->
+<section class="band band-soft" id="contributions">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Contributions</p>
+      <h2 class="band-title">What we show</h2>
+    </header>
+    <div class="contrib-grid">
+      <div class="contrib-card">
+        <span class="num">01</span>
+        <h4>Motion as the WAM prediction target</h4>
+        <p>We render 3D scene flow as RGB and encode it with a frozen video VAE, so motion shares the video latent space.
+        One backbone flow-matches motion and action &mdash; no new tokenizer.</p>
+      </div>
+      <div class="contrib-card">
+        <span class="num">02</span>
+        <h4>Motion is the most effective target</h4>
+        <p>On real-robot manipulation, predicting motion beats predicting video &mdash; or both &mdash; on in-distribution
+        success and OOD generalization. Adding a video target <em>interferes</em> with action learning.</p>
+      </div>
+      <div class="contrib-card">
+        <span class="num">03</span>
+        <h4>Generalization from human video</h4>
+        <p>FloMo transfers to objects, motions, and tasks seen <em>only</em> in action-free human video &mdash; like
+        pulling a string, never present in robot training.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== METHOD ===================== -->
+<section class="band" id="method">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Method</p>
+      <h2 class="band-title">3D scene flow as the <span class="accent">video-action intermediate</span></h2>
+    </header>
+
+    <div class="prose">
+      <p>The action that creates a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. 2D optical
+      flow mixes camera motion with task motion, so FloMo predicts <b>3D scene flow</b>: the 3D displacement of each tracked
+      point in the first camera frame, isolating object and hand motion.</p>
+      <p>We render this as an RGB video and encode it with the <b>frozen Wan&nbsp;2.2 VAE</b>. Rendered flow lands in the same
+      latent space as video, so the pretrained DiT handles it with no new tokenizer &mdash; we fine-tune only the backbone
+      (LoRA, rank 64).</p>
+    </div>
+
+    <!-- ===== SIGNATURE 1: BEFORE/AFTER WIPE over scene-flow clips ===== -->
+    <h3 class="feature-title">Pixels vs. motion <span class="try-pill">drag to compare</span></h3>
+    <p class="feature-sub">
+      Grab the handle and wipe between the <b>raw RGB observation</b> and the same frame rendered as a
+      <b>3D scene-flow colour field</b>. The texture-heavy pixels on the left collapse to the clean, low-entropy motion token on the right.
+    </p>
+
+    <div class="js-only">
+      <div class="chip-row" id="cwChips" role="tablist" aria-label="Scene-flow sample selector">
+        <button class="task-chip active" role="tab" aria-selected="true" data-sample="cabinet"
+          data-video="static/videos/sceneflow/sceneflow_0103.mp4" data-poster="static/videos/sceneflow/sceneflow_0103.jpg"
+          data-caption="&ldquo;Open kitchen cabinet&rdquo; &mdash; the cabinet door and hand sweep out a coherent green motion field.">Open cabinet</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="dry"
+          data-video="static/videos/sceneflow/sceneflow_0104.mp4" data-poster="static/videos/sceneflow/sceneflow_0104.jpg"
+          data-caption="&ldquo;Dry pink devices and place in drawer&rdquo; &mdash; the manipulated object lights up against a near-static background.">Dry &amp; stow</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="fabric"
+          data-video="static/videos/sceneflow/sceneflow_0305.mp4" data-poster="static/videos/sceneflow/sceneflow_0305.jpg"
+          data-caption="&ldquo;Place wound fabric scrap on table&rdquo; &mdash; a short controlled place, isolated cleanly from the scene.">Place fabric</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
+          data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg"
+          data-caption="&ldquo;Move jar and cup to kitchen counter&rdquo; &mdash; a large bimanual reach produces a dense, fast motion field.">Move dishes</button>
+      </div>
+
+      <div class="cw" id="cwWipe"
+           data-video="static/videos/sceneflow/sceneflow_0103.mp4"
+           data-poster="static/videos/sceneflow/sceneflow_0103.jpg">
+        <div class="cw-window" id="cwWindow">
+          <div class="cw-layer cw-before" id="cwBefore"><!-- panel 1: RGB observation --></div>
+          <div class="cw-layer cw-after" id="cwAfter"><!-- panel 3: scene flow as RGB --></div>
+          <span class="cw-tag cw-tag-l">RGB observation</span>
+          <span class="cw-tag cw-tag-r">scene flow as RGB</span>
+          <div class="cw-handle" id="cwHandle" aria-hidden="true"><span class="cw-grip"></span></div>
+          <input class="cw-range" id="cwRange" type="range" min="0" max="100" value="52"
+                 aria-label="Wipe between RGB observation and scene-flow colour rendering">
+        </div>
+      </div>
+      <p class="cw-caption" id="cwCaption">&ldquo;Open kitchen cabinet&rdquo; &mdash; the cabinet door and hand sweep out a coherent green motion field.</p>
+      <p class="feature-foot">
+        Both halves are the <b>same clip at the same instant</b>: left is what a pixel predictor must reconstruct,
+        right is what FloMo predicts instead. The middle panel of each source clip shows the underlying one-step 3D flow arrows.
+      </p>
+    </div>
+
+    <!-- No-JS fallback: plain video grid -->
+    <div class="nojs-fallback">
+      <div class="vid-grid two">
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0103.mp4" poster="static/videos/sceneflow/sceneflow_0103.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Open cabinet</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0104.mp4" poster="static/videos/sceneflow/sceneflow_0104.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Dry &amp; stow</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0305.mp4" poster="static/videos/sceneflow/sceneflow_0305.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Place fabric</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Move dishes</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+      </div>
+    </div>
+
+    <!-- ===== SIGNATURE 2: colour cube, hero-grade (driven by index.js #flowCube) ===== -->
+    <h3 class="feature-title" style="margin-top:3rem;">Paint a motion, get its colour <span class="try-pill">interactive</span></h3>
+    <p class="feature-sub">
+      Every 3D motion vector becomes a single colour. Drag the pad for in-plane motion, the slider for depth, and
+      watch (&Delta;X,&nbsp;&Delta;Y,&nbsp;&Delta;Z) map to (R,&nbsp;G,&nbsp;B) &mdash; the exact encoding the frozen VAE reads.
+    </p>
+
+    <div class="js-only flowcube panel cube-panel" id="flowCube">
+      <div class="flowcube-grid">
+        <div class="flowcube-left">
+          <div class="flowcube-pad" id="fcPad" role="application" aria-label="Drag to set in-plane motion delta-X and delta-Y">
+            <div class="fc-cross"></div>
+            <svg class="fc-arrow" viewBox="0 0 200 200" aria-hidden="true">
+              <line id="fcArrowLine" x1="100" y1="100" x2="100" y2="100"></line>
+            </svg>
+            <button class="fc-knob" id="fcKnob" type="button" aria-label="Motion vector handle — drag, or use arrow keys"></button>
+          </div>
+          <div class="fc-zrow">
+            <label for="fcZ">&Delta;Z</label>
+            <input class="fc-z" id="fcZ" type="range" min="-1" max="1" step="0.01" value="0" aria-label="Depth motion delta-Z">
+            <span class="fc-axis-hint">toward / away</span>
+          </div>
+        </div>
+        <div class="flowcube-out">
+          <div class="fc-swatch" id="fcSwatch"></div>
+          <div class="fc-readout">
+            <div class="fc-row"><span>&Delta;X</span><b id="fcVx">+0.00</b></div>
+            <div class="fc-row"><span>&Delta;Y</span><b id="fcVy">+0.00</b></div>
+            <div class="fc-row"><span>&Delta;Z</span><b id="fcVz">+0.00</b></div>
+            <div class="fc-arrow-rgb">&darr; encodes to</div>
+            <div class="fc-rgb" id="fcRgb">rgb(128, 128, 128)</div>
+          </div>
+        </div>
+      </div>
+      <p class="fc-hint">Each axis maps linearly to one colour channel, so a moving point becomes one RGB value &mdash; exactly
+      the token the frozen VAE encodes. Zero motion is mid-grey.</p>
+    </div>
+
+    <!-- two-stage training -->
+    <h3 class="feature-title" style="margin-top:3rem;">Two-stage co-training</h3>
+    <p class="feature-sub">FloMo is co-trained on a mixture of egocentric human video and bimanual robot teleoperation.</p>
+    <div class="stage-flow">
+      <div class="stage-card">
+        <span class="stage-num">Stage 1</span>
+        <h5>Mid-training</h5>
+        <p>Train on the full mixture. Human video supervises scene flow only; robot data supervises scene flow
+        <em>and</em> action &mdash; building a broad motion prior at scale.</p>
+      </div>
+      <div class="stage-link" aria-hidden="true">&rarr;</div>
+      <div class="stage-card s2">
+        <span class="stage-num">Stage 2</span>
+        <h5>Fine-tuning</h5>
+        <p>Train on robot data only, dropping human video. This sharpens action prediction without diluting
+        the gradient with action-free samples.</p>
+      </div>
+    </div>
+    <p class="prose" style="margin-top:1.4rem;">
+      <b>At inference</b>, from an image and a language instruction, FloMo denoises for 10 UniPC steps, then executes
+      a chunk of 16 actions before re-planning.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== RESULTS ===================== -->
+<section class="band band-soft" id="results">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Results</p>
+      <h2 class="band-title">Predicting motion beats predicting pixels</h2>
+      <p class="band-sub">Three contact-rich bimanual tasks (<em>Oven</em>, <em>Toolbox</em>, <em>Corn</em>), real-robot evaluation.</p>
+    </header>
+
+    <!-- ===== SIGNATURE 3: head-to-head duel ===== -->
+    <div class="duel panel" data-metric="Avg. in-distribution success" data-unit="%" data-max="100">
+      <div class="panel-tab">Head-to-head &middot; in-distribution success</div>
+      <div class="duel-board">
+        <div class="duel-side" data-side="a">
+          <label class="duel-pick-label">
+            <span>Method A</span>
+            <select class="duel-pick" data-side="a" aria-label="Method A">
+              <option value="FloMo" data-score="87" data-ours="1" selected>FloMo (ours)</option>
+              <option value="Joint Video-Action" data-score="47">Joint Video-Action</option>
+              <option value="FloMo w/ Video" data-score="40">FloMo w/ Video</option>
+              <option value="BC (no pretraining)" data-score="7">BC (no pretraining)</option>
+            </select>
+          </label>
+          <div class="duel-score" data-role="score-a">87</div>
+          <div class="duel-meter"><div class="duel-fill" data-role="fill-a"></div></div>
+        </div>
+
+        <div class="duel-vs" aria-hidden="true"><span>VS</span></div>
+
+        <div class="duel-side" data-side="b">
+          <label class="duel-pick-label">
+            <span>Method B</span>
+            <select class="duel-pick" data-side="b" aria-label="Method B">
+              <option value="FloMo" data-score="87" data-ours="1">FloMo (ours)</option>
+              <option value="Joint Video-Action" data-score="47" selected>Joint Video-Action</option>
+              <option value="FloMo w/ Video" data-score="40">FloMo w/ Video</option>
+              <option value="BC (no pretraining)" data-score="7">BC (no pretraining)</option>
+            </select>
+          </label>
+          <div class="duel-score" data-role="score-b">47</div>
+          <div class="duel-meter"><div class="duel-fill" data-role="fill-b"></div></div>
+        </div>
+      </div>
+      <p class="duel-verdict" data-role="verdict" aria-live="polite"></p>
+    </div>
+
+    <div class="results-split">
+      <figure class="panel fig-card">
+        <img class="lightboxable" src="static/images/figure_policy_indist.png" alt="In-distribution success rates">
+        <figcaption class="figure-caption">
+          <b>In-distribution success.</b> Predicting motion (ours) is the best target on every task; predicting only
+          video or video&nbsp;+&nbsp;motion lowers success.
+        </figcaption>
+      </figure>
+
+      <div class="panel rank-panel">
+        <div class="panel-tab">The full field &middot; avg. in-distribution success (%)</div>
+        <div class="bar-chart" id="idBars" aria-label="Average in-distribution success rate">
+          <div class="bar-row"><span class="bar-label">FloMo</span><div class="bar-track"><div class="bar flomo" data-value="87"></div></div><span class="bar-val" data-num="87">87</span></div>
+          <div class="bar-row"><span class="bar-label">Joint Video-Action</span><div class="bar-track"><div class="bar" data-value="47"></div></div><span class="bar-val" data-num="47">47</span></div>
+          <div class="bar-row"><span class="bar-label">FloMo w/ Video</span><div class="bar-track"><div class="bar" data-value="40"></div></div><span class="bar-val" data-num="40">40</span></div>
+          <div class="bar-row"><span class="bar-label">BC (no pretraining)</span><div class="bar-track"><div class="bar" data-value="7"></div></div><span class="bar-val" data-num="7">7</span></div>
+        </div>
+        <p class="rank-note">FloMo wins every task, averaging <b>87%</b> &mdash; vs <b>47%</b> Joint Video-Action,
+        <b>40%</b> FloMo&nbsp;w/&nbsp;Video, <b>7%</b> from-scratch BC. The gap is largest on <em>Oven</em>: 3D motion
+        targets the gripper&ndash;handle contact directly, while a video target wastes capacity reconstructing reflections and textures.</p>
+      </div>
+    </div>
+
+    <!-- OOD table + explorer -->
+    <div class="ood-block">
+      <h3 class="feature-title">Out-of-distribution generalization</h3>
+      <p class="feature-sub">
+        FloMo leads on all three OOD axes &mdash; an unseen primitive (<em>Close Cabinet</em>), task (<em>Pull String</em>),
+        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply. Pick an axis to highlight its columns and load the rollout.
+      </p>
+
+      <div class="ood-explorer js-only">
+        <div class="chip-row ood-tabs" id="oodTabs" role="tablist" aria-label="OOD axis selector">
+          <button class="task-chip active" role="tab" aria-selected="true" data-group="cc" data-cells="1,2"
+            data-video="static/videos/door.mp4" data-poster="static/images/posters/door.jpg"
+            data-badge="ood" data-badge-text="OOD &middot; unseen primitive"
+            data-caption="Push the cabinet door shut.">Close Cabinet</button>
+          <button class="task-chip" role="tab" aria-selected="false" data-group="ps" data-cells="3,4"
+            data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
+            data-badge="ood" data-badge-text="OOD &middot; unseen task"
+            data-caption="Pull the hanging string, a primitive seen only in human video.">Pull String</button>
+          <button class="task-chip" role="tab" aria-selected="false" data-group="hl" data-cells="5,6"
+            data-video="static/videos/highlighter.mp4" data-poster="static/images/posters/highlighter.jpg"
+            data-badge="ood" data-badge-text="OOD &middot; unseen object"
+            data-caption="Place the unseen highlighter in the bowl.">Highlighter</button>
+        </div>
+      </div>
+
+      <div class="ood-layout">
+        <div class="results-table table-wrap">
+          <table id="oodTable">
+            <thead>
+              <tr>
+                <th rowspan="2" class="lcell">Method</th>
+                <th colspan="2" data-group="cc">Close Cabinet</th>
+                <th colspan="2" data-group="ps">Pull String</th>
+                <th colspan="2" data-group="hl">Highlighter</th>
+              </tr>
+              <tr>
+                <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
+                <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
+                <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="lcell">BC (no pretraining)</td><td>3/5</td><td>80</td><td>0/5</td><td>0</td><td>1/5</td><td>50</td></tr>
+              <tr><td class="lcell">Joint Video-Action</td><td>0/5</td><td>40</td><td>1/5</td><td>20</td><td>2/5</td><td>40</td></tr>
+              <tr><td class="lcell">FloMo w/ Video</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td></tr>
+              <tr><td class="lcell">AMPLIFY</td><td>2/5</td><td>60</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td></tr>
+              <tr><td class="lcell">DreamZero</td><td>2/5</td><td>80</td><td>1/5</td><td>30</td><td>1/5</td><td>30</td></tr>
+              <tr class="ours"><td class="lcell">FloMo (ours)</td><td>5/5</td><td>100</td><td>3/5</td><td>60</td><td>4/5</td><td>80</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ood-stage-wrap js-only">
+          <div class="demo-stage small" id="oodStage" data-video="static/videos/door.mp4">
+            <img class="stage-poster" src="static/images/posters/door.jpg" alt="Selected OOD rollout poster">
+            <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
+          </div>
+          <div class="demo-meta">
+            <span class="vbadge ood demo-status" id="oodStatus">OOD &middot; unseen primitive</span>
+            <p class="demo-caption" id="oodCaption">Push the cabinet door shut.</p>
+          </div>
+        </div>
+      </div>
+      <p class="figure-caption">SR = successful rollouts / total &nbsp;&middot;&nbsp; TP = avg. fraction of subtasks completed (%).</p>
+    </div>
+
+    <!-- scaling + attention -->
+    <div class="results-split" style="margin-top:2.2rem;">
+      <figure class="panel fig-card">
+        <img class="lightboxable" src="static/images/figure_id_scaling.png" alt="Inverse-dynamics scaling">
+        <figcaption class="figure-caption">
+          <b>Sample efficiency.</b> Held-out action error vs. action-data scale for two <em>ground-truth</em> conditioning
+          signals (log-log). Recovering actions from motion is more sample-efficient than from video, with ~22% lower
+          error at 1% of the data.
+        </figcaption>
+      </figure>
+      <figure class="panel fig-card">
+        <img class="lightboxable" src="static/images/figure_attention_share.png" alt="Action attention by modality">
+        <figcaption class="figure-caption">
+          <b>Action attention concentrates on motion.</b> Share of action-query attention to each input modality across
+          DiT layers. Attention to motion rises through the trunk and dominates; action queries attend to motion roughly
+          <b>3&times;</b> more than to video.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== GENERALIZATION FROM HUMAN VIDEO ===================== -->
+<section class="band" id="generalization">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Generalization from human video</p>
+      <h2 class="band-title">Scene flow transfers from human video</h2>
+      <p class="band-sub">
+        3D scene flow is embodiment-agnostic: a human hand and a robot gripper produce a similar motion field. FloMo learns
+        motions from action-free human video and carries them to the robot.
+      </p>
+    </header>
+
+    <!-- ablation duel: with vs without human video -->
+    <div class="duel panel" data-metric="Avg. OOD success" data-unit="%" data-max="100" data-static="1">
+      <div class="panel-tab">The ablation &middot; remove only the ~81h human-video subset</div>
+      <div class="duel-board">
+        <div class="duel-side" data-side="a">
+          <div class="duel-fixed-name">FloMo</div>
+          <div class="duel-score good" data-role="score-a" data-score="80" data-target="80" data-suffix="%">80%</div>
+          <div class="duel-meter"><div class="duel-fill" data-role="fill-a" data-score="80"></div></div>
+          <div class="duel-fixed-sub">with human video</div>
+        </div>
+        <div class="duel-vs" aria-hidden="true"><span>VS</span></div>
+        <div class="duel-side" data-side="b">
+          <div class="duel-fixed-name">FloMo</div>
+          <div class="duel-score bad" data-role="score-b" data-score="7" data-target="7" data-suffix="%">7%</div>
+          <div class="duel-meter"><div class="duel-fill bad" data-role="fill-b" data-score="7"></div></div>
+          <div class="duel-fixed-sub">no human video</div>
+        </div>
+      </div>
+      <p class="duel-verdict static" data-role="verdict">Same model, same motion target. Removing only the human-video subset drops average OOD success by <b>73 points</b>.</p>
+    </div>
+
+    <div class="results-table table-wrap wide">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2" class="lcell">Training data</th>
+            <th colspan="2">Close Cabinet</th>
+            <th colspan="2">Pull String</th>
+            <th colspan="2">Highlighter</th>
+            <th colspan="2">Average</th>
+          </tr>
+          <tr>
+            <th>SR</th><th>TP</th><th>SR</th><th>TP</th><th>SR</th><th>TP</th><th>SR</th><th>TP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ours"><td class="lcell">FloMo</td><td>5/5</td><td>100</td><td>3/5</td><td>60</td><td>4/5</td><td>80</td><td>80%</td><td>80</td></tr>
+          <tr><td class="lcell">FloMo (no human video)</td><td>0/5</td><td>20</td><td>1/5</td><td>50</td><td>0/5</td><td>20</td><td>7%</td><td>30</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="figure-caption">Both models predict 3D motion and differ only in whether the ~81h EgoVerse human-video subset is in training. SR = successful rollouts / total; TP = avg. fraction of subtasks completed (%).</p>
+
+    <div class="prose" style="margin-top:1.2rem;">
+      <p>Same model, same motion target &mdash; removing only the ~81h EgoVerse human-video subset drops average OOD success
+      from 80% to 7%. The generalization comes from human video, made transferable by the motion representation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PULL STRING: FloMo vs BASELINES ===================== -->
+<section class="band band-soft" id="comparison">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Rollout duels</p>
+      <h2 class="band-title">Pull String (OOD): FloMo vs. baselines</h2>
+      <p class="band-sub">The same unseen task, same conditions. FloMo succeeds where pixel-predicting baselines fail.</p>
+    </header>
+
+    <div class="cmp js-only panel" id="cmpSwitcher">
+      <div class="panel-tab">Switch the method &middot; or sync all three side by side</div>
+      <div class="cmp-controls">
+        <div class="cmp-seg" role="tablist" aria-label="Method selector">
+          <button class="active" role="tab" aria-selected="true" data-method="flomo"
+            data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
+            data-badge="ok" data-badge-text="Success">FloMo</button>
+          <button role="tab" aria-selected="false" data-method="dreamzero"
+            data-video="static/videos/string_dreamzero.mp4" data-poster="static/images/posters/string_dreamzero.jpg"
+            data-badge="fail" data-badge-text="Failure">DreamZero</button>
+          <button role="tab" aria-selected="false" data-method="bc"
+            data-video="static/videos/string_bc.mp4" data-poster="static/images/posters/string_bc.jpg"
+            data-badge="fail" data-badge-text="Failure">BC</button>
+        </div>
+        <button class="cmp-btn" id="cmpSyncToggle" type="button" aria-pressed="false">Play all in sync</button>
+        <button class="cmp-btn" id="cmpPlay" type="button">Play all</button>
+        <button class="cmp-btn" id="cmpMute" type="button" aria-pressed="false">Unmute</button>
+      </div>
+
+      <div class="cmp-single" id="cmpSingleWrap">
+        <div class="demo-stage" id="cmpStage" data-video="static/videos/string.mp4">
+          <img class="stage-poster" src="static/images/posters/string.jpg" alt="Selected method rollout poster">
+          <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
+        </div>
+        <div class="cmp-result" id="cmpResult"><span class="vbadge ok">Success</span></div>
+      </div>
+
+      <div class="cmp-sync" id="cmpSync" hidden>
+        <div class="cmp-cell">
+          <video data-src="static/videos/string.mp4" poster="static/images/posters/string.jpg" muted loop playsinline preload="none"></video>
+          <div class="cmp-cell-label"><span class="task">FloMo</span> <span class="vbadge ok">Success</span></div>
+        </div>
+        <div class="cmp-cell">
+          <video data-src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg" muted loop playsinline preload="none"></video>
+          <div class="cmp-cell-label"><span class="task">DreamZero</span> <span class="vbadge fail">Failure</span></div>
+        </div>
+        <div class="cmp-cell">
+          <video data-src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg" muted loop playsinline preload="none"></video>
+          <div class="cmp-cell-label"><span class="task">BC (no pretraining)</span> <span class="vbadge fail">Failure</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No-JS fallback: three labeled cards -->
+    <div class="nojs-fallback">
+      <div class="vid-grid">
+        <div class="video-card"><video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">FloMo</span><span class="vbadge ok">Success</span></div></div>
+        <div class="video-card"><video src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">DreamZero</span><span class="vbadge fail">Failure</span></div></div>
+        <div class="video-card"><video src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">BC (no pretraining)</span><span class="vbadge fail">Failure</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CODE / RESOURCES ===================== -->
+<section class="band" id="code">
+  <div class="wrap has-text-centered">
+    <header class="band-head">
+      <p class="kicker">Code</p>
+      <h2 class="band-title">Code &amp; resources</h2>
+    </header>
+    <div class="hero-actions" style="justify-content:center;">
+      <span class="btn btn-dark is-disabled" title="Released upon acceptance" aria-disabled="true">
+        <span class="btn-ico" aria-hidden="true">&#9676;</span> Code (coming soon)
+      </span>
+    </div>
+    <p class="band-sub" style="margin-top:.8rem;">Source released upon acceptance.</p>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer-flomo" id="foot">
+  <div class="wrap has-text-centered">
+    <p>Anonymous CoRL 2026 submission. This page intentionally omits author and institution information for double-blind review.</p>
+    <p style="margin-top:.4rem;">Page built on the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page</a> style.</p>
+  </div>
+</footer>
+
+</main>
+
+<!-- ===================== LIGHTBOX MODAL ===================== -->
+<div class="modal" id="lightbox" role="dialog" aria-modal="true" aria-label="Figure zoom">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <img class="lightbox-img" src="" alt="">
+  </div>
+  <button class="modal-close lightbox-close" aria-label="close"></button>
+</div>
+
+</body>
+</html>

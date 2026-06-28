@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FloMo — design options</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --flomo-orange:#f09018; --flomo-orange-dark:#d97d08;
+      --flomo-teal:#307890; --flomo-teal-dark:#245d70;
+      --ink:#1f2733; --muted:#5b6675;
+      --soft-bg:#f6f8fa; --soft-teal:#eaf3f5; --soft-orange:#fcf1e3; --line:#e7ebef;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--soft-bg);color:var(--ink);
+      font-family:'Noto Sans',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.55;}
+    .wrap{max-width:1060px;margin:0 auto;padding:3.2rem 1.25rem 4rem;}
+    .kicker{text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;font-weight:700;color:var(--flomo-teal);margin:0 0 .5rem;}
+    h1{font-size:2rem;font-weight:700;letter-spacing:-.01em;margin:0 0 .5rem;}
+    .lede{color:var(--muted);max-width:640px;margin:0 0 .3rem;font-size:1.02rem;}
+    .hint{color:var(--muted);font-size:.86rem;margin:.3rem 0 2.2rem;}
+    .hint code{background:#eef0f3;border-radius:5px;padding:.08rem .4rem;font-size:.82rem;}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;}
+    @media(max-width:880px){.grid{grid-template-columns:1fr}}
+    .card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+      border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;
+      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;}
+    .card:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(20,30,45,.12);border-color:#f0c89a;}
+    .swatchbar{height:7px;display:flex}
+    .swatchbar i{flex:1}
+    .card-body{padding:1.2rem 1.25rem 1.35rem;display:flex;flex-direction:column;flex:1;}
+    .tag{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+    .card h2{font-size:1.28rem;font-weight:700;margin:0 0 .4rem;letter-spacing:-.01em;}
+    .card p{color:var(--muted);font-size:.9rem;margin:0 0 .85rem;}
+    .sig{font-size:.82rem;color:var(--flomo-teal-dark);background:var(--soft-teal);
+      border-radius:8px;padding:.5rem .65rem;margin:0 0 1rem;line-height:1.4;}
+    .sig b{color:var(--ink);font-weight:700;display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.15rem;color:var(--flomo-teal);}
+    .open{margin-top:auto;align-self:flex-start;font-weight:700;font-size:.88rem;color:#fff;
+      background:var(--flomo-orange);border-radius:999px;padding:.45rem 1.05rem;}
+    .card:hover .open{background:var(--flomo-orange-dark);}
+    .current{margin-top:2.4rem;padding-top:1.6rem;border-top:1px solid var(--line);}
+    .current a{color:var(--flomo-orange-dark);font-weight:700;}
+    .meta{color:var(--muted);font-size:.84rem;margin-top:.35rem;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="kicker">Same palette · new interaction design</p>
+    <h1>FloMo — three interactive directions</h1>
+    <p class="lede">Each keeps the current FloMo orange/teal theme, but reinvents the structure and adds a memorable, hands-on centerpiece. Same paper, same content, same numbers.</p>
+    <p class="hint">Serve the folder so videos load — already running at <code>localhost:8080</code>.</p>
+
+    <div class="grid">
+      <a class="card" href="option-scrolly.html">
+        <div class="swatchbar"><i style="background:#ffffff"></i><i style="background:#f09018"></i><i style="background:#307890"></i><i style="background:#1f2733"></i></div>
+        <div class="card-body">
+          <div class="tag">Direction 1</div>
+          <h2>Scrolly Walkthrough</h2>
+          <p>A two-column cinematic build-up: a sticky stage transforms as the narrative scrolls past it.</p>
+          <div class="sig"><b>Signature</b>The FloMo architecture <strong>assembles itself</strong> as you scroll — tokens flow in, the backbone splits into motion + action, motion turns into RGB color.</div>
+          <span class="open">Open →</span>
+        </div>
+      </a>
+
+      <a class="card" href="option-compare.html">
+        <div class="swatchbar"><i style="background:#f09018"></i><i style="background:#fcf1e3"></i><i style="background:#307890"></i><i style="background:#eaf3f5"></i></div>
+        <div class="card-body">
+          <div class="tag">Direction 2</div>
+          <h2>Tactile Compare Engine</h2>
+          <p>Hands-on everywhere, because the paper's whole claim is "motion beats pixels."</p>
+          <div class="sig"><b>Signature</b><strong>Drag-to-wipe</strong> between the raw RGB observation and its scene-flow color field; results play out as head-to-head "duels."</div>
+          <span class="open">Open →</span>
+        </div>
+      </a>
+
+      <a class="card" href="option-flowmap.html">
+        <div class="swatchbar"><i style="background:#1f2733"></i><i style="background:#f09018"></i><i style="background:#307890"></i><i style="background:#245d70"></i></div>
+        <div class="card-body">
+          <div class="tag">Direction 3 · bolder</div>
+          <h2>Flow Map</h2>
+          <p>The argument as a traversable flow: <em>video → motion → action</em>, with a persistent progress rail.</p>
+          <div class="sig"><b>Signature</b><strong>Drag to morph</strong> a human hand into a robot gripper while the encoded 3D-motion color token stays constant — the "transfers from human video" idea, made physical.</div>
+          <span class="open">Open →</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="current">
+      <a href="index.html">View current site (index.html) →</a>
+      <p class="meta">Your existing page is untouched. Pick a direction and I'll promote it to <code>index.html</code> and remove the rest. Want any of them bolder or more restrained first? Just say so.</p>
+    </div>
+  </div>
+</body>
+</html>
