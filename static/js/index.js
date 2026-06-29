@@ -270,97 +270,59 @@
     show(0, true); // start playing + cycling (no-op autoplay under reduced motion)
   }
 
-  /* ---------- comparison switcher (FloMo vs baselines) ---------- */
+  /* ---------- comparison carousel (FloMo vs baselines, autoplay + autocycle) ---------- */
   function initComparison() {
     var root = document.getElementById('cmpSwitcher');
     if (!root) return;
-    var single = document.getElementById('cmpSingleWrap');
-    var stage = document.getElementById('cmpStage');
-    var api = setupStage(stage);
+    var video = document.getElementById('cmpVideo');
+    if (!video) return;
     var result = document.getElementById('cmpResult');
-    var seg = [].slice.call(root.querySelectorAll('.cmp-seg button'));
-    var syncWrap = document.getElementById('cmpSync');
-    var syncToggle = document.getElementById('cmpSyncToggle');
-    var masterPlay = document.getElementById('cmpPlay');
-    var muteBtn = document.getElementById('cmpMute');
-    var syncVideos = [].slice.call(syncWrap.querySelectorAll('video'));
+    var caption = document.getElementById('cmpCaption');
+    var prev = document.getElementById('cmpPrev');
+    var next = document.getElementById('cmpNext');
+    var carousel = document.getElementById('cmpCarousel');
+    var dots = [].slice.call(document.querySelectorAll('#cmpDots .ood-dot'));
 
-    var muted = true, syncing = false, playing = false, rafId = null;
+    // The three methods on the same OOD Pull String task, in cycle order.
+    var items = [
+      { video: 'static/videos/string.mp4', poster: 'static/images/posters/string.jpg',
+        badge: 'ok', badgeText: 'Success',
+        caption: '<b>FloMo</b> &mdash; grasps and pulls the hanging string, completing the unseen task.' },
+      { video: 'static/videos/string_dreamzero.mp4', poster: 'static/images/posters/string_dreamzero.jpg',
+        badge: 'fail', badgeText: 'Failure',
+        caption: '<b>DreamZero</b> &mdash; a pixel-predicting baseline; never establishes the pull.' },
+      { video: 'static/videos/string_bc.mp4', poster: 'static/images/posters/string_bc.jpg',
+        badge: 'fail', badgeText: 'Failure',
+        caption: '<b>BC (no pretraining)</b> &mdash; never finds the string without a motion prior.' }
+    ];
+    var idx = 0;
+    slow(video); // 3x-real-time clips: play at half speed (listeners persist across src changes)
 
-    function setResult(badge, text) {
-      result.innerHTML = '<span class="vbadge ' + badge + '">' + text + '</span>';
+    function show(i, autoplay) {
+      idx = (i % items.length + items.length) % items.length;
+      var it = items[idx];
+      if (result) { result.className = 'vbadge ' + it.badge + ' demo-status'; result.textContent = it.badgeText; }
+      if (caption) caption.innerHTML = it.caption;
+      dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
+      video.poster = it.poster;
+      video.src = it.video;
+      video.load();
+      if (autoplay && !reduceMotion) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
     }
-    function selectMethod(btn) {
-      seg.forEach(function (b) {
-        var on = b === btn;
-        b.classList.toggle('active', on);
-        b.setAttribute('aria-selected', on ? 'true' : 'false');
+    function go(delta) { show(idx + delta, true); }
+
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    // autocycle: advance to the next method whenever a clip finishes
+    video.addEventListener('ended', function () { go(1); });
+    if (carousel) {
+      carousel.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
       });
-      api.reset(btn.dataset.video, btn.dataset.poster);
-      setResult(btn.dataset.badge, btn.dataset.badgeText);
-      if (!syncing) masterPlay.textContent = 'Play';
     }
-    seg.forEach(function (b) { b.addEventListener('click', function () { selectMethod(b); }); });
 
-    function loadSyncSrc() {
-      syncVideos.forEach(function (v) { if (!v.src) v.src = v.dataset.src; v.muted = muted; });
-    }
-    function syncLoop() {
-      if (!syncing) return;
-      var leader = syncVideos[0];
-      for (var i = 1; i < syncVideos.length; i++) {
-        if (Math.abs(syncVideos[i].currentTime - leader.currentTime) > 0.08) {
-          syncVideos[i].currentTime = leader.currentTime;
-        }
-      }
-      rafId = requestAnimationFrame(syncLoop);
-    }
-    syncToggle.addEventListener('click', function () {
-      syncing = !syncing;
-      syncToggle.classList.toggle('active', syncing);
-      syncToggle.setAttribute('aria-pressed', syncing ? 'true' : 'false');
-      single.hidden = syncing;
-      syncWrap.hidden = !syncing;
-      if (syncing) {
-        loadSyncSrc();
-        if (!reduceMotion) rafId = requestAnimationFrame(syncLoop);
-        masterPlay.textContent = 'Play all';
-      } else {
-        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-        syncVideos.forEach(function (v) { v.pause(); });
-        playing = false;
-        masterPlay.textContent = 'Play';
-      }
-    });
-    masterPlay.addEventListener('click', function () {
-      if (!syncing) {
-        // single mode: master button toggles the selected clip and reflects state
-        var nowPlaying = api.toggle();
-        masterPlay.textContent = nowPlaying ? 'Pause' : 'Play';
-        return;
-      }
-      playing = !playing;
-      if (playing) {
-        loadSyncSrc();
-        syncVideos.forEach(function (v) { v.currentTime = 0; });
-        syncVideos.forEach(function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); });
-        masterPlay.textContent = 'Pause';
-        if (!reduceMotion && !rafId) rafId = requestAnimationFrame(syncLoop);
-      } else {
-        syncVideos.forEach(function (v) { v.pause(); });
-        masterPlay.textContent = 'Play all';
-      }
-    });
-    muteBtn.addEventListener('click', function () {
-      muted = !muted;
-      syncVideos.forEach(function (v) { v.muted = muted; });
-      api.setMuted(muted);
-      muteBtn.textContent = muted ? 'Unmute' : 'Mute';
-      muteBtn.setAttribute('aria-pressed', muted ? 'false' : 'true');
-    });
-
-    // default selection
-    if (seg[0]) selectMethod(seg[0]);
+    show(0, true); // start playing + cycling (no-op autoplay under reduced motion)
   }
 
   /* ---------- architecture hotspots (tap to toggle on touch) ---------- */

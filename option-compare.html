@@ -215,9 +215,9 @@
         <button class="task-chip active" role="tab" aria-selected="true" data-sample="board"
           data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg"
           data-caption="&ldquo;Place a wooden board on the desk&rdquo; &mdash; the lifted board sweeps out a clean red&rarr;green gradient against a static background.">Lift board</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="scissors"
-          data-video="static/videos/sceneflow/sceneflow_0100.mp4" data-poster="static/videos/sceneflow/sceneflow_0100.jpg"
-          data-caption="&ldquo;Adjust an electronic component with scissors&rdquo; &mdash; busy two-handed motion lights up a dense, multi-coloured field.">Scissors</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="weeds"
+          data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg"
+          data-caption="&ldquo;Clear the weeds and loosen the soil&rdquo; &mdash; a big two-handed pull collapses into one bold, coherent red motion field while the leafy background stays still.">Clear weeds</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
           data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg"
           data-caption="&ldquo;Move jar and cup to kitchen counter&rdquo; &mdash; a large bimanual reach produces a dense, fast motion field.">Jar &amp; cup</button>
@@ -233,15 +233,15 @@
           aria-label="Scene-flow tokenization clip"></video>
       </div>
 
-      <div class="flow-legend" aria-hidden="true">
+      <div class="flow-legend">
         <span><b>RGB</b> observation</span>
-        <span><b>One-step 3D flow</b> (arrows on the scene, colour = direction)</span>
-        <span><b>Scene flow as RGB</b> (R,G,B = dx,dy,dz)</span>
+        <span><b>One-step 3D flow</b> &middot; arrows colour-coded by direction</span>
+        <span><b>Scene flow as RGB</b> &middot; (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
       </div>
 
       <div class="thumb-strip" id="flowThumbs" aria-hidden="true">
         <button class="thumb flow-thumb active" data-sample="board" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0201.jpg" alt=""></button>
-        <button class="thumb flow-thumb" data-sample="scissors" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0100.jpg" alt=""></button>
+        <button class="thumb flow-thumb" data-sample="weeds" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0107.jpg" alt=""></button>
         <button class="thumb flow-thumb" data-sample="dishes" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0108.jpg" alt=""></button>
         <button class="thumb flow-thumb" data-sample="bin" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0209.jpg" alt=""></button>
       </div>
@@ -251,7 +251,7 @@
     <div class="nojs-fallback">
       <div class="vid-grid two">
         <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0100.mp4" poster="static/videos/sceneflow/sceneflow_0100.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Scissors</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
         <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Jar &amp; cup</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
         <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0209.mp4" poster="static/videos/sceneflow/sceneflow_0209.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wipe bin</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
       </div>
@@ -534,45 +534,19 @@
     </header>
 
     <div class="cmp js-only panel" id="cmpSwitcher">
-      <div class="panel-tab">Switch the method &middot; or sync all three side by side</div>
-      <div class="cmp-controls">
-        <div class="cmp-seg" role="tablist" aria-label="Method selector">
-          <button class="active" role="tab" aria-selected="true" data-method="flomo"
-            data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
-            data-badge="ok" data-badge-text="Success">FloMo</button>
-          <button role="tab" aria-selected="false" data-method="dreamzero"
-            data-video="static/videos/string_dreamzero.mp4" data-poster="static/images/posters/string_dreamzero.jpg"
-            data-badge="fail" data-badge-text="Failure">DreamZero</button>
-          <button role="tab" aria-selected="false" data-method="bc"
-            data-video="static/videos/string_bc.mp4" data-poster="static/images/posters/string_bc.jpg"
-            data-badge="fail" data-badge-text="Failure">BC</button>
-        </div>
-        <button class="cmp-btn" id="cmpSyncToggle" type="button" aria-pressed="false">Play all in sync</button>
-        <button class="cmp-btn" id="cmpPlay" type="button">Play all</button>
-        <button class="cmp-btn" id="cmpMute" type="button" aria-pressed="false">Unmute</button>
+      <div class="panel-tab">Same unseen task, same conditions &middot; step through each method</div>
+      <div class="ood-carousel" id="cmpCarousel">
+        <button class="ood-arrow prev" id="cmpPrev" type="button" aria-label="Previous method">&#8249;</button>
+        <video id="cmpVideo" class="ood-video" muted playsinline preload="auto"
+          poster="static/images/posters/string.jpg" aria-label="Pull String rollout for the selected method"></video>
+        <button class="ood-arrow next" id="cmpNext" type="button" aria-label="Next method">&#8250;</button>
       </div>
-
-      <div class="cmp-single" id="cmpSingleWrap">
-        <div class="demo-stage" id="cmpStage" data-video="static/videos/string.mp4">
-          <img class="stage-poster" src="static/images/posters/string.jpg" alt="Selected method rollout poster">
-          <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
-        </div>
-        <div class="cmp-result" id="cmpResult"><span class="vbadge ok">Success</span></div>
+      <div class="ood-dots" id="cmpDots" aria-hidden="true">
+        <span class="ood-dot active"></span><span class="ood-dot"></span><span class="ood-dot"></span>
       </div>
-
-      <div class="cmp-sync" id="cmpSync" hidden>
-        <div class="cmp-cell">
-          <video data-src="static/videos/string.mp4" poster="static/images/posters/string.jpg" muted loop playsinline preload="none"></video>
-          <div class="cmp-cell-label"><span class="task">FloMo</span> <span class="vbadge ok">Success</span></div>
-        </div>
-        <div class="cmp-cell">
-          <video data-src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg" muted loop playsinline preload="none"></video>
-          <div class="cmp-cell-label"><span class="task">DreamZero</span> <span class="vbadge fail">Failure</span></div>
-        </div>
-        <div class="cmp-cell">
-          <video data-src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg" muted loop playsinline preload="none"></video>
-          <div class="cmp-cell-label"><span class="task">BC (no pretraining)</span> <span class="vbadge fail">Failure</span></div>
-        </div>
+      <div class="demo-meta">
+        <span class="vbadge ok demo-status" id="cmpResult">Success</span>
+        <p class="demo-caption" id="cmpCaption"><b>FloMo</b> &mdash; grasps and pulls the hanging string, completing the unseen task.</p>
       </div>
     </div>
 

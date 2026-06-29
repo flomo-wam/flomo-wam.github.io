@@ -156,26 +156,27 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .key-foot { margin: .95rem 0 0; font-size: .82rem; color: var(--muted); }
 
 /* wide 3-panel scene-flow clips: an inline auto-looping video on white.
-   The source clips have a baked-in caption band at the very top (panel labels
-   plus an overlapping task title). We crop that band off here and rely on the
-   HTML .flow-legend below for clean, non-clashing labels. */
+   The clips are rendered "clean" (no baked-in titles), so the panel labels
+   live in the HTML .flow-legend below and stay aligned + legible at any size. */
 .flow-stage {
   max-width: 940px; margin: 1.4rem auto 0; overflow: hidden;
-  aspect-ratio: 974 / 320; background: #fff;
+  aspect-ratio: 974 / 330; background: #fff;
   border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-sm);
 }
 .flow-video {
-  display: block; width: 100%; aspect-ratio: 974 / 354; object-fit: contain;
+  display: block; width: 100%; height: 100%; object-fit: contain;
   background: #fff; border: 0; border-radius: 0; box-shadow: none;
-  margin-top: -3.49%; /* push the baked-in caption band above the crop */
 }
+/* legend: one centered label per panel on a 3-equal-column grid that mirrors
+   the video's three equal panels, so each label sits under its panel at any width */
 .flow-legend {
-  display: flex; gap: 1.1rem; justify-content: center; flex-wrap: wrap;
-  margin-top: .85rem; color: var(--muted); font-size: .82rem;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem;
+  max-width: 940px; margin: .8rem auto 0;
+  color: var(--muted); font-size: .82rem; text-align: center;
 }
-.flow-legend span { display: inline-flex; align-items: center; gap: .35rem; }
+.flow-legend span { display: block; padding: 0 .3rem; line-height: 1.35; }
 .flow-legend b { color: var(--ink); font-weight: 600; }
-.flow-thumb { width: 148px; aspect-ratio: 974 / 354; }
+.flow-thumb { width: 148px; aspect-ratio: 974 / 330; }
 
 /* --------------------------------------------------------------- BANDS --- */
 .band { padding: 3.4rem 0; border-top: 1px solid var(--line); }
@@ -604,32 +605,9 @@ html:not(.js) .ood-layout { grid-template-columns: 1fr; }
 .ood-dot.active { background: var(--flomo-orange); transform: scale(1.25); }
 
 /* --------------------------------------------------- COMPARISON --------- */
-.cmp { max-width: 940px; margin: 0 auto; }
-.cmp-controls { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; align-items: center; margin-bottom: 1.1rem; }
-.cmp-seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 999px; overflow: hidden; }
-.cmp-seg button {
-  border: none; background: #fff; color: var(--muted); padding: .45rem 1rem; font-weight: 600;
-  cursor: pointer; font-size: .88rem; font-family: var(--font-body); transition: background .15s ease, color .15s ease;
-}
-.cmp-seg button + button { border-left: 1px solid var(--line-strong); }
-.cmp-seg button:hover { color: var(--ink); }
-.cmp-seg button.active { background: var(--ink); color: #fff; }
-.cmp-seg button:focus-visible { outline: 2px solid var(--flomo-teal); outline-offset: -2px; }
-.cmp-btn {
-  border: 1px solid var(--line-strong); background: #fff; border-radius: 999px; padding: .45rem .95rem;
-  font-weight: 600; cursor: pointer; color: var(--ink); font-size: .85rem; font-family: var(--font-body);
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
-}
-.cmp-btn:hover { border-color: var(--flomo-teal); }
-.cmp-btn.active { background: var(--flomo-teal); color: #fff; border-color: var(--flomo-teal); }
-.cmp-btn:focus-visible { outline: 2px solid var(--flomo-teal); outline-offset: 2px; }
-.cmp-result { text-align: center; margin-top: .8rem; }
-.cmp-result .vbadge { font-size: .8rem; padding: .25rem .8rem; }
-.cmp-sync { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
-.cmp-cell { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.cmp-cell video { width: 100%; display: block; background: #000; aspect-ratio: 16 / 9; object-fit: contain; }
-.cmp-cell-label { padding: .5rem .7rem; font-size: .85rem; color: var(--muted); }
-.cmp-cell-label .task { font-weight: 700; color: var(--ink); }
+/* the Pull String duel reuses the .ood-* carousel styles (arrows, dots, video) */
+.cmp { max-width: 940px; margin: 0 auto; text-align: center; }
+.cmp .ood-carousel { margin-top: .4rem; }
 
 /* --------------------------------------------------- LIGHTBOX ----------- */
 .modal { display: none; position: fixed; inset: 0; z-index: 80; align-items: center; justify-content: center; }
@@ -663,7 +641,7 @@ html:not(.js) .ood-layout { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
   .nav-mark { display: none; }
-  .vid-grid, .vid-grid.two, .cmp-sync { grid-template-columns: 1fr; }
+  .vid-grid, .vid-grid.two { grid-template-columns: 1fr; }
   .duel-board { grid-template-columns: 1fr; }
   .duel-vs { transform: rotate(90deg); margin: -.2rem 0; }
   .stage-flow { grid-template-columns: 1fr; }
