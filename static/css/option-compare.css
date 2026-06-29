@@ -155,12 +155,19 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .key-list code { margin-left: auto; font-family: var(--font-mono); font-size: .76rem; color: var(--muted); }
 .key-foot { margin: .95rem 0 0; font-size: .82rem; color: var(--muted); }
 
-/* wide 3-panel scene-flow clips: an inline auto-looping video on white */
-.flow-stage { max-width: 940px; margin: 1.4rem auto 0; }
+/* wide 3-panel scene-flow clips: an inline auto-looping video on white.
+   The source clips have a baked-in caption band at the very top (panel labels
+   plus an overlapping task title). We crop that band off here and rely on the
+   HTML .flow-legend below for clean, non-clashing labels. */
+.flow-stage {
+  max-width: 940px; margin: 1.4rem auto 0; overflow: hidden;
+  aspect-ratio: 974 / 320; background: #fff;
+  border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-sm);
+}
 .flow-video {
   display: block; width: 100%; aspect-ratio: 974 / 354; object-fit: contain;
-  background: #fff; border: 1px solid var(--line); border-radius: 14px;
-  box-shadow: var(--shadow-sm);
+  background: #fff; border: 0; border-radius: 0; box-shadow: none;
+  margin-top: -3.49%; /* push the baked-in caption band above the crop */
 }
 .flow-legend {
   display: flex; gap: 1.1rem; justify-content: center; flex-wrap: wrap;
@@ -238,17 +245,18 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .arch-panel { max-width: 940px; margin: 0 auto; text-align: center; }
 .arch-wrap { position: relative; display: inline-block; max-width: 100%; }
 .arch-wrap > img { display: block; max-width: 100%; border-radius: 10px; }
+/* invisible bounding-box hotspots: a transparent region over each component
+   that reveals its tip on hover/focus (no visible "+" markers). */
 .hotspot {
-  position: absolute; transform: translate(-50%, -50%);
-  width: 26px; height: 26px; border-radius: 50%;
-  background: rgba(240,144,24,.94); border: 2px solid #fff; color: #fff;
-  font-weight: 700; font-size: .9rem; line-height: 1; cursor: pointer; padding: 0;
-  display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,.28);
+  position: absolute; padding: 0; cursor: help;
+  background: transparent; border: 1.5px solid transparent; border-radius: 8px;
+  font-size: 0; line-height: 0;
+  transition: background .15s ease, border-color .15s ease;
 }
-.hotspot:hover, .hotspot.show { background: var(--flomo-orange-dark); }
+.hotspot:hover, .hotspot.show { background: var(--orange-12); border-color: var(--orange-40); }
 .hotspot:focus-visible { outline: 3px solid var(--flomo-teal); outline-offset: 2px; }
 .hotspot .tip {
-  position: absolute; bottom: 135%; left: 50%; transform: translateX(-50%);
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
   background: var(--ink); color: #fff; padding: .45rem .65rem; border-radius: 8px;
   font-size: .78rem; font-weight: 500; width: max-content; max-width: 220px;
   white-space: normal; text-align: center; opacity: 0; pointer-events: none;
@@ -405,35 +413,51 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .flowcube-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; justify-items: center;
 }
-.flowcube-left { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-.flowcube-pad {
-  position: relative; width: 220px; height: 220px; border-radius: 16px; border: 1px solid var(--line);
-  background: radial-gradient(circle at center, #fff, #eef2f5);
-  box-shadow: inset 0 1px 6px rgba(20,30,45,.08); cursor: crosshair; touch-action: none;
+.flowcube-stage { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+.fc3d-tip { margin: 0; font-size: .78rem; color: var(--muted); text-align: center; }
+
+/* live 3D RGB cube: corners are colour-coded, the draggable tip is the current colour */
+.fc3d-scene { width: 240px; height: 290px; margin: 0 auto; perspective: 820px; touch-action: none; cursor: grab; }
+.fc3d-scene:active { cursor: grabbing; }
+.fc3d-cube {
+  position: relative; width: 200px; height: 200px; margin: 45px auto;
+  transform-style: preserve-3d; transform: rotateX(-22deg) rotateY(32deg);
 }
-.fc-cross::before, .fc-cross::after { content: ""; position: absolute; background: #dfe5ea; }
-.fc-cross::before { left: 50%; top: 8%; bottom: 8%; width: 1px; transform: translateX(-.5px); }
-.fc-cross::after  { top: 50%; left: 8%; right: 8%; height: 1px; transform: translateY(-.5px); }
-.fc-arrow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.fc-arrow line { stroke: var(--flomo-teal); stroke-width: 3; stroke-linecap: round; }
-.fc-knob {
-  position: absolute; top: 50%; left: 50%; width: 24px; height: 24px; padding: 0;
-  transform: translate(-50%, -50%); border-radius: 50%;
-  background: var(--flomo-orange); border: 3px solid #fff; cursor: grab;
-  box-shadow: 0 2px 6px rgba(0,0,0,.25); touch-action: none;
+.fc3d-face { position: absolute; inset: 0; border: 1px solid var(--teal-22); background: rgba(48,120,144,.045); pointer-events: none; }
+.fc3d-fz1 { transform: translateZ(100px); }
+.fc3d-fz2 { transform: translateZ(-100px); }
+.fc3d-fx1 { transform: rotateY(90deg) translateZ(100px); }
+.fc3d-fx2 { transform: rotateY(-90deg) translateZ(100px); }
+.fc3d-fy1 { transform: rotateX(90deg) translateZ(100px); }
+.fc3d-fy2 { transform: rotateX(-90deg) translateZ(100px); }
+.fc3d-corner {
+  position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  border-radius: 50%; border: 1.5px solid rgba(255,255,255,.9); box-shadow: 0 1px 3px rgba(20,30,45,.3);
+  pointer-events: none;
 }
-.fc-knob:active { cursor: grabbing; }
-.fc-knob:focus-visible { outline: 3px solid var(--flomo-teal); outline-offset: 3px; }
-.fc-zrow { display: flex; align-items: center; gap: .6rem; font-size: .82rem; color: var(--muted); }
-.fc-zrow label { font-weight: 700; color: var(--ink); font-family: var(--font-mono); }
-.fc-z { width: 160px; accent-color: var(--flomo-teal); }
-.fc-axis-hint { font-size: .72rem; }
-.flowcube-out { display: flex; gap: 1.3rem; align-items: center; }
+.fc3d-origin {
+  position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px;
+  border-radius: 50%; background: rgb(128,128,128); border: 1.5px solid #fff; pointer-events: none;
+}
+/* the motion vector: a coloured bar from origin to the tip (oriented via matrix3d in JS) */
+.fc3d-vec {
+  position: absolute; left: 50%; top: 50%; height: 4px; width: 0; margin-top: -2px;
+  transform-origin: 0 50%; border-radius: 3px; background: rgb(128,128,128); pointer-events: none;
+}
+.fc3d-point {
+  position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px;
+  padding: 0; -webkit-appearance: none; appearance: none;
+  border-radius: 50%; background: rgb(128,128,128); border: 2px solid #fff; cursor: grab;
+  box-shadow: 0 0 0 1px rgba(20,30,45,.25), 0 3px 10px rgba(20,30,45,.45); touch-action: none;
+}
+.fc3d-point:active { cursor: grabbing; }
+.fc3d-point:focus-visible { outline: 3px solid var(--flomo-teal); outline-offset: 3px; }
+.fc-rgb-row { display: flex; align-items: center; gap: .6rem; justify-content: center; margin-top: .4rem; }
 .fc-swatch {
-  width: 130px; height: 130px; border-radius: 16px; border: 1px solid var(--line);
-  background: rgb(128,128,128); box-shadow: 0 3px 14px var(--ink-shadow); transition: background .05s linear;
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line);
+  background: rgb(128,128,128); box-shadow: var(--shadow-sm); flex: 0 0 auto;
 }
-.fc-readout { font-family: var(--font-mono); font-size: .9rem; color: var(--ink); min-width: 140px; text-align: left; }
+.fc-readout { font-family: var(--font-mono); font-size: .9rem; color: var(--ink); min-width: 150px; text-align: left; }
 .fc-row { display: flex; justify-content: space-between; gap: 1rem; padding: .08rem 0; }
 .fc-row span { color: var(--muted); }
 .fc-row b { font-weight: 700; }
@@ -557,6 +581,27 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 /* no-JS: the OOD stage is .js-only, so collapse to a single full-width table */
 html:not(.js) .ood-layout { grid-template-columns: 1fr; }
 .ood-stage-wrap { position: sticky; top: 84px; }
+
+/* auto-cycling OOD rollout carousel */
+.ood-carousel { position: relative; max-width: 520px; margin: 0 auto; }
+.ood-video {
+  display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #000;
+  border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-md);
+}
+.ood-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(13,17,23,.55); color: #fff; font-size: 1.5rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s ease, transform .15s ease;
+}
+.ood-arrow:hover { background: var(--flomo-orange); }
+.ood-arrow:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.ood-arrow.prev { left: .55rem; }
+.ood-arrow.next { right: .55rem; }
+.ood-dots { display: flex; gap: .4rem; justify-content: center; margin-top: .7rem; }
+.ood-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); transition: background .15s ease, transform .15s ease; }
+.ood-dot.active { background: var(--flomo-orange); transform: scale(1.25); }
 
 /* --------------------------------------------------- COMPARISON --------- */
 .cmp { max-width: 940px; margin: 0 auto; }

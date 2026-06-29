@@ -31,8 +31,8 @@
       <span class="nav-mark">Compare&nbsp;Engine</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#live-demo">Rollouts</a></li>
       <li><a href="#method">Method</a></li>
+      <li><a href="#live-demo">Rollouts</a></li>
       <li><a href="#results">Results</a></li>
       <li><a href="#generalization">Human&nbsp;video</a></li>
       <li><a href="#comparison">Duels</a></li>
@@ -68,95 +68,23 @@
   </div>
 </section>
 
-<!-- ===================== LIVE DEMO: ROLLOUT EXPLORER ===================== -->
-<section class="band" id="live-demo">
-  <div class="wrap">
-    <header class="band-head">
-      <p class="kicker">Live demo</p>
-      <h2 class="band-title">Real-robot rollouts</h2>
-      <p class="band-sub">Pick a task. In-distribution and out-of-distribution rollouts from the same FloMo policy.</p>
-    </header>
-
-    <!-- Enhanced, JS-powered explorer -->
-    <div class="js-only panel">
-      <div class="chip-row" id="taskChips" role="tablist" aria-label="Rollout task selector">
-        <button class="task-chip active" role="tab" aria-selected="true" data-task="oven"
-          data-video="static/videos/oven.mp4" data-poster="static/images/posters/oven.jpg"
-          data-badge="id" data-badge-text="In-distribution"
-          data-caption="Open the oven, retrieve the croissant, place it on a plate.">Oven</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="toolbox"
-          data-video="static/videos/toolbox.mp4" data-poster="static/images/posters/toolbox.jpg"
-          data-badge="id" data-badge-text="In-distribution"
-          data-caption="Open the hinged lid, grasp the screwdriver, place it inside.">Toolbox</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="corn"
-          data-video="static/videos/corn.mp4" data-poster="static/images/posters/corn.jpg"
-          data-badge="id" data-badge-text="In-distribution"
-          data-caption="Grasp the corn cob and place it in the bowl.">Corn</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="highlighter"
-          data-video="static/videos/highlighter.mp4" data-poster="static/images/posters/highlighter.jpg"
-          data-badge="ood" data-badge-text="OOD &middot; unseen object"
-          data-caption="Place the unseen highlighter in the bowl.">Highlighter</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="string"
-          data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
-          data-badge="ood" data-badge-text="OOD &middot; unseen task"
-          data-caption="Pull the hanging string, a primitive seen only in human video.">Pull String</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="door"
-          data-video="static/videos/door.mp4" data-poster="static/images/posters/door.jpg"
-          data-badge="ood" data-badge-text="OOD &middot; unseen primitive"
-          data-caption="Push the cabinet door shut.">Close Cabinet</button>
-      </div>
-
-      <div class="demo-stage" id="demoStage" data-video="static/videos/oven.mp4">
-        <img class="stage-poster" src="static/images/posters/oven.jpg" alt="Selected rollout poster">
-        <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
-      </div>
-
-      <div class="demo-meta">
-        <span class="vbadge id demo-status" id="demoStatus">In-distribution</span>
-        <p class="demo-caption" id="demoCaption">Open the oven, retrieve the croissant, place it on a plate.</p>
-      </div>
-
-      <div class="thumb-strip" id="taskThumbs" aria-hidden="true">
-        <button class="thumb active" data-task="oven" tabindex="-1"><img src="static/images/posters/oven.jpg" alt=""></button>
-        <button class="thumb" data-task="toolbox" tabindex="-1"><img src="static/images/posters/toolbox.jpg" alt=""></button>
-        <button class="thumb" data-task="corn" tabindex="-1"><img src="static/images/posters/corn.jpg" alt=""></button>
-        <button class="thumb" data-task="highlighter" tabindex="-1"><img src="static/images/posters/highlighter.jpg" alt=""></button>
-        <button class="thumb" data-task="string" tabindex="-1"><img src="static/images/posters/string.jpg" alt=""></button>
-        <button class="thumb" data-task="door" tabindex="-1"><img src="static/images/posters/door.jpg" alt=""></button>
-      </div>
-    </div>
-
-    <!-- No-JS fallback: plain rollout grid -->
-    <div class="nojs-fallback">
-      <div class="vid-grid">
-        <div class="video-card"><video src="static/videos/oven.mp4" poster="static/images/posters/oven.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><br>Open the oven, retrieve the croissant, place it on a plate.</div></div>
-        <div class="video-card"><video src="static/videos/toolbox.mp4" poster="static/images/posters/toolbox.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div></div>
-        <div class="video-card"><video src="static/videos/corn.mp4" poster="static/images/posters/corn.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><br>Grasp the corn cob and place it in the bowl.</div></div>
-        <div class="video-card"><video src="static/videos/highlighter.mp4" poster="static/images/posters/highlighter.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">OOD &middot; unseen object</span><br>Place the unseen highlighter in the bowl.</div></div>
-        <div class="video-card"><video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">OOD &middot; unseen task</span><br>Pull the hanging string, a primitive seen only in human video.</div></div>
-        <div class="video-card"><video src="static/videos/door.mp4" poster="static/images/posters/door.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">OOD &middot; unseen primitive</span><br>Push the cabinet door shut.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ===================== ANNOTATED ARCHITECTURE ===================== -->
 <section class="band band-soft" id="tldr">
   <div class="wrap">
     <figure class="panel arch-panel">
-      <div class="panel-tab">Architecture &middot; hover the <span class="dot">+</span> hotspots</div>
+      <div class="panel-tab">Architecture &middot; hover the highlighted regions</div>
       <div class="arch-wrap">
         <img src="static/images/figure_arch.png" alt="FloMo architecture">
-        <button class="hotspot" style="top:18%;left:50%;" aria-label="Backbone detail">+
-          <span class="tip">Wan&nbsp;2.2 5B DiT backbone</span></button>
-        <button class="hotspot" style="top:60%;left:14%;" aria-label="Frozen encoders detail">+
-          <span class="tip">Frozen Wan&nbsp;2.2 VAE / UMT5 text encoder</span></button>
-        <button class="hotspot" style="top:78%;left:38%;" aria-label="Scene-flow tokenization detail">+
-          <span class="tip">Scene-flow rendered as RGB &rarr; shared video latent</span></button>
-        <button class="hotspot" style="top:40%;left:84%;" aria-label="Output heads detail">+
+        <button class="hotspot" style="top:21%;left:1.5%;width:16%;height:11%;" aria-label="Text encoder detail">
+          <span class="tip">Frozen UMT5-XXL text encoder (11B)</span></button>
+        <button class="hotspot" style="top:45%;left:15.5%;width:38%;height:14%;" aria-label="Backbone detail">
+          <span class="tip">Wan&nbsp;2.2 5B DiT MoE backbone &mdash; only this is fine-tuned (LoRA rank&nbsp;64)</span></button>
+        <button class="hotspot" style="top:21%;left:36.5%;width:18%;height:11%;" aria-label="Frozen video encoder detail">
+          <span class="tip">Frozen Wan&nbsp;2.2 VAE &mdash; motion shares the video latent space</span></button>
+        <button class="hotspot" style="top:62%;left:18.5%;width:35%;height:13%;" aria-label="Output heads detail">
           <span class="tip">Flow-matching heads: motion + action</span></button>
-        <button class="hotspot" style="top:30%;left:66%;" aria-label="Fine-tuning detail">+
-          <span class="tip">LoRA rank 64 (backbone only)</span></button>
+        <button class="hotspot" style="top:59%;left:74%;width:18%;height:28%;" aria-label="Scene-flow tokenization detail">
+          <span class="tip">Scene flow rendered as RGB: (&Delta;X,&Delta;Y,&Delta;Z) &rarr; (R,G,B)</span></button>
       </div>
       <figcaption class="figure-caption">
         <b>FloMo architecture.</b> From an image and a text prompt, a pretrained video backbone (Wan&nbsp;2.2 5B DiT)
@@ -234,8 +162,47 @@
       (LoRA, rank 64).</p>
     </div>
 
+    <!-- ===== SIGNATURE: interactive motion -> colour on a live 3D RGB cube (driven by index.js #flowCube) ===== -->
+    <h3 class="feature-title">Paint a motion, get its colour <span class="try-pill">interactive</span></h3>
+    <p class="feature-sub">
+      Every 3D motion vector becomes a single colour. Drag the dot to aim the vector anywhere inside the live
+      <b>RGB cube</b> &mdash; orbit the cube to reach depth &mdash; and watch (&Delta;X,&nbsp;&Delta;Y,&nbsp;&Delta;Z)
+      map to (R,&nbsp;G,&nbsp;B), the exact encoding the frozen VAE reads.
+    </p>
+
+    <div class="js-only flowcube panel cube-panel" id="flowCube">
+      <div class="flowcube-grid">
+        <div class="flowcube-stage">
+          <div class="fc3d-scene" id="fc3dScene"
+            aria-label="3D RGB cube — drag the dot to aim the motion vector, drag the cube to orbit">
+            <div class="fc3d-cube" id="fc3dCube">
+              <div class="fc3d-face fc3d-fz1"></div>
+              <div class="fc3d-face fc3d-fz2"></div>
+              <div class="fc3d-face fc3d-fx1"></div>
+              <div class="fc3d-face fc3d-fx2"></div>
+              <div class="fc3d-face fc3d-fy1"></div>
+              <div class="fc3d-face fc3d-fy2"></div>
+              <div class="fc3d-origin"></div>
+              <div class="fc3d-vec" id="fc3dVec"></div>
+              <button class="fc3d-point" id="fc3dPoint" type="button"
+                aria-label="Motion vector tip — drag to aim it in 3D; arrow keys move X/Y, Shift+Up/Down sets depth"></button>
+            </div>
+          </div>
+          <p class="fc3d-tip">Drag the dot to aim the vector &middot; drag the cube to orbit (to reach depth)</p>
+        </div>
+        <div class="fc-readout">
+          <div class="fc-row"><span>&Delta;X &rarr; R</span><b id="fcVx">+0.00</b></div>
+          <div class="fc-row"><span>&Delta;Y &rarr; G</span><b id="fcVy">+0.00</b></div>
+          <div class="fc-row"><span>&Delta;Z &rarr; B</span><b id="fcVz">+0.00</b></div>
+          <div class="fc-rgb-row"><span class="fc-swatch" id="fcSwatch"></span><span class="fc-rgb" id="fcRgb">rgb(128, 128, 128)</span></div>
+        </div>
+      </div>
+      <p class="fc-hint">Each axis maps linearly to one colour channel, so a moving point becomes one RGB value &mdash; exactly
+      the token the frozen VAE encodes. Zero motion sits at the grey centre of the cube.</p>
+    </div>
+
     <!-- ===== SIGNATURE 1: scene-flow tokenization gallery (driven by index.js #flowVideo) ===== -->
-    <h3 class="feature-title">Pixels vs. motion</h3>
+    <h3 class="feature-title" style="margin-top:3rem;">Pixels vs. motion</h3>
     <p class="feature-sub">
       Each clip plays left&rarr;right: the <b>raw RGB observation</b>, the recovered <b>one-step 3D motion field</b> as
       colour-coded arrows, and that flow rendered as an <b>RGB token</b>. The arrows track the moving hand and object,
@@ -245,24 +212,24 @@
     <!-- JS-powered explorer -->
     <div class="js-only">
       <div class="chip-row" id="flowChips" role="tablist" aria-label="Scene-flow sample selector">
-        <button class="task-chip active" role="tab" aria-selected="true" data-sample="cabinet"
-          data-video="static/videos/sceneflow/sceneflow_0103.mp4" data-poster="static/videos/sceneflow/sceneflow_0103.jpg"
-          data-caption="&ldquo;Open kitchen cabinet&rdquo; &mdash; the cabinet door and hand sweep out a coherent green motion field.">Open cabinet</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="dry"
-          data-video="static/videos/sceneflow/sceneflow_0104.mp4" data-poster="static/videos/sceneflow/sceneflow_0104.jpg"
-          data-caption="&ldquo;Dry pink devices and place in drawer&rdquo; &mdash; the manipulated object lights up against a near-static background.">Dry &amp; stow</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="fabric"
-          data-video="static/videos/sceneflow/sceneflow_0305.mp4" data-poster="static/videos/sceneflow/sceneflow_0305.jpg"
-          data-caption="&ldquo;Place wound fabric scrap on table&rdquo; &mdash; a short controlled place, isolated cleanly from the scene.">Place fabric</button>
+        <button class="task-chip active" role="tab" aria-selected="true" data-sample="board"
+          data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg"
+          data-caption="&ldquo;Place a wooden board on the desk&rdquo; &mdash; the lifted board sweeps out a clean red&rarr;green gradient against a static background.">Lift board</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="scissors"
+          data-video="static/videos/sceneflow/sceneflow_0100.mp4" data-poster="static/videos/sceneflow/sceneflow_0100.jpg"
+          data-caption="&ldquo;Adjust an electronic component with scissors&rdquo; &mdash; busy two-handed motion lights up a dense, multi-coloured field.">Scissors</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
           data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg"
-          data-caption="&ldquo;Move jar and cup to kitchen counter&rdquo; &mdash; a large bimanual reach produces a dense, fast motion field.">Move dishes</button>
+          data-caption="&ldquo;Move jar and cup to kitchen counter&rdquo; &mdash; a large bimanual reach produces a dense, fast motion field.">Jar &amp; cup</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="bin"
+          data-video="static/videos/sceneflow/sceneflow_0209.mp4" data-poster="static/videos/sceneflow/sceneflow_0209.jpg"
+          data-caption="&ldquo;Wipe a bin with a cloth&rdquo; &mdash; a coherent back-and-forth wipe isolates as a clean magenta motion field.">Wipe bin</button>
       </div>
 
       <div class="flow-stage">
         <video id="flowVideo" class="flow-video" autoplay muted loop playsinline controls preload="auto"
-          poster="static/videos/sceneflow/sceneflow_0103.jpg"
-          src="static/videos/sceneflow/sceneflow_0103.mp4"
+          poster="static/videos/sceneflow/sceneflow_0201.jpg"
+          src="static/videos/sceneflow/sceneflow_0201.mp4"
           aria-label="Scene-flow tokenization clip"></video>
       </div>
 
@@ -272,64 +239,22 @@
         <span><b>Scene flow as RGB</b> (R,G,B = dx,dy,dz)</span>
       </div>
 
-      <div class="demo-meta">
-        <p class="demo-caption" id="flowCaption">&ldquo;Open kitchen cabinet&rdquo; &mdash; the cabinet door and hand sweep out a coherent green motion field.</p>
-      </div>
-
       <div class="thumb-strip" id="flowThumbs" aria-hidden="true">
-        <button class="thumb flow-thumb active" data-sample="cabinet" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0103.jpg" alt=""></button>
-        <button class="thumb flow-thumb" data-sample="dry" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0104.jpg" alt=""></button>
-        <button class="thumb flow-thumb" data-sample="fabric" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0305.jpg" alt=""></button>
+        <button class="thumb flow-thumb active" data-sample="board" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0201.jpg" alt=""></button>
+        <button class="thumb flow-thumb" data-sample="scissors" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0100.jpg" alt=""></button>
         <button class="thumb flow-thumb" data-sample="dishes" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0108.jpg" alt=""></button>
+        <button class="thumb flow-thumb" data-sample="bin" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0209.jpg" alt=""></button>
       </div>
     </div>
 
     <!-- No-JS fallback: plain video grid -->
     <div class="nojs-fallback">
       <div class="vid-grid two">
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0103.mp4" poster="static/videos/sceneflow/sceneflow_0103.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Open cabinet</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0104.mp4" poster="static/videos/sceneflow/sceneflow_0104.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Dry &amp; stow</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0305.mp4" poster="static/videos/sceneflow/sceneflow_0305.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Place fabric</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Move dishes</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0100.mp4" poster="static/videos/sceneflow/sceneflow_0100.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Scissors</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Jar &amp; cup</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0209.mp4" poster="static/videos/sceneflow/sceneflow_0209.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wipe bin</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
       </div>
-    </div>
-
-    <!-- ===== SIGNATURE 2: colour cube, hero-grade (driven by index.js #flowCube) ===== -->
-    <h3 class="feature-title" style="margin-top:3rem;">Paint a motion, get its colour <span class="try-pill">interactive</span></h3>
-    <p class="feature-sub">
-      Every 3D motion vector becomes a single colour. Drag the pad for in-plane motion, the slider for depth, and
-      watch (&Delta;X,&nbsp;&Delta;Y,&nbsp;&Delta;Z) map to (R,&nbsp;G,&nbsp;B) &mdash; the exact encoding the frozen VAE reads.
-    </p>
-
-    <div class="js-only flowcube panel cube-panel" id="flowCube">
-      <div class="flowcube-grid">
-        <div class="flowcube-left">
-          <div class="flowcube-pad" id="fcPad" role="application" aria-label="Drag to set in-plane motion delta-X and delta-Y">
-            <div class="fc-cross"></div>
-            <svg class="fc-arrow" viewBox="0 0 200 200" aria-hidden="true">
-              <line id="fcArrowLine" x1="100" y1="100" x2="100" y2="100"></line>
-            </svg>
-            <button class="fc-knob" id="fcKnob" type="button" aria-label="Motion vector handle — drag, or use arrow keys"></button>
-          </div>
-          <div class="fc-zrow">
-            <label for="fcZ">&Delta;Z</label>
-            <input class="fc-z" id="fcZ" type="range" min="-1" max="1" step="0.01" value="0" aria-label="Depth motion delta-Z">
-            <span class="fc-axis-hint">toward / away</span>
-          </div>
-        </div>
-        <div class="flowcube-out">
-          <div class="fc-swatch" id="fcSwatch"></div>
-          <div class="fc-readout">
-            <div class="fc-row"><span>&Delta;X</span><b id="fcVx">+0.00</b></div>
-            <div class="fc-row"><span>&Delta;Y</span><b id="fcVy">+0.00</b></div>
-            <div class="fc-row"><span>&Delta;Z</span><b id="fcVz">+0.00</b></div>
-            <div class="fc-arrow-rgb">&darr; encodes to</div>
-            <div class="fc-rgb" id="fcRgb">rgb(128, 128, 128)</div>
-          </div>
-        </div>
-      </div>
-      <p class="fc-hint">Each axis maps linearly to one colour channel, so a moving point becomes one RGB value &mdash; exactly
-      the token the frozen VAE encodes. Zero motion is mid-grey.</p>
     </div>
 
     <!-- two-stage training -->
@@ -357,6 +282,78 @@
   </div>
 </section>
 
+<!-- ===================== LIVE DEMO: ROLLOUT EXPLORER (relocated above Results) ===================== -->
+<section class="band" id="live-demo">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Live demo</p>
+      <h2 class="band-title">Real-robot rollouts</h2>
+      <p class="band-sub">Pick a task. In-distribution and out-of-distribution rollouts from the same FloMo policy.</p>
+    </header>
+
+    <!-- Enhanced, JS-powered explorer -->
+    <div class="js-only panel">
+      <div class="chip-row" id="taskChips" role="tablist" aria-label="Rollout task selector">
+        <button class="task-chip active" role="tab" aria-selected="true" data-task="oven"
+          data-video="static/videos/oven.mp4" data-poster="static/images/posters/oven.jpg"
+          data-badge="id" data-badge-text="In-distribution"
+          data-caption="Open the oven, retrieve the croissant, place it on a plate.">Oven</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="toolbox"
+          data-video="static/videos/toolbox.mp4" data-poster="static/images/posters/toolbox.jpg"
+          data-badge="id" data-badge-text="In-distribution"
+          data-caption="Open the hinged lid, grasp the screwdriver, place it inside.">Toolbox</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="corn"
+          data-video="static/videos/corn.mp4" data-poster="static/images/posters/corn.jpg"
+          data-badge="id" data-badge-text="In-distribution"
+          data-caption="Grasp the corn cob and place it in the bowl.">Corn</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="highlighter"
+          data-video="static/videos/highlighter.mp4" data-poster="static/images/posters/highlighter.jpg"
+          data-badge="ood" data-badge-text="OOD &middot; unseen object"
+          data-caption="Place the unseen highlighter in the bowl.">Highlighter</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="string"
+          data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
+          data-badge="ood" data-badge-text="OOD &middot; unseen task"
+          data-caption="Pull the hanging string, a primitive seen only in human video.">Pull String</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-task="door"
+          data-video="static/videos/door.mp4" data-poster="static/images/posters/door.jpg"
+          data-badge="ood" data-badge-text="OOD &middot; unseen primitive"
+          data-caption="Push the cabinet door shut.">Close Cabinet</button>
+      </div>
+
+      <div class="demo-stage" id="demoStage" data-video="static/videos/oven.mp4">
+        <img class="stage-poster" src="static/images/posters/oven.jpg" alt="Selected rollout poster">
+        <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
+      </div>
+
+      <div class="demo-meta">
+        <span class="vbadge id demo-status" id="demoStatus">In-distribution</span>
+        <p class="demo-caption" id="demoCaption">Open the oven, retrieve the croissant, place it on a plate.</p>
+      </div>
+
+      <div class="thumb-strip" id="taskThumbs" aria-hidden="true">
+        <button class="thumb active" data-task="oven" tabindex="-1"><img src="static/images/posters/oven.jpg" alt=""></button>
+        <button class="thumb" data-task="toolbox" tabindex="-1"><img src="static/images/posters/toolbox.jpg" alt=""></button>
+        <button class="thumb" data-task="corn" tabindex="-1"><img src="static/images/posters/corn.jpg" alt=""></button>
+        <button class="thumb" data-task="highlighter" tabindex="-1"><img src="static/images/posters/highlighter.jpg" alt=""></button>
+        <button class="thumb" data-task="string" tabindex="-1"><img src="static/images/posters/string.jpg" alt=""></button>
+        <button class="thumb" data-task="door" tabindex="-1"><img src="static/images/posters/door.jpg" alt=""></button>
+      </div>
+    </div>
+
+    <!-- No-JS fallback: plain rollout grid -->
+    <div class="nojs-fallback">
+      <div class="vid-grid">
+        <div class="video-card"><video src="static/videos/oven.mp4" poster="static/images/posters/oven.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><br>Open the oven, retrieve the croissant, place it on a plate.</div></div>
+        <div class="video-card"><video src="static/videos/toolbox.mp4" poster="static/images/posters/toolbox.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div></div>
+        <div class="video-card"><video src="static/videos/corn.mp4" poster="static/images/posters/corn.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><br>Grasp the corn cob and place it in the bowl.</div></div>
+        <div class="video-card"><video src="static/videos/highlighter.mp4" poster="static/images/posters/highlighter.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">OOD &middot; unseen object</span><br>Place the unseen highlighter in the bowl.</div></div>
+        <div class="video-card"><video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">OOD &middot; unseen task</span><br>Pull the hanging string, a primitive seen only in human video.</div></div>
+        <div class="video-card"><video src="static/videos/door.mp4" poster="static/images/posters/door.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">OOD &middot; unseen primitive</span><br>Push the cabinet door shut.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== RESULTS ===================== -->
 <section class="band band-soft" id="results">
   <div class="wrap">
@@ -365,43 +362,6 @@
       <h2 class="band-title">Predicting motion beats predicting pixels</h2>
       <p class="band-sub">Three contact-rich bimanual tasks (<em>Oven</em>, <em>Toolbox</em>, <em>Corn</em>), real-robot evaluation.</p>
     </header>
-
-    <!-- ===== SIGNATURE 3: head-to-head duel ===== -->
-    <div class="duel panel" data-metric="Avg. in-distribution success" data-unit="%" data-max="100">
-      <div class="panel-tab">Head-to-head &middot; in-distribution success</div>
-      <div class="duel-board">
-        <div class="duel-side" data-side="a">
-          <label class="duel-pick-label">
-            <span>Method A</span>
-            <select class="duel-pick" data-side="a" aria-label="Method A">
-              <option value="FloMo" data-score="87" data-ours="1" selected>FloMo (ours)</option>
-              <option value="Joint Video-Action" data-score="47">Joint Video-Action</option>
-              <option value="FloMo w/ Video" data-score="40">FloMo w/ Video</option>
-              <option value="BC (no pretraining)" data-score="7">BC (no pretraining)</option>
-            </select>
-          </label>
-          <div class="duel-score" data-role="score-a">87</div>
-          <div class="duel-meter"><div class="duel-fill" data-role="fill-a"></div></div>
-        </div>
-
-        <div class="duel-vs" aria-hidden="true"><span>VS</span></div>
-
-        <div class="duel-side" data-side="b">
-          <label class="duel-pick-label">
-            <span>Method B</span>
-            <select class="duel-pick" data-side="b" aria-label="Method B">
-              <option value="FloMo" data-score="87" data-ours="1">FloMo (ours)</option>
-              <option value="Joint Video-Action" data-score="47" selected>Joint Video-Action</option>
-              <option value="FloMo w/ Video" data-score="40">FloMo w/ Video</option>
-              <option value="BC (no pretraining)" data-score="7">BC (no pretraining)</option>
-            </select>
-          </label>
-          <div class="duel-score" data-role="score-b">47</div>
-          <div class="duel-meter"><div class="duel-fill" data-role="fill-b"></div></div>
-        </div>
-      </div>
-      <p class="duel-verdict" data-role="verdict" aria-live="polite"></p>
-    </div>
 
     <div class="results-split">
       <figure class="panel fig-card">
@@ -431,25 +391,8 @@
       <h3 class="feature-title">Out-of-distribution generalization</h3>
       <p class="feature-sub">
         FloMo leads on all three OOD axes &mdash; an unseen primitive (<em>Close Cabinet</em>), task (<em>Pull String</em>),
-        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply. Pick an axis to highlight its columns and load the rollout.
+        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply. The rollouts auto-cycle &mdash; the matching table columns highlight as each one plays.
       </p>
-
-      <div class="ood-explorer js-only">
-        <div class="chip-row ood-tabs" id="oodTabs" role="tablist" aria-label="OOD axis selector">
-          <button class="task-chip active" role="tab" aria-selected="true" data-group="cc" data-cells="1,2"
-            data-video="static/videos/door.mp4" data-poster="static/images/posters/door.jpg"
-            data-badge="ood" data-badge-text="OOD &middot; unseen primitive"
-            data-caption="Push the cabinet door shut.">Close Cabinet</button>
-          <button class="task-chip" role="tab" aria-selected="false" data-group="ps" data-cells="3,4"
-            data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
-            data-badge="ood" data-badge-text="OOD &middot; unseen task"
-            data-caption="Pull the hanging string, a primitive seen only in human video.">Pull String</button>
-          <button class="task-chip" role="tab" aria-selected="false" data-group="hl" data-cells="5,6"
-            data-video="static/videos/highlighter.mp4" data-poster="static/images/posters/highlighter.jpg"
-            data-badge="ood" data-badge-text="OOD &middot; unseen object"
-            data-caption="Place the unseen highlighter in the bowl.">Highlighter</button>
-        </div>
-      </div>
 
       <div class="ood-layout">
         <div class="results-table table-wrap">
@@ -479,9 +422,14 @@
         </div>
 
         <div class="ood-stage-wrap js-only">
-          <div class="demo-stage small" id="oodStage" data-video="static/videos/door.mp4">
-            <img class="stage-poster" src="static/images/posters/door.jpg" alt="Selected OOD rollout poster">
-            <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
+          <div class="ood-carousel" id="oodCarousel">
+            <button class="ood-arrow prev" id="oodPrev" type="button" aria-label="Previous OOD rollout">&#8249;</button>
+            <video id="oodVideo" class="ood-video" muted playsinline preload="auto"
+              poster="static/images/posters/door.jpg" aria-label="Out-of-distribution rollout"></video>
+            <button class="ood-arrow next" id="oodNext" type="button" aria-label="Next OOD rollout">&#8250;</button>
+          </div>
+          <div class="ood-dots" id="oodDots" aria-hidden="true">
+            <span class="ood-dot active"></span><span class="ood-dot"></span><span class="ood-dot"></span>
           </div>
           <div class="demo-meta">
             <span class="vbadge ood demo-status" id="oodStatus">OOD &middot; unseen primitive</span>

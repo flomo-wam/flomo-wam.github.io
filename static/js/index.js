@@ -207,55 +207,67 @@
     });
   }
 
-  /* ---------- OOD axis explorer ---------- */
+  /* ---------- OOD rollout carousel (autoplay + autocycle) ---------- */
   function initOod() {
-    var stage = document.getElementById('oodStage');
     var table = document.getElementById('oodTable');
-    if (!stage || !table) return;
-    var api = setupStage(stage);
+    var video = document.getElementById('oodVideo');
+    if (!table || !video) return;
     var status = document.getElementById('oodStatus');
     var caption = document.getElementById('oodCaption');
-    var chips = [].slice.call(document.querySelectorAll('#oodTabs .task-chip'));
+    var prev = document.getElementById('oodPrev');
+    var next = document.getElementById('oodNext');
+    var carousel = document.getElementById('oodCarousel');
+    var dots = [].slice.call(document.querySelectorAll('#oodDots .ood-dot'));
+
+    // The three OOD axes, in cycle order. cells = the table columns to highlight.
+    var items = [
+      { cells: [1, 2], group: 'cc', video: 'static/videos/door.mp4', poster: 'static/images/posters/door.jpg',
+        badge: 'OOD &middot; unseen primitive', caption: 'Push the cabinet door shut.' },
+      { cells: [3, 4], group: 'ps', video: 'static/videos/string.mp4', poster: 'static/images/posters/string.jpg',
+        badge: 'OOD &middot; unseen task', caption: 'Pull the hanging string, a primitive seen only in human video.' },
+      { cells: [5, 6], group: 'hl', video: 'static/videos/highlighter.mp4', poster: 'static/images/posters/highlighter.jpg',
+        badge: 'OOD &middot; unseen object', caption: 'Place the unseen highlighter in the bowl.' }
+    ];
+    var idx = 0;
+    slow(video); // 3x-real-time clips: play at half speed (listeners persist across src changes)
 
     function clearCols() {
-      [].forEach.call(table.querySelectorAll('.col-active'), function (c) {
-        c.classList.remove('col-active');
-      });
+      [].forEach.call(table.querySelectorAll('.col-active'), function (c) { c.classList.remove('col-active'); });
     }
-    function highlight(chip) {
+    function highlight(item) {
       clearCols();
-      var cells = chip.dataset.cells.split(',').map(Number);
       [].forEach.call(table.tBodies[0].rows, function (r) {
-        cells.forEach(function (i) { if (r.cells[i]) r.cells[i].classList.add('col-active'); });
+        item.cells.forEach(function (i) { if (r.cells[i]) r.cells[i].classList.add('col-active'); });
       });
-      var th = table.querySelector('thead th[data-group="' + chip.dataset.group + '"]');
+      var th = table.querySelector('thead th[data-group="' + item.group + '"]');
       if (th) th.classList.add('col-active');
     }
-    function select(chip) {
-      chips.forEach(function (c) {
-        var on = c === chip;
-        c.classList.toggle('active', on);
-        c.setAttribute('aria-selected', on ? 'true' : 'false');
+    function show(i, autoplay) {
+      idx = (i % items.length + items.length) % items.length;
+      var it = items[idx];
+      highlight(it);
+      if (status) status.innerHTML = it.badge;
+      if (caption) caption.textContent = it.caption;
+      dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
+      video.poster = it.poster;
+      video.src = it.video;
+      video.load();
+      if (autoplay && !reduceMotion) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+    }
+    function go(delta) { show(idx + delta, true); }
+
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    // autocycle: advance to the next axis whenever a clip finishes
+    video.addEventListener('ended', function () { go(1); });
+    if (carousel) {
+      carousel.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
       });
-      highlight(chip);
-      api.reset(chip.dataset.video, chip.dataset.poster);
-      status.className = 'vbadge ' + chip.dataset.badge + ' demo-status';
-      status.innerHTML = chip.dataset.badgeText;
-      caption.textContent = chip.dataset.caption;
     }
 
-    chips.forEach(function (chip, i) {
-      chip.addEventListener('click', function () { select(chip); });
-      chip.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault(); var n = chips[(i + 1) % chips.length]; n.focus(); select(n);
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault(); var p = chips[(i - 1 + chips.length) % chips.length]; p.focus(); select(p);
-        }
-      });
-    });
-    // highlight default column without autoplaying
-    if (chips[0]) highlight(chips[0]);
+    show(0, true); // start playing + cycling (no-op autoplay under reduced motion)
   }
 
   /* ---------- comparison switcher (FloMo vs baselines) ---------- */
@@ -408,66 +420,158 @@
   }
 
   /* ---------- ID bar chart animation ---------- */
-  /* ---------- interactive scene-flow -> RGB color cube ---------- */
+  /* ---------- interactive scene-flow -> RGB colour on a live 3D cube ----------
+     The motion vector is set by dragging its tip directly in the cube: a screen-plane
+     drag moves the tip in the plane facing the camera, and orbiting the cube lets that
+     drag reach any depth — so all of (dX, dY, dZ) are set in 3D, with no separate slider. */
   function initFlowCube() {
     var root = document.getElementById('flowCube');
     if (!root) return;
-    var pad = document.getElementById('fcPad');
-    var knob = document.getElementById('fcKnob');
-    var line = document.getElementById('fcArrowLine');
-    var zEl = document.getElementById('fcZ');
     var swatch = document.getElementById('fcSwatch');
     var rgbEl = document.getElementById('fcRgb');
     var vx = document.getElementById('fcVx');
     var vy = document.getElementById('fcVy');
     var vz = document.getElementById('fcVz');
+    var cube = document.getElementById('fc3dCube');
+    var scene = document.getElementById('fc3dScene');
+    var point = document.getElementById('fc3dPoint');
+    var vec = document.getElementById('fc3dVec');
     var dx = 0, dy = 0, dz = 0;
+    var H = 100; // cube half-extent in px (matches CSS .fc3d-cube = 200x200)
 
     function clamp(v) { return Math.max(-1, Math.min(1, v)); }
     function chan(v) { return Math.round((v + 1) / 2 * 255); } // [-1,1] -> [0,255], 0 -> mid-grey
     function fmt(v) { return (v >= 0 ? '+' : '') + v.toFixed(2); }
+    // cube-local CSS coords: +X right, +Y up (CSS y is down, so negate), +Z toward viewer
+    function pos3d(x, y, z) { return 'translate3d(' + (x * H) + 'px,' + (-y * H) + 'px,' + (z * H) + 'px)'; }
+
+    // ----- 3x3 rotation helpers (R = Rx(ax)·Ry(ay), CSS coords) -----
+    function rad(d) { return d * Math.PI / 180; }
+    function rotMat(ax, ay) {
+      var cx = Math.cos(rad(ax)), sx = Math.sin(rad(ax));
+      var cy = Math.cos(rad(ay)), sy = Math.sin(rad(ay));
+      return [
+        [cy,       0,   sy],
+        [sx * sy,  cx, -sx * cy],
+        [-cx * sy, sx,  cx * cy]
+      ];
+    }
+    function mulVec(m, v) {
+      return [m[0][0]*v[0] + m[0][1]*v[1] + m[0][2]*v[2],
+              m[1][0]*v[0] + m[1][1]*v[1] + m[1][2]*v[2],
+              m[2][0]*v[0] + m[2][1]*v[1] + m[2][2]*v[2]];
+    }
+    function mulVecT(m, v) { // m^T · v  (R is orthonormal, so this is R^-1·v)
+      return [m[0][0]*v[0] + m[1][0]*v[1] + m[2][0]*v[2],
+              m[0][1]*v[0] + m[1][1]*v[1] + m[2][1]*v[2],
+              m[0][2]*v[0] + m[1][2]*v[1] + m[2][2]*v[2]];
+    }
+
+    var rotX = -22, rotY = 32; // current cube orientation (read by the tip-drag math)
+
+    // build the 8 colour-coded corners of the RGB cube once
+    if (cube && !cube.dataset.built) {
+      cube.dataset.built = '1';
+      [-1, 1].forEach(function (sx) {
+        [-1, 1].forEach(function (sy) {
+          [-1, 1].forEach(function (sz) {
+            var c = document.createElement('span');
+            c.className = 'fc3d-corner';
+            c.style.background = 'rgb(' + chan(sx) + ',' + chan(sy) + ',' + chan(sz) + ')';
+            c.style.transform = pos3d(sx, sy, sz);
+            cube.insertBefore(c, vec); // corners behind the vector + tip
+          });
+        });
+      });
+    }
 
     function render() {
       var css = 'rgb(' + chan(dx) + ', ' + chan(dy) + ', ' + chan(dz) + ')';
-      swatch.style.background = css;
-      rgbEl.textContent = css;
-      vx.textContent = fmt(dx); vy.textContent = fmt(dy); vz.textContent = fmt(dz);
-      // pad is 200x200, centre (100,100); +dx -> right, +dy -> up
-      var cx = 100 + dx * 84, cy = 100 - dy * 84;
-      knob.style.left = (cx / 2) + '%';
-      knob.style.top = (cy / 2) + '%';
-      line.setAttribute('x2', cx.toFixed(1));
-      line.setAttribute('y2', cy.toFixed(1));
-    }
-    function setFromPoint(clientX, clientY) {
-      var rect = pad.getBoundingClientRect();
-      dx = clamp(((clientX - rect.left) / rect.width - 0.5) * 2);
-      dy = clamp((0.5 - (clientY - rect.top) / rect.height) * 2); // invert: up is positive
-      render();
+      if (swatch) swatch.style.background = css;
+      if (rgbEl) rgbEl.textContent = css;
+      if (vx) vx.textContent = fmt(dx);
+      if (vy) vy.textContent = fmt(dy);
+      if (vz) vz.textContent = fmt(dz);
+      if (point) { point.style.background = css; point.style.transform = pos3d(dx, dy, dz); }
+      if (vec) {
+        // arrow from origin to the tip: orient a unit-length bar along the tip direction
+        var ex = dx * H, ey = -dy * H, ez = dz * H, L = Math.sqrt(ex*ex + ey*ey + ez*ez);
+        if (L < 1) { vec.style.opacity = '0'; }
+        else {
+          var ux = ex/L, uy = ey/L, uz = ez/L;            // x-axis = tip direction
+          var ref = Math.abs(uy) > 0.92 ? [0,0,1] : [0,1,0];
+          var d = ref[0]*ux + ref[1]*uy + ref[2]*uz;
+          var yx = ref[0]-d*ux, yy = ref[1]-d*uy, yz = ref[2]-d*uz;
+          var yl = Math.sqrt(yx*yx + yy*yy + yz*yz) || 1; yx/=yl; yy/=yl; yz/=yl;
+          var zx = uy*yz-uz*yy, zy = uz*yx-ux*yz, zz = ux*yy-uy*yx; // z = x × y
+          vec.style.opacity = '1';
+          vec.style.width = L + 'px';
+          vec.style.background = css;
+          vec.style.transform = 'matrix3d(' + ux+','+uy+','+uz+',0,' +
+            yx+','+yy+','+yz+',0,' + zx+','+zy+','+zz+',0, 0,0,0,1)';
+        }
+      }
     }
 
-    var dragging = false;
-    pad.addEventListener('pointerdown', function (e) {
-      dragging = true;
-      if (pad.setPointerCapture) { try { pad.setPointerCapture(e.pointerId); } catch (err) {} }
-      setFromPoint(e.clientX, e.clientY);
-      e.preventDefault();
-    });
-    pad.addEventListener('pointermove', function (e) {
-      if (dragging) { setFromPoint(e.clientX, e.clientY); e.preventDefault(); }
-    });
-    window.addEventListener('pointerup', function () { dragging = false; });
+    // ----- drag the tip: screen-plane motion mapped back into cube-local axes -----
+    var tipDrag = false, tLastX = 0, tLastY = 0;
+    if (point) {
+      point.addEventListener('pointerdown', function (e) {
+        tipDrag = true; auto = false; tLastX = e.clientX; tLastY = e.clientY;
+        if (point.setPointerCapture) { try { point.setPointerCapture(e.pointerId); } catch (err) {} }
+        e.preventDefault(); e.stopPropagation();
+      });
+      point.addEventListener('pointermove', function (e) {
+        if (!tipDrag) return;
+        var sdx = (e.clientX - tLastX) / H, sdy = (e.clientY - tLastY) / H;
+        tLastX = e.clientX; tLastY = e.clientY;
+        var R = rotMat(rotX, rotY);
+        var world = mulVec(R, [dx, -dy, dz]); // tip in screen space
+        world[0] += sdx; world[1] += sdy;     // slide in the screen plane (keep depth)
+        var loc = mulVecT(R, world);          // back to cube-local
+        dx = clamp(loc[0]); dy = clamp(-loc[1]); dz = clamp(loc[2]);
+        render(); e.preventDefault();
+      });
+      point.addEventListener('pointerup', function () { tipDrag = false; });
+      point.addEventListener('lostpointercapture', function () { tipDrag = false; });
+      point.addEventListener('keydown', function (e) {
+        var s = 0.08;
+        if (e.shiftKey && e.key === 'ArrowUp') dz = clamp(dz + s);
+        else if (e.shiftKey && e.key === 'ArrowDown') dz = clamp(dz - s);
+        else if (e.key === 'ArrowRight') dx = clamp(dx + s);
+        else if (e.key === 'ArrowLeft') dx = clamp(dx - s);
+        else if (e.key === 'ArrowUp') dy = clamp(dy + s);
+        else if (e.key === 'ArrowDown') dy = clamp(dy - s);
+        else return;
+        e.preventDefault(); render();
+      });
+    }
 
-    knob.addEventListener('keydown', function (e) {
-      var step = e.shiftKey ? 0.2 : 0.05;
-      if (e.key === 'ArrowRight') dx = clamp(dx + step);
-      else if (e.key === 'ArrowLeft') dx = clamp(dx - step);
-      else if (e.key === 'ArrowUp') dy = clamp(dy + step);
-      else if (e.key === 'ArrowDown') dy = clamp(dy - step);
-      else return;
-      e.preventDefault(); render();
-    });
-    zEl.addEventListener('input', function () { dz = clamp(parseFloat(zEl.value) || 0); render(); });
+    // ----- orbit the cube (drag the scene background); gentle auto-spin until touched -----
+    var orbiting = false, lastX = 0, lastY = 0, auto = !reduceMotion;
+    function applyOrbit() { if (cube) cube.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)'; }
+    if (scene) {
+      scene.addEventListener('pointerdown', function (e) {
+        if (e.target === point) return; // the tip handles its own drag
+        orbiting = true; auto = false; lastX = e.clientX; lastY = e.clientY;
+        if (scene.setPointerCapture) { try { scene.setPointerCapture(e.pointerId); } catch (err) {} }
+        e.preventDefault();
+      });
+      scene.addEventListener('pointermove', function (e) {
+        if (!orbiting) return;
+        rotY += (e.clientX - lastX) * 0.4;
+        rotX = Math.max(-85, Math.min(85, rotX - (e.clientY - lastY) * 0.4));
+        lastX = e.clientX; lastY = e.clientY; applyOrbit();
+      });
+      window.addEventListener('pointerup', function () { orbiting = false; tipDrag = false; });
+    }
+    applyOrbit();
+    if (auto && cube && window.requestAnimationFrame) {
+      (function spin() {
+        if (auto && !orbiting && !tipDrag) { rotY += 0.22; applyOrbit(); }
+        requestAnimationFrame(spin);
+      })();
+    }
 
     render();
   }
