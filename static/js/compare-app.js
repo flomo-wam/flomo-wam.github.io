@@ -207,148 +207,122 @@
     });
   }
 
-  /* ---------- OOD axis explorer ---------- */
+  /* ---------- OOD rollout carousel (autoplay + autocycle) ---------- */
   function initOod() {
-    var stage = document.getElementById('oodStage');
     var table = document.getElementById('oodTable');
-    if (!stage || !table) return;
-    var api = setupStage(stage);
+    var video = document.getElementById('oodVideo');
+    if (!table || !video) return;
     var status = document.getElementById('oodStatus');
     var caption = document.getElementById('oodCaption');
-    var chips = [].slice.call(document.querySelectorAll('#oodTabs .task-chip'));
+    var prev = document.getElementById('oodPrev');
+    var next = document.getElementById('oodNext');
+    var carousel = document.getElementById('oodCarousel');
+    var dots = [].slice.call(document.querySelectorAll('#oodDots .ood-dot'));
+
+    // The three OOD axes, in cycle order. cells = the table columns to highlight.
+    var items = [
+      { cells: [1, 2], group: 'cc', video: 'static/videos/door.mp4', poster: 'static/images/posters/door.jpg',
+        badge: 'OOD &middot; unseen primitive', caption: 'Push the cabinet door shut.' },
+      { cells: [3, 4], group: 'ps', video: 'static/videos/string.mp4', poster: 'static/images/posters/string.jpg',
+        badge: 'OOD &middot; unseen task', caption: 'Pull the hanging string, a primitive seen only in human video.' },
+      { cells: [5, 6], group: 'hl', video: 'static/videos/highlighter.mp4', poster: 'static/images/posters/highlighter.jpg',
+        badge: 'OOD &middot; unseen object', caption: 'Place the unseen highlighter in the bowl.' }
+    ];
+    var idx = 0;
+    slow(video); // 3x-real-time clips: play at half speed (listeners persist across src changes)
 
     function clearCols() {
-      [].forEach.call(table.querySelectorAll('.col-active'), function (c) {
-        c.classList.remove('col-active');
-      });
+      [].forEach.call(table.querySelectorAll('.col-active'), function (c) { c.classList.remove('col-active'); });
     }
-    function highlight(chip) {
+    function highlight(item) {
       clearCols();
-      var cells = chip.dataset.cells.split(',').map(Number);
       [].forEach.call(table.tBodies[0].rows, function (r) {
-        cells.forEach(function (i) { if (r.cells[i]) r.cells[i].classList.add('col-active'); });
+        item.cells.forEach(function (i) { if (r.cells[i]) r.cells[i].classList.add('col-active'); });
       });
-      var th = table.querySelector('thead th[data-group="' + chip.dataset.group + '"]');
+      var th = table.querySelector('thead th[data-group="' + item.group + '"]');
       if (th) th.classList.add('col-active');
     }
-    function select(chip) {
-      chips.forEach(function (c) {
-        var on = c === chip;
-        c.classList.toggle('active', on);
-        c.setAttribute('aria-selected', on ? 'true' : 'false');
+    function show(i, autoplay) {
+      idx = (i % items.length + items.length) % items.length;
+      var it = items[idx];
+      highlight(it);
+      if (status) status.innerHTML = it.badge;
+      if (caption) caption.textContent = it.caption;
+      dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
+      video.poster = it.poster;
+      video.src = it.video;
+      video.load();
+      if (autoplay && !reduceMotion) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+    }
+    function go(delta) { show(idx + delta, true); }
+
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    // autocycle: advance to the next axis whenever a clip finishes
+    video.addEventListener('ended', function () { go(1); });
+    if (carousel) {
+      carousel.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
       });
-      highlight(chip);
-      api.reset(chip.dataset.video, chip.dataset.poster);
-      status.className = 'vbadge ' + chip.dataset.badge + ' demo-status';
-      status.innerHTML = chip.dataset.badgeText;
-      caption.textContent = chip.dataset.caption;
     }
 
-    chips.forEach(function (chip, i) {
-      chip.addEventListener('click', function () { select(chip); });
-      chip.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault(); var n = chips[(i + 1) % chips.length]; n.focus(); select(n);
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault(); var p = chips[(i - 1 + chips.length) % chips.length]; p.focus(); select(p);
-        }
-      });
-    });
-    // highlight default column without autoplaying
-    if (chips[0]) highlight(chips[0]);
+    show(0, true); // start playing + cycling (no-op autoplay under reduced motion)
   }
 
-  /* ---------- comparison switcher (FloMo vs baselines) ---------- */
+  /* ---------- comparison carousel (FloMo vs baselines, autoplay + autocycle) ---------- */
   function initComparison() {
     var root = document.getElementById('cmpSwitcher');
     if (!root) return;
-    var single = document.getElementById('cmpSingleWrap');
-    var stage = document.getElementById('cmpStage');
-    var api = setupStage(stage);
+    var video = document.getElementById('cmpVideo');
+    if (!video) return;
     var result = document.getElementById('cmpResult');
-    var seg = [].slice.call(root.querySelectorAll('.cmp-seg button'));
-    var syncWrap = document.getElementById('cmpSync');
-    var syncToggle = document.getElementById('cmpSyncToggle');
-    var masterPlay = document.getElementById('cmpPlay');
-    var muteBtn = document.getElementById('cmpMute');
-    var syncVideos = [].slice.call(syncWrap.querySelectorAll('video'));
+    var caption = document.getElementById('cmpCaption');
+    var prev = document.getElementById('cmpPrev');
+    var next = document.getElementById('cmpNext');
+    var carousel = document.getElementById('cmpCarousel');
+    var dots = [].slice.call(document.querySelectorAll('#cmpDots .ood-dot'));
 
-    var muted = true, syncing = false, playing = false, rafId = null;
+    // The three methods on the same OOD Pull String task, in cycle order.
+    var items = [
+      { video: 'static/videos/string.mp4', poster: 'static/images/posters/string.jpg',
+        badge: 'ok', badgeText: 'Success',
+        caption: '<b>FloMo</b> &mdash; grasps and pulls the hanging string, completing the unseen task.' },
+      { video: 'static/videos/string_dreamzero.mp4', poster: 'static/images/posters/string_dreamzero.jpg',
+        badge: 'fail', badgeText: 'Failure',
+        caption: '<b>DreamZero</b> &mdash; a pixel-predicting baseline; never establishes the pull.' },
+      { video: 'static/videos/string_bc.mp4', poster: 'static/images/posters/string_bc.jpg',
+        badge: 'fail', badgeText: 'Failure',
+        caption: '<b>BC (no pretraining)</b> &mdash; never finds the string without a motion prior.' }
+    ];
+    var idx = 0;
+    slow(video); // 3x-real-time clips: play at half speed (listeners persist across src changes)
 
-    function setResult(badge, text) {
-      result.innerHTML = '<span class="vbadge ' + badge + '">' + text + '</span>';
+    function show(i, autoplay) {
+      idx = (i % items.length + items.length) % items.length;
+      var it = items[idx];
+      if (result) { result.className = 'vbadge ' + it.badge + ' demo-status'; result.textContent = it.badgeText; }
+      if (caption) caption.innerHTML = it.caption;
+      dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
+      video.poster = it.poster;
+      video.src = it.video;
+      video.load();
+      if (autoplay && !reduceMotion) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
     }
-    function selectMethod(btn) {
-      seg.forEach(function (b) {
-        var on = b === btn;
-        b.classList.toggle('active', on);
-        b.setAttribute('aria-selected', on ? 'true' : 'false');
+    function go(delta) { show(idx + delta, true); }
+
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    // autocycle: advance to the next method whenever a clip finishes
+    video.addEventListener('ended', function () { go(1); });
+    if (carousel) {
+      carousel.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
       });
-      api.reset(btn.dataset.video, btn.dataset.poster);
-      setResult(btn.dataset.badge, btn.dataset.badgeText);
-      if (!syncing) masterPlay.textContent = 'Play';
     }
-    seg.forEach(function (b) { b.addEventListener('click', function () { selectMethod(b); }); });
 
-    function loadSyncSrc() {
-      syncVideos.forEach(function (v) { if (!v.src) v.src = v.dataset.src; v.muted = muted; });
-    }
-    function syncLoop() {
-      if (!syncing) return;
-      var leader = syncVideos[0];
-      for (var i = 1; i < syncVideos.length; i++) {
-        if (Math.abs(syncVideos[i].currentTime - leader.currentTime) > 0.08) {
-          syncVideos[i].currentTime = leader.currentTime;
-        }
-      }
-      rafId = requestAnimationFrame(syncLoop);
-    }
-    syncToggle.addEventListener('click', function () {
-      syncing = !syncing;
-      syncToggle.classList.toggle('active', syncing);
-      syncToggle.setAttribute('aria-pressed', syncing ? 'true' : 'false');
-      single.hidden = syncing;
-      syncWrap.hidden = !syncing;
-      if (syncing) {
-        loadSyncSrc();
-        if (!reduceMotion) rafId = requestAnimationFrame(syncLoop);
-        masterPlay.textContent = 'Play all';
-      } else {
-        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-        syncVideos.forEach(function (v) { v.pause(); });
-        playing = false;
-        masterPlay.textContent = 'Play';
-      }
-    });
-    masterPlay.addEventListener('click', function () {
-      if (!syncing) {
-        // single mode: master button toggles the selected clip and reflects state
-        var nowPlaying = api.toggle();
-        masterPlay.textContent = nowPlaying ? 'Pause' : 'Play';
-        return;
-      }
-      playing = !playing;
-      if (playing) {
-        loadSyncSrc();
-        syncVideos.forEach(function (v) { v.currentTime = 0; });
-        syncVideos.forEach(function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); });
-        masterPlay.textContent = 'Pause';
-        if (!reduceMotion && !rafId) rafId = requestAnimationFrame(syncLoop);
-      } else {
-        syncVideos.forEach(function (v) { v.pause(); });
-        masterPlay.textContent = 'Play all';
-      }
-    });
-    muteBtn.addEventListener('click', function () {
-      muted = !muted;
-      syncVideos.forEach(function (v) { v.muted = muted; });
-      api.setMuted(muted);
-      muteBtn.textContent = muted ? 'Unmute' : 'Mute';
-      muteBtn.setAttribute('aria-pressed', muted ? 'false' : 'true');
-    });
-
-    // default selection
-    if (seg[0]) selectMethod(seg[0]);
+    show(0, true); // start playing + cycling (no-op autoplay under reduced motion)
   }
 
   /* ---------- architecture hotspots (tap to toggle on touch) ---------- */
@@ -407,70 +381,8 @@
     });
   }
 
+
   /* ---------- ID bar chart animation ---------- */
-  /* ---------- interactive scene-flow -> RGB color cube ---------- */
-  function initFlowCube() {
-    var root = document.getElementById('flowCube');
-    if (!root) return;
-    var pad = document.getElementById('fcPad');
-    var knob = document.getElementById('fcKnob');
-    var line = document.getElementById('fcArrowLine');
-    var zEl = document.getElementById('fcZ');
-    var swatch = document.getElementById('fcSwatch');
-    var rgbEl = document.getElementById('fcRgb');
-    var vx = document.getElementById('fcVx');
-    var vy = document.getElementById('fcVy');
-    var vz = document.getElementById('fcVz');
-    var dx = 0, dy = 0, dz = 0;
-
-    function clamp(v) { return Math.max(-1, Math.min(1, v)); }
-    function chan(v) { return Math.round((v + 1) / 2 * 255); } // [-1,1] -> [0,255], 0 -> mid-grey
-    function fmt(v) { return (v >= 0 ? '+' : '') + v.toFixed(2); }
-
-    function render() {
-      var css = 'rgb(' + chan(dx) + ', ' + chan(dy) + ', ' + chan(dz) + ')';
-      swatch.style.background = css;
-      rgbEl.textContent = css;
-      vx.textContent = fmt(dx); vy.textContent = fmt(dy); vz.textContent = fmt(dz);
-      // pad is 200x200, centre (100,100); +dx -> right, +dy -> up
-      var cx = 100 + dx * 84, cy = 100 - dy * 84;
-      knob.style.left = (cx / 2) + '%';
-      knob.style.top = (cy / 2) + '%';
-      line.setAttribute('x2', cx.toFixed(1));
-      line.setAttribute('y2', cy.toFixed(1));
-    }
-    function setFromPoint(clientX, clientY) {
-      var rect = pad.getBoundingClientRect();
-      dx = clamp(((clientX - rect.left) / rect.width - 0.5) * 2);
-      dy = clamp((0.5 - (clientY - rect.top) / rect.height) * 2); // invert: up is positive
-      render();
-    }
-
-    var dragging = false;
-    pad.addEventListener('pointerdown', function (e) {
-      dragging = true;
-      if (pad.setPointerCapture) { try { pad.setPointerCapture(e.pointerId); } catch (err) {} }
-      setFromPoint(e.clientX, e.clientY);
-      e.preventDefault();
-    });
-    pad.addEventListener('pointermove', function (e) {
-      if (dragging) { setFromPoint(e.clientX, e.clientY); e.preventDefault(); }
-    });
-    window.addEventListener('pointerup', function () { dragging = false; });
-
-    knob.addEventListener('keydown', function (e) {
-      var step = e.shiftKey ? 0.2 : 0.05;
-      if (e.key === 'ArrowRight') dx = clamp(dx + step);
-      else if (e.key === 'ArrowLeft') dx = clamp(dx - step);
-      else if (e.key === 'ArrowUp') dy = clamp(dy + step);
-      else if (e.key === 'ArrowDown') dy = clamp(dy - step);
-      else return;
-      e.preventDefault(); render();
-    });
-    zEl.addEventListener('input', function () { dz = clamp(parseFloat(zEl.value) || 0); render(); });
-
-    render();
-  }
 
   function initBars() {
     var chart = document.getElementById('idBars');
@@ -526,7 +438,6 @@
     initLightbox();
     initBars();
     initCountUp();
-    initFlowCube();
     // slow every video already in the DOM (flow gallery, comparison grid,
     // no-JS fallbacks); dynamically created stage videos are handled inline.
     [].forEach.call(document.querySelectorAll('video'), slow);
