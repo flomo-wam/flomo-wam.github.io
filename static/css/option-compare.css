@@ -192,6 +192,9 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 }
 .band-title .accent { color: var(--flomo-orange); }
 .band-sub { color: var(--muted); margin: .7rem auto 0; font-size: 1rem; max-width: 640px; }
+/* keep the Abstract heading on a single line on wider screens (it wraps on phones) */
+#abstract .band-head { max-width: 1040px; }
+@media (min-width: 760px) { #abstract .band-title { white-space: nowrap; } }
 
 .prose { max-width: 760px; margin: 0 auto; color: var(--ink); }
 .prose p { margin: 0 0 1rem; }
