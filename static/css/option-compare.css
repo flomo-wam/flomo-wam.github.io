@@ -257,13 +257,19 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .hotspot:hover, .hotspot.show { background: var(--orange-12); border-color: var(--orange-40); }
 .hotspot:focus-visible { outline: 3px solid var(--flomo-teal); outline-offset: 2px; }
 .hotspot .tip {
-  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-  background: var(--ink); color: #fff; padding: .45rem .65rem; border-radius: 8px;
-  font-size: .78rem; font-weight: 500; width: max-content; max-width: 220px;
+  position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(4px);
+  background: var(--ink); color: #fff; padding: .5rem .72rem; border-radius: 9px;
+  font-size: .78rem; font-weight: 500; line-height: 1.4;          /* reset .hotspot's line-height:0 so wrapped lines don't overlap */
+  width: max-content; max-width: 230px;
   white-space: normal; text-align: center; opacity: 0; pointer-events: none;
-  transition: opacity .15s ease; z-index: 5;
+  box-shadow: 0 10px 24px rgba(20,30,45,.26);
+  transition: opacity .16s ease, transform .16s ease; z-index: 8;
 }
-.hotspot:hover .tip, .hotspot:focus .tip, .hotspot.show .tip { opacity: 1; }
+.hotspot .tip::after {                                            /* caret pointing down at the region */
+  content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 6px solid transparent; border-top-color: var(--ink);
+}
+.hotspot:hover .tip, .hotspot:focus .tip, .hotspot.show .tip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* --------------------------------------------------- CONTRIBUTIONS ------ */
 .contrib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
