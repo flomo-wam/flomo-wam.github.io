@@ -162,45 +162,6 @@
       (LoRA, rank 64).</p>
     </div>
 
-    <!-- ===== SIGNATURE: interactive motion -> colour on a live 3D RGB cube (driven by index.js #flowCube) ===== -->
-    <h3 class="feature-title">Paint a motion, get its colour <span class="try-pill">interactive</span></h3>
-    <p class="feature-sub">
-      Every 3D motion vector becomes a single colour. Drag the dot to aim the vector anywhere inside the live
-      <b>RGB cube</b> &mdash; orbit the cube to reach depth &mdash; and watch (&Delta;X,&nbsp;&Delta;Y,&nbsp;&Delta;Z)
-      map to (R,&nbsp;G,&nbsp;B), the exact encoding the frozen VAE reads.
-    </p>
-
-    <div class="js-only flowcube panel cube-panel" id="flowCube">
-      <div class="flowcube-grid">
-        <div class="flowcube-stage">
-          <div class="fc3d-scene" id="fc3dScene"
-            aria-label="3D RGB cube — drag the dot to aim the motion vector, drag the cube to orbit">
-            <div class="fc3d-cube" id="fc3dCube">
-              <div class="fc3d-face fc3d-fz1"></div>
-              <div class="fc3d-face fc3d-fz2"></div>
-              <div class="fc3d-face fc3d-fx1"></div>
-              <div class="fc3d-face fc3d-fx2"></div>
-              <div class="fc3d-face fc3d-fy1"></div>
-              <div class="fc3d-face fc3d-fy2"></div>
-              <div class="fc3d-origin"></div>
-              <div class="fc3d-vec" id="fc3dVec"></div>
-              <button class="fc3d-point" id="fc3dPoint" type="button"
-                aria-label="Motion vector tip — drag to aim it in 3D; arrow keys move X/Y, Shift+Up/Down sets depth"></button>
-            </div>
-          </div>
-          <p class="fc3d-tip">Drag the dot to aim the vector &middot; drag the cube to orbit (to reach depth)</p>
-        </div>
-        <div class="fc-readout">
-          <div class="fc-row"><span>&Delta;X &rarr; R</span><b id="fcVx">+0.00</b></div>
-          <div class="fc-row"><span>&Delta;Y &rarr; G</span><b id="fcVy">+0.00</b></div>
-          <div class="fc-row"><span>&Delta;Z &rarr; B</span><b id="fcVz">+0.00</b></div>
-          <div class="fc-rgb-row"><span class="fc-swatch" id="fcSwatch"></span><span class="fc-rgb" id="fcRgb">rgb(128, 128, 128)</span></div>
-        </div>
-      </div>
-      <p class="fc-hint">Each axis maps linearly to one colour channel, so a moving point becomes one RGB value &mdash; exactly
-      the token the frozen VAE encodes. Zero motion sits at the grey centre of the cube.</p>
-    </div>
-
     <!-- ===== SIGNATURE 1: scene-flow tokenization gallery (driven by index.js #flowVideo) ===== -->
     <h3 class="feature-title" style="margin-top:3rem;">Pixels vs. motion</h3>
     <p class="feature-sub">
