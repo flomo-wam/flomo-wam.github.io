@@ -183,8 +183,8 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .band-soft { background: var(--soft-bg); }
 .band-head { text-align: center; max-width: 760px; margin: 0 auto 2rem; }
 .kicker {
-  font-family: var(--font-display); text-transform: uppercase; letter-spacing: .16em;
-  font-size: .76rem; font-weight: 700; color: var(--flomo-teal); margin: 0 0 .5rem;
+  font-family: var(--font-display); text-transform: uppercase; letter-spacing: .14em;
+  font-size: 1.02rem; font-weight: 700; color: var(--flomo-teal); margin: 0 0 .6rem;
 }
 .band-title {
   font-family: var(--font-display); font-weight: 700; letter-spacing: -.01em;
