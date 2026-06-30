@@ -270,59 +270,17 @@
     show(0, true); // start playing + cycling (no-op autoplay under reduced motion)
   }
 
-  /* ---------- comparison carousel (FloMo vs baselines, autoplay + autocycle) ---------- */
+  /* ---------- comparison grid (FloMo vs baselines, all autoplay together) ---------- */
   function initComparison() {
-    var root = document.getElementById('cmpSwitcher');
-    if (!root) return;
-    var video = document.getElementById('cmpVideo');
-    if (!video) return;
-    var result = document.getElementById('cmpResult');
-    var caption = document.getElementById('cmpCaption');
-    var prev = document.getElementById('cmpPrev');
-    var next = document.getElementById('cmpNext');
-    var carousel = document.getElementById('cmpCarousel');
-    var dots = [].slice.call(document.querySelectorAll('#cmpDots .ood-dot'));
-
-    // The three methods on the same OOD Pull String task, in cycle order.
-    var items = [
-      { video: 'static/videos/string.mp4', poster: 'static/images/posters/string.jpg',
-        badge: 'ok', badgeText: 'Success',
-        caption: '<b>FloMo</b> &mdash; grasps and pulls the hanging string, completing the unseen task.' },
-      { video: 'static/videos/string_dreamzero.mp4', poster: 'static/images/posters/string_dreamzero.jpg',
-        badge: 'fail', badgeText: 'Failure',
-        caption: '<b>DreamZero</b> &mdash; a pixel-predicting baseline; never establishes the pull.' },
-      { video: 'static/videos/string_bc.mp4', poster: 'static/images/posters/string_bc.jpg',
-        badge: 'fail', badgeText: 'Failure',
-        caption: '<b>BC (no pretraining)</b> &mdash; never finds the string without a motion prior.' }
-    ];
-    var idx = 0;
-    slow(video); // 3x-real-time clips: play at half speed (listeners persist across src changes)
-
-    function show(i, autoplay) {
-      idx = (i % items.length + items.length) % items.length;
-      var it = items[idx];
-      if (result) { result.className = 'vbadge ' + it.badge + ' demo-status'; result.textContent = it.badgeText; }
-      if (caption) caption.innerHTML = it.caption;
-      dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
-      video.poster = it.poster;
-      video.src = it.video;
-      video.load();
-      if (autoplay && !reduceMotion) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
-    }
-    function go(delta) { show(idx + delta, true); }
-
-    if (prev) prev.addEventListener('click', function () { go(-1); });
-    if (next) next.addEventListener('click', function () { go(1); });
-    // autocycle: advance to the next method whenever a clip finishes
-    video.addEventListener('ended', function () { go(1); });
-    if (carousel) {
-      carousel.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
-        else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
-      });
-    }
-
-    show(0, true); // start playing + cycling (no-op autoplay under reduced motion)
+    var vids = [].slice.call(document.querySelectorAll('.cmp-video'));
+    if (!vids.length) return;
+    vids.forEach(function (v) {
+      slow(v); // 3x-real-time clips: play at half speed (listeners attached before play)
+      if (reduceMotion) { v.removeAttribute('autoplay'); v.pause(); return; }
+      v.muted = true; // setting the property (not just the attribute) unlocks muted autoplay
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
   }
 
   /* ---------- architecture hotspots (tap to toggle on touch) ---------- */
@@ -387,12 +345,27 @@
   function initBars() {
     var chart = document.getElementById('idBars');
     if (!chart) return;
-    var bars = [].slice.call(chart.querySelectorAll('.bar'));
-    function fill() { bars.forEach(function (b) { b.style.width = b.dataset.value + '%'; }); }
-    if (reduceMotion || !('IntersectionObserver' in window)) { fill(); return; }
+    var bars = [].slice.call(chart.querySelectorAll('.vbar'));
+    if (!bars.length) return;
+    // Each bar grows to data-value% of its .vbar-plot height, minus the value
+    // label that sits above it, so the bars fill the panel and never overflow.
+    function fill() {
+      bars.forEach(function (b) {
+        var plot = b.parentNode;                       // .vbar-plot
+        var val = plot.querySelector('.vbar-val');
+        var avail = plot.clientHeight - (val ? val.offsetHeight : 0) - 6;
+        if (avail <= 0) return;
+        b.style.height = Math.round(b.dataset.value / 100 * avail) + 'px';
+      });
+    }
+    function fillSoon() { requestAnimationFrame(fill); }
+    // re-measure on resize so the pixel heights track the layout
+    var rT;
+    window.addEventListener('resize', function () { clearTimeout(rT); rT = setTimeout(fill, 150); });
+    if (reduceMotion || !('IntersectionObserver' in window)) { fillSoon(); return; }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) { chart.classList.add('in-view'); fill(); io.disconnect(); }
+        if (e.isIntersecting) { chart.classList.add('in-view'); fillSoon(); io.disconnect(); }
       });
     }, { threshold: 0.4 });
     io.observe(chart);

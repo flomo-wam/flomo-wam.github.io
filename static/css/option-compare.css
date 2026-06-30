@@ -257,7 +257,8 @@ section[id], footer[id] { scroll-margin-top: 76px; }
   font-size: 0; line-height: 0;
   transition: background .15s ease, border-color .15s ease;
 }
-.hotspot:hover, .hotspot.show { background: var(--orange-12); border-color: var(--orange-40); }
+/* hover/tap reveals the name tooltip only — no bounding-box highlight */
+.hotspot:hover, .hotspot.show { background: transparent; border-color: transparent; }
 .hotspot:focus-visible { outline: 3px solid var(--flomo-teal); outline-offset: 2px; }
 .hotspot .tip {
   position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(4px);
@@ -493,20 +494,34 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .results-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: stretch; }
 .fig-card { display: flex; flex-direction: column; }
 .fig-card img { border-radius: 10px; display: block; }
+/* bottom-align the caption so it lines up with the rank-panel note across the split */
+.fig-card .figure-caption { margin-top: auto; padding-top: 1rem; }
 .lightboxable { cursor: zoom-in; }
 .rank-panel { display: flex; flex-direction: column; }
 .rank-note { color: var(--muted); font-size: .9rem; margin: 1rem 0 0; }
 .rank-note b { color: var(--ink); }
 .rank-note em { color: var(--flomo-orange-dark); font-style: normal; font-weight: 600; }
 
-/* ---- bar chart (index.js sets width from data-value) ---- */
-.bar-chart { margin: .4rem 0 0; }
-.bar-row { display: flex; align-items: center; gap: .7rem; margin: .5rem 0; }
-.bar-label { flex: 0 0 138px; font-size: .82rem; color: var(--ink); text-align: right; font-weight: 600; }
-.bar-track { flex: 1; background: #eef1f4; border-radius: 6px; height: 22px; overflow: hidden; }
-.bar { height: 100%; width: 0; border-radius: 6px; background: #aeb6c0; transition: width 1s cubic-bezier(.2,.7,.2,1); }
-.bar.flomo { background: var(--flomo-orange); }
-.bar-val { flex: 0 0 30px; font-family: var(--font-mono); font-weight: 700; color: var(--ink); font-size: .9rem; }
+/* ---- vertical bar chart (compare-app.js sets bar heights from data-value) ---- */
+.vbars {
+  display: flex; align-items: stretch; justify-content: space-between; gap: .9rem;
+  flex: 1 1 auto; min-height: 240px; margin: .9rem 0 .2rem;
+}
+.vbar-col { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.vbar-plot {
+  flex: 1 1 auto; width: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end; gap: .3rem;
+}
+.vbar-val { font-family: var(--font-mono); font-weight: 700; font-size: .92rem; color: var(--ink); }
+.vbar {
+  width: 100%; max-width: 58px; height: 0; border-radius: 7px 7px 0 0;
+  background: #aeb6c0; transition: height 1s cubic-bezier(.2,.7,.2,1);
+}
+.vbar.flomo { background: var(--flomo-orange); }
+.vbar-label {
+  margin-top: .55rem; font-size: .74rem; line-height: 1.2; font-weight: 600;
+  color: var(--ink); text-align: center;
+}
 
 /* --------------------------------------------------- TABLES ------------- */
 .ood-block { margin-top: 2.6rem; }
@@ -555,9 +570,22 @@ html:not(.js) .ood-layout { grid-template-columns: 1fr; }
 .ood-dot.active { background: var(--flomo-orange); transform: scale(1.25); }
 
 /* --------------------------------------------------- COMPARISON --------- */
-/* the Pull String duel reuses the .ood-* carousel styles (arrows, dots, video) */
-.cmp { max-width: 940px; margin: 0 auto; text-align: center; }
-.cmp .ood-carousel { margin-top: .4rem; }
+/* three Pull String rollouts (FloMo + two baselines) autoplaying side by side */
+.cmp { max-width: 1040px; margin: 0 auto; }
+.cmp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: .4rem; }
+.cmp-card {
+  margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
+}
+.cmp-card.win { border-color: var(--flomo-orange); box-shadow: 0 0 0 2px var(--orange-22), var(--shadow-sm); }
+.cmp-video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #000; }
+.cmp-card figcaption {
+  padding: .7rem .9rem .9rem; display: flex; flex-wrap: wrap; align-items: center; gap: .35rem;
+}
+.cmp-name { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: .95rem; }
+.cmp-card.win .cmp-name { color: var(--flomo-orange-dark); }
+.cmp-desc { flex-basis: 100%; color: var(--muted); font-size: .85rem; margin-top: .1rem; }
+@media (max-width: 768px) { .cmp-grid { grid-template-columns: 1fr; } }
 
 /* --------------------------------------------------- LIGHTBOX ----------- */
 .modal { display: none; position: fixed; inset: 0; z-index: 80; align-items: center; justify-content: center; }
@@ -597,14 +625,14 @@ html:not(.js) .ood-layout { grid-template-columns: 1fr; }
   .stage-flow { grid-template-columns: 1fr; }
   .stage-link { transform: rotate(90deg); }
   .tldr { flex-direction: column; }
-  .bar-label { flex-basis: 104px; }
+  .vbars { min-height: 200px; }
 }
 
 /* --------------------------------------------------- REDUCED MOTION ----- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { scroll-behavior: auto !important; }
-  .bar, .duel-fill, .duel-side,
+  .vbar, .duel-fill, .duel-side,
   .contrib-card, .stage-card, .btn-ghost, .stage-play, .task-chip { transition: none !important; }
   .contrib-card:hover, .stage-card:hover, .btn-ghost:hover { transform: none; }
 }

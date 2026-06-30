@@ -35,7 +35,7 @@
       <li><a href="#live-demo">Rollouts</a></li>
       <li><a href="#results">Results</a></li>
       <li><a href="#generalization">Human&nbsp;video</a></li>
-      <li><a href="#comparison">Duels</a></li>
+      <li><a href="#comparison">Comparison</a></li>
       <li><a class="nav-code" href="#code">Code (soon)</a></li>
     </ul>
   </div>
@@ -54,8 +54,8 @@
         <span>for Learning from Human&nbsp;Video</span>
       </h1>
       <p class="hero-thesis">
-        Most world-action models predict <b>future pixels</b>. We predict <b>3D motion</b> instead &mdash;
-        and motion is what actually carries the transfer from video to action.
+        Most world-action models predict <b>future pixels</b>. FloMo predicts dense <b>3D motion</b> instead.
+        Motion is the medium through which video pretraining transfers to action.
       </p>
       <p class="author-line">Authors omitted for double-blind review</p>
       <div class="hero-actions">
@@ -71,25 +71,29 @@
 <!-- ===================== ANNOTATED ARCHITECTURE ===================== -->
 <section class="band band-soft" id="tldr">
   <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Architecture</p>
+      <h2 class="band-title">One backbone predicts motion and action</h2>
+    </header>
     <figure class="panel arch-panel">
-      <div class="panel-tab">Architecture &middot; hover the highlighted regions</div>
+      <div class="panel-tab">Hover a component for its name</div>
       <div class="arch-wrap">
         <img src="static/images/figure_arch.png" alt="FloMo architecture">
-        <button class="hotspot" style="top:21%;left:1.5%;width:16%;height:11%;" aria-label="Text encoder detail">
-          <span class="tip">Frozen UMT5-XXL text encoder (11B)</span></button>
-        <button class="hotspot" style="top:45%;left:15.5%;width:38%;height:14%;" aria-label="Backbone detail">
-          <span class="tip">Wan&nbsp;2.2 5B DiT MoE backbone &mdash; only this is fine-tuned (LoRA rank&nbsp;64)</span></button>
-        <button class="hotspot" style="top:21%;left:36.5%;width:18%;height:11%;" aria-label="Frozen video encoder detail">
-          <span class="tip">Frozen Wan&nbsp;2.2 VAE &mdash; motion shares the video latent space</span></button>
-        <button class="hotspot" style="top:62%;left:18.5%;width:35%;height:13%;" aria-label="Output heads detail">
-          <span class="tip">Flow-matching heads: motion + action</span></button>
-        <button class="hotspot" style="top:59%;left:74%;width:18%;height:28%;" aria-label="Scene-flow tokenization detail">
-          <span class="tip">Scene flow rendered as RGB: (&Delta;X,&Delta;Y,&Delta;Z) &rarr; (R,G,B)</span></button>
+        <button class="hotspot" style="top:21%;left:1.5%;width:16%;height:11%;" aria-label="Text encoder">
+          <span class="tip">Text encoder (UMT5-XXL, frozen)</span></button>
+        <button class="hotspot" style="top:45%;left:15.5%;width:38%;height:14%;" aria-label="Video backbone">
+          <span class="tip">Video backbone (Wan&nbsp;2.2 5B DiT, LoRA-tuned)</span></button>
+        <button class="hotspot" style="top:21%;left:36.5%;width:18%;height:11%;" aria-label="Video VAE encoder">
+          <span class="tip">Video VAE (Wan&nbsp;2.2, frozen)</span></button>
+        <button class="hotspot" style="top:62%;left:18.5%;width:35%;height:13%;" aria-label="Output heads">
+          <span class="tip">Motion and action heads</span></button>
+        <button class="hotspot" style="top:59%;left:74%;width:18%;height:28%;" aria-label="Scene flow as RGB">
+          <span class="tip">Scene flow as RGB</span></button>
       </div>
       <figcaption class="figure-caption">
-        <b>FloMo architecture.</b> From an image and a text prompt, a pretrained video backbone (Wan&nbsp;2.2 5B DiT)
+        <b>FloMo architecture.</b> From an image and text prompt, a pretrained video backbone (Wan&nbsp;2.2 5B DiT)
         flow-matches dense 3D motion and robot actions. 3D velocities are rendered as RGB and encoded by the backbone's
-        VAE, so motion shares the video latent space &mdash; no new tokenizer.
+        VAE, so motion shares the video latent space and needs no new tokenizer.
       </figcaption>
     </figure>
   </div>
@@ -109,8 +113,8 @@
       video latent space, so no new tokenizer is needed. Co-trained on action-free human video and robot teleoperation,
       it generalizes to unseen objects, motion primitives, and tasks.</p>
       <p>Removing the motion objective hurts generalization; adding a video objective hurts success. Action tokens
-      attend roughly <b>3&times;</b> more to motion than to video &mdash; <b>motion mediates the transfer from video
-      to action.</b></p>
+      attend roughly <b>3&times;</b> more to motion than to video. <b>Motion mediates the transfer from video
+      pretraining to action.</b></p>
     </div>
   </div>
 </section>
@@ -126,20 +130,20 @@
       <div class="contrib-card">
         <span class="num">01</span>
         <h4>Motion as the WAM prediction target</h4>
-        <p>We render 3D scene flow as RGB and encode it with a frozen video VAE, so motion shares the video latent space.
-        One backbone flow-matches motion and action &mdash; no new tokenizer.</p>
+        <p>We render 3D scene flow as RGB and encode it with the frozen video VAE, so motion shares the video latent
+        space. A single backbone flow-matches motion and action with no new tokenizer.</p>
       </div>
       <div class="contrib-card">
         <span class="num">02</span>
         <h4>Motion is the most effective target</h4>
-        <p>On real-robot manipulation, predicting motion beats predicting video &mdash; or both &mdash; on in-distribution
-        success and OOD generalization. Adding a video target <em>interferes</em> with action learning.</p>
+        <p>On real-robot manipulation, predicting motion beats predicting video, or both, on in-distribution success
+        and out-of-distribution generalization. Adding a video target <em>interferes</em> with action learning.</p>
       </div>
       <div class="contrib-card">
         <span class="num">03</span>
         <h4>Generalization from human video</h4>
-        <p>FloMo transfers to objects, motions, and tasks seen <em>only</em> in action-free human video &mdash; like
-        pulling a string, never present in robot training.</p>
+        <p>FloMo transfers to objects, motion primitives, and tasks seen <em>only</em> in action-free human video,
+        such as string-pulling, never present in robot training.</p>
       </div>
     </div>
   </div>
@@ -158,7 +162,7 @@
       flow mixes camera motion with task motion, so FloMo predicts <b>3D scene flow</b>: the 3D displacement of each tracked
       point in the first camera frame, isolating object and hand motion.</p>
       <p>We render this as an RGB video and encode it with the <b>frozen Wan&nbsp;2.2 VAE</b>. Rendered flow lands in the same
-      latent space as video, so the pretrained DiT handles it with no new tokenizer &mdash; we fine-tune only the backbone
+      latent space as video, so the pretrained DiT handles it with no new tokenizer. We fine-tune only the backbone
       (LoRA, rank 64).</p>
     </div>
 
@@ -175,16 +179,16 @@
       <div class="chip-row" id="flowChips" role="tablist" aria-label="Scene-flow sample selector">
         <button class="task-chip active" role="tab" aria-selected="true" data-sample="board"
           data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg"
-          data-caption="&ldquo;Place a wooden board on the desk&rdquo; &mdash; the lifted board sweeps out a clean red&rarr;green gradient against a static background.">Lift board</button>
+          data-caption="&ldquo;Place a wooden board on the desk.&rdquo; The lifted board sweeps out a clean red&rarr;green gradient against a static background.">Lift board</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="weeds"
           data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg"
-          data-caption="&ldquo;Clear the weeds and loosen the soil&rdquo; &mdash; a big two-handed pull collapses into one bold, coherent red motion field while the leafy background stays still.">Clear weeds</button>
+          data-caption="&ldquo;Clear the weeds and loosen the soil.&rdquo; A two-handed pull collapses into one bold, coherent red motion field while the leafy background stays still.">Clear weeds</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
           data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg"
-          data-caption="&ldquo;Move jar and cup to kitchen counter&rdquo; &mdash; a large bimanual reach produces a dense, fast motion field.">Jar &amp; cup</button>
+          data-caption="&ldquo;Move jar and cup to the kitchen counter.&rdquo; A large bimanual reach produces a dense, fast motion field.">Jar &amp; cup</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="bin"
           data-video="static/videos/sceneflow/sceneflow_0209.mp4" data-poster="static/videos/sceneflow/sceneflow_0209.jpg"
-          data-caption="&ldquo;Wipe a bin with a cloth&rdquo; &mdash; a coherent back-and-forth wipe isolates as a clean magenta motion field.">Wipe bin</button>
+          data-caption="&ldquo;Wipe a bin with a cloth.&rdquo; A coherent back-and-forth wipe isolates as a clean magenta motion field.">Wipe bin</button>
       </div>
 
       <div class="flow-stage">
@@ -226,7 +230,7 @@
         <span class="stage-num">Stage 1</span>
         <h5>Mid-training</h5>
         <p>Train on the full mixture. Human video supervises scene flow only; robot data supervises scene flow
-        <em>and</em> action &mdash; building a broad motion prior at scale.</p>
+        <em>and</em> action. This builds a broad motion prior at scale.</p>
       </div>
       <div class="stage-link" aria-hidden="true">&rarr;</div>
       <div class="stage-card s2">
@@ -334,16 +338,29 @@
       </figure>
 
       <div class="panel rank-panel">
-        <div class="panel-tab">The full field &middot; avg. in-distribution success (%)</div>
-        <div class="bar-chart" id="idBars" aria-label="Average in-distribution success rate">
-          <div class="bar-row"><span class="bar-label">FloMo</span><div class="bar-track"><div class="bar flomo" data-value="87"></div></div><span class="bar-val" data-num="87">87</span></div>
-          <div class="bar-row"><span class="bar-label">Joint Video-Action</span><div class="bar-track"><div class="bar" data-value="47"></div></div><span class="bar-val" data-num="47">47</span></div>
-          <div class="bar-row"><span class="bar-label">FloMo w/ Video</span><div class="bar-track"><div class="bar" data-value="40"></div></div><span class="bar-val" data-num="40">40</span></div>
-          <div class="bar-row"><span class="bar-label">BC (no pretraining)</span><div class="bar-track"><div class="bar" data-value="7"></div></div><span class="bar-val" data-num="7">7</span></div>
+        <div class="panel-tab">Average in-distribution success (%)</div>
+        <div class="vbars" id="idBars" role="img" aria-label="Average in-distribution success rate: FloMo 87, Joint Video-Action 47, FloMo with Video 40, BC 7">
+          <div class="vbar-col">
+            <div class="vbar-plot"><span class="vbar-val" data-num="87">87</span><div class="vbar flomo" data-value="87"></div></div>
+            <span class="vbar-label">FloMo</span>
+          </div>
+          <div class="vbar-col">
+            <div class="vbar-plot"><span class="vbar-val" data-num="47">47</span><div class="vbar" data-value="47"></div></div>
+            <span class="vbar-label">Joint<br>Video-Action</span>
+          </div>
+          <div class="vbar-col">
+            <div class="vbar-plot"><span class="vbar-val" data-num="40">40</span><div class="vbar" data-value="40"></div></div>
+            <span class="vbar-label">FloMo<br>w/ Video</span>
+          </div>
+          <div class="vbar-col">
+            <div class="vbar-plot"><span class="vbar-val" data-num="7">7</span><div class="vbar" data-value="7"></div></div>
+            <span class="vbar-label">BC<br>(scratch)</span>
+          </div>
         </div>
-        <p class="rank-note">FloMo wins every task, averaging <b>87%</b> &mdash; vs <b>47%</b> Joint Video-Action,
-        <b>40%</b> FloMo&nbsp;w/&nbsp;Video, <b>7%</b> from-scratch BC. The gap is largest on <em>Oven</em>: 3D motion
-        targets the gripper&ndash;handle contact directly, while a video target wastes capacity reconstructing reflections and textures.</p>
+        <p class="rank-note">FloMo wins every task, averaging <b>87%</b> against <b>47%</b> for Joint Video-Action,
+        <b>40%</b> for FloMo&nbsp;w/&nbsp;Video, and <b>7%</b> for from-scratch BC. The gap is largest on <em>Oven</em>,
+        where 3D motion targets the gripper&ndash;handle contact directly while a video target wastes capacity
+        reconstructing reflections and textures.</p>
       </div>
     </div>
 
@@ -351,8 +368,8 @@
     <div class="ood-block">
       <h3 class="feature-title">Out-of-distribution generalization</h3>
       <p class="feature-sub">
-        FloMo leads on all three OOD axes &mdash; an unseen primitive (<em>Close Cabinet</em>), task (<em>Pull String</em>),
-        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply. The rollouts auto-cycle &mdash; the matching table columns highlight as each one plays.
+        FloMo leads on all three OOD axes: an unseen primitive (<em>Close Cabinet</em>), task (<em>Pull String</em>),
+        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply. The rollouts auto-cycle, and the matching table columns highlight as each one plays.
       </p>
 
       <div class="ood-layout">
@@ -437,7 +454,7 @@
 
     <!-- ablation duel: with vs without human video -->
     <div class="duel panel" data-metric="Avg. OOD success" data-unit="%" data-max="100" data-static="1">
-      <div class="panel-tab">The ablation &middot; remove only the ~81h human-video subset</div>
+      <div class="panel-tab">Ablation &middot; remove only the ~81&thinsp;h human-video subset</div>
       <div class="duel-board">
         <div class="duel-side" data-side="a">
           <div class="duel-fixed-name">FloMo</div>
@@ -479,7 +496,7 @@
     <p class="figure-caption">Both models predict 3D motion and differ only in whether the ~81h EgoVerse human-video subset is in training. SR = successful rollouts / total; TP = avg. fraction of subtasks completed (%).</p>
 
     <div class="prose" style="margin-top:1.2rem;">
-      <p>Same model, same motion target &mdash; removing only the ~81h EgoVerse human-video subset drops average OOD success
+      <p>Same model, same motion target. Removing only the ~81&thinsp;h EgoVerse human-video subset drops average OOD success
       from 80% to 7%. The generalization comes from human video, made transferable by the motion representation.</p>
     </div>
   </div>
@@ -489,25 +506,37 @@
 <section class="band band-soft" id="comparison">
   <div class="wrap">
     <header class="band-head">
-      <p class="kicker">Rollout duels</p>
+      <p class="kicker">Side by side</p>
       <h2 class="band-title">Pull String (OOD): FloMo vs. baselines</h2>
-      <p class="band-sub">The same unseen task, same conditions. FloMo succeeds where pixel-predicting baselines fail.</p>
+      <p class="band-sub">The same unseen task, same conditions, all three rollouts playing at once. FloMo succeeds where pixel-predicting baselines fail.</p>
     </header>
 
-    <div class="cmp js-only panel" id="cmpSwitcher">
-      <div class="panel-tab">Same unseen task, same conditions &middot; step through each method</div>
-      <div class="ood-carousel" id="cmpCarousel">
-        <button class="ood-arrow prev" id="cmpPrev" type="button" aria-label="Previous method">&#8249;</button>
-        <video id="cmpVideo" class="ood-video" muted playsinline preload="auto"
-          poster="static/images/posters/string.jpg" aria-label="Pull String rollout for the selected method"></video>
-        <button class="ood-arrow next" id="cmpNext" type="button" aria-label="Next method">&#8250;</button>
-      </div>
-      <div class="ood-dots" id="cmpDots" aria-hidden="true">
-        <span class="ood-dot active"></span><span class="ood-dot"></span><span class="ood-dot"></span>
-      </div>
-      <div class="demo-meta">
-        <span class="vbadge ok demo-status" id="cmpResult">Success</span>
-        <p class="demo-caption" id="cmpCaption"><b>FloMo</b> &mdash; grasps and pulls the hanging string, completing the unseen task.</p>
+    <div class="cmp js-only">
+      <div class="cmp-grid">
+        <figure class="cmp-card win">
+          <video class="cmp-video" src="static/videos/string.mp4" poster="static/images/posters/string.jpg"
+            autoplay muted loop playsinline preload="auto" aria-label="Pull String rollout: FloMo"></video>
+          <figcaption>
+            <span class="cmp-name">FloMo</span><span class="vbadge ok">Success</span>
+            <span class="cmp-desc">Grasps and pulls the hanging string, completing the unseen task.</span>
+          </figcaption>
+        </figure>
+        <figure class="cmp-card">
+          <video class="cmp-video" src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg"
+            autoplay muted loop playsinline preload="auto" aria-label="Pull String rollout: DreamZero"></video>
+          <figcaption>
+            <span class="cmp-name">DreamZero</span><span class="vbadge fail">Failure</span>
+            <span class="cmp-desc">A pixel-predicting baseline; never establishes the pull.</span>
+          </figcaption>
+        </figure>
+        <figure class="cmp-card">
+          <video class="cmp-video" src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg"
+            autoplay muted loop playsinline preload="auto" aria-label="Pull String rollout: BC (no pretraining)"></video>
+          <figcaption>
+            <span class="cmp-name">BC (no pretraining)</span><span class="vbadge fail">Failure</span>
+            <span class="cmp-desc">Never finds the string without a motion prior.</span>
+          </figcaption>
+        </figure>
       </div>
     </div>
 
