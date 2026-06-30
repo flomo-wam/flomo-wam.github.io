@@ -76,19 +76,8 @@
       <h2 class="band-title">One backbone predicts motion and action</h2>
     </header>
     <figure class="panel arch-panel">
-      <div class="panel-tab">Hover a component for its name</div>
       <div class="arch-wrap">
         <img src="static/images/figure_arch.png" alt="FloMo architecture">
-        <button class="hotspot" style="top:21%;left:1.5%;width:16%;height:11%;" aria-label="Text encoder">
-          <span class="tip">Text encoder (UMT5-XXL, frozen)</span></button>
-        <button class="hotspot" style="top:45%;left:15.5%;width:38%;height:14%;" aria-label="Video backbone">
-          <span class="tip">Video backbone (Wan&nbsp;2.2 5B DiT, LoRA-tuned)</span></button>
-        <button class="hotspot" style="top:21%;left:36.5%;width:18%;height:11%;" aria-label="Video VAE encoder">
-          <span class="tip">Video VAE (Wan&nbsp;2.2, frozen)</span></button>
-        <button class="hotspot" style="top:62%;left:18.5%;width:35%;height:13%;" aria-label="Output heads">
-          <span class="tip">Motion and action heads</span></button>
-        <button class="hotspot" style="top:59%;left:74%;width:18%;height:28%;" aria-label="Scene flow as RGB">
-          <span class="tip">Scene flow as RGB</span></button>
       </div>
       <figcaption class="figure-caption">
         <b>FloMo architecture.</b> From an image and text prompt, a pretrained video backbone (Wan&nbsp;2.2 5B DiT)
@@ -402,7 +391,7 @@
         <div class="ood-stage-wrap js-only">
           <div class="ood-carousel" id="oodCarousel">
             <button class="ood-arrow prev" id="oodPrev" type="button" aria-label="Previous OOD rollout">&#8249;</button>
-            <video id="oodVideo" class="ood-video" muted playsinline preload="auto"
+            <video id="oodVideo" class="ood-video" muted playsinline controls preload="auto"
               poster="static/images/posters/door.jpg" aria-label="Out-of-distribution rollout"></video>
             <button class="ood-arrow next" id="oodNext" type="button" aria-label="Next OOD rollout">&#8250;</button>
           </div>
@@ -515,7 +504,7 @@
       <div class="cmp-grid">
         <figure class="cmp-card win">
           <video class="cmp-video" src="static/videos/string.mp4" poster="static/images/posters/string.jpg"
-            autoplay muted loop playsinline preload="auto" aria-label="Pull String rollout: FloMo"></video>
+            autoplay muted loop playsinline controls preload="auto" aria-label="Pull String rollout: FloMo"></video>
           <figcaption>
             <span class="cmp-name">FloMo</span><span class="vbadge ok">Success</span>
             <span class="cmp-desc">Grasps and pulls the hanging string, completing the unseen task.</span>
@@ -523,7 +512,7 @@
         </figure>
         <figure class="cmp-card">
           <video class="cmp-video" src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg"
-            autoplay muted loop playsinline preload="auto" aria-label="Pull String rollout: DreamZero"></video>
+            autoplay muted loop playsinline controls preload="auto" aria-label="Pull String rollout: DreamZero"></video>
           <figcaption>
             <span class="cmp-name">DreamZero</span><span class="vbadge fail">Failure</span>
             <span class="cmp-desc">A pixel-predicting baseline; never establishes the pull.</span>
@@ -531,7 +520,7 @@
         </figure>
         <figure class="cmp-card">
           <video class="cmp-video" src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg"
-            autoplay muted loop playsinline preload="auto" aria-label="Pull String rollout: BC (no pretraining)"></video>
+            autoplay muted loop playsinline controls preload="auto" aria-label="Pull String rollout: BC (no pretraining)"></video>
           <figcaption>
             <span class="cmp-name">BC (no pretraining)</span><span class="vbadge fail">Failure</span>
             <span class="cmp-desc">Never finds the string without a motion prior.</span>

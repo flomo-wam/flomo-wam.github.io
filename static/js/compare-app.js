@@ -283,22 +283,6 @@
     });
   }
 
-  /* ---------- architecture hotspots (tap to toggle on touch) ---------- */
-  function initHotspots() {
-    var spots = [].slice.call(document.querySelectorAll('.hotspot'));
-    if (!spots.length) return;
-    spots.forEach(function (h) {
-      h.addEventListener('click', function (e) {
-        e.stopPropagation();
-        spots.forEach(function (o) { if (o !== h) o.classList.remove('show'); });
-        h.classList.toggle('show');
-      });
-    });
-    document.addEventListener('click', function () {
-      spots.forEach(function (o) { o.classList.remove('show'); });
-    });
-  }
-
   /* ---------- lightbox zoom ---------- */
   function initLightbox() {
     var modal = document.getElementById('lightbox');
@@ -407,7 +391,6 @@
     initFlowGallery();
     initOod();
     initComparison();
-    initHotspots();
     initLightbox();
     initBars();
     initCountUp();
