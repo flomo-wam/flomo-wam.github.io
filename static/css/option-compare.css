@@ -82,11 +82,6 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 }
 .nav-brand { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; }
 .nav-brand img { height: 1.7rem; display: block; }
-.nav-mark {
-  font-family: var(--font-display); font-weight: 700; font-size: .78rem;
-  letter-spacing: .04em; color: var(--ink);
-  border-left: 1px solid var(--line-strong); padding-left: .55rem;
-}
 .nav-links { display: flex; align-items: center; gap: .1rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
 .nav-links a {
   display: inline-block; padding: .35rem .6rem; border-radius: 8px;
@@ -595,7 +590,6 @@ html:not(.js) .ood-layout { grid-template-columns: 1fr; }
   .contrib-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-  .nav-mark { display: none; }
   .vid-grid, .vid-grid.two { grid-template-columns: 1fr; }
   .duel-board { grid-template-columns: 1fr; }
   .duel-vs { transform: rotate(90deg); margin: -.2rem 0; }
