@@ -125,8 +125,9 @@
       <div class="contrib-card">
         <span class="num">02</span>
         <h4>Motion is the most effective target</h4>
-        <p>On real-robot manipulation, predicting motion beats predicting video, or both, on in-distribution success
-        and out-of-distribution generalization. Adding a video target <em>interferes</em> with action learning.</p>
+        <p>On real-robot manipulation, predicting motion gives higher in-distribution success and out-of-distribution
+        generalization than predicting video, or than jointly predicting video and motion. Adding a video target
+        <em>interferes</em> with action learning.</p>
       </div>
       <div class="contrib-card">
         <span class="num">03</span>
@@ -314,9 +315,11 @@
     <header class="band-head">
       <p class="kicker">Results</p>
       <h2 class="band-title">Predicting motion beats predicting pixels</h2>
-      <p class="band-sub">Three contact-rich bimanual tasks (<em>Oven</em>, <em>Toolbox</em>, <em>Corn</em>), real-robot evaluation.</p>
+      <p class="band-sub">Real-robot evaluation: in-distribution success, out-of-distribution generalization, and what makes motion the better target.</p>
     </header>
 
+    <h3 class="feature-title">In-distribution success</h3>
+    <p class="feature-sub">Three contact-rich bimanual tasks (<em>Oven</em>, <em>Toolbox</em>, <em>Corn</em>), evaluated on the real robot.</p>
     <div class="results-split">
       <figure class="panel fig-card">
         <img class="lightboxable" src="static/images/figure_policy_indist.png" alt="In-distribution success rates">
@@ -408,7 +411,9 @@
     </div>
 
     <!-- scaling + attention -->
-    <div class="results-split" style="margin-top:2.2rem;">
+    <h3 class="feature-title">Sample efficiency and attention</h3>
+    <p class="feature-sub">Two controlled probes into why motion is the better target: how efficiently it recovers actions, and where the action stream attends.</p>
+    <div class="results-split">
       <figure class="panel fig-card">
         <img class="lightboxable" src="static/images/figure_id_scaling.png" alt="Inverse-dynamics scaling">
         <figcaption class="figure-caption">

@@ -467,7 +467,9 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 
 /* --------------------------------------------------- RESULTS SPLIT ------ */
 .results-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: stretch; }
-.fig-card { display: flex; flex-direction: column; }
+/* reset the browser's default <figure> margin so fig-card panels match the
+   width/height of the sibling .panel divs in a .results-split grid */
+.fig-card { margin: 0; display: flex; flex-direction: column; }
 .fig-card img { border-radius: 10px; display: block; }
 /* bottom-align the caption so it lines up with the rank-panel note across the split */
 .fig-card .figure-caption { margin-top: auto; padding-top: 1rem; }
