@@ -5,10 +5,9 @@
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Rollout clips are rendered at ~3x real time; slow playback so the
-  // motion is easy to read. playbackRate is reset by load()/src changes,
-  // so re-apply it whenever the media (re)loads or starts playing.
-  var SLOW_RATE = 0.5;
+  // Rollout clips from the replacement bundle are already encoded at the
+  // annotated 5x speed, so keep playback at the media's native rate.
+  var SLOW_RATE = 1;
   function slow(v) {
     if (!v) return;
     function apply() { try { v.playbackRate = SLOW_RATE; } catch (e) {} }
@@ -20,6 +19,21 @@
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
     else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  function updateVideoOverlay(root, meta) {
+    if (!root || !meta) return;
+    var model = root.querySelector('[data-overlay="model"]');
+    var speed = root.querySelector('[data-overlay="speed"]');
+    var distribution = root.querySelector('[data-overlay="distribution"]');
+    var prompt = root.querySelector('[data-overlay="prompt"]');
+    if (model && meta.model) model.innerHTML = meta.model;
+    if (speed && meta.speed) speed.innerHTML = meta.speed;
+    if (distribution && meta.badge) {
+      distribution.className = 'ov-pill ' + (meta.badgeClass || '');
+      distribution.innerHTML = meta.badge;
+    }
+    if (prompt && meta.prompt) prompt.textContent = meta.prompt;
   }
 
   /* ---------- shared: a poster -> click-to-play video stage ---------- */
@@ -44,7 +58,6 @@
         video.src = stage.dataset.video;
         stage.appendChild(video);
         slow(video);
-        video.addEventListener('click', toggle);
         // keep the overlay state in sync when the native controls are used
         video.addEventListener('pause', function () { stage.classList.remove('is-playing'); });
         video.addEventListener('play', function () { stage.classList.add('is-playing'); });
@@ -130,6 +143,13 @@
       status.className = 'vbadge ' + chip.dataset.badge + ' demo-status';
       status.innerHTML = chip.dataset.badgeText;
       caption.textContent = chip.dataset.caption;
+      updateVideoOverlay(stage, {
+        model: chip.dataset.model,
+        speed: chip.dataset.speed,
+        badgeClass: chip.dataset.badge,
+        badge: chip.dataset.badgeText,
+        prompt: chip.dataset.caption
+      });
     }
 
     chips.forEach(function (chip, i) {
@@ -221,15 +241,18 @@
 
     // The three OOD axes, in cycle order. cells = the table columns to highlight.
     var items = [
-      { cells: [1, 2], group: 'cc', video: 'static/videos/door.mp4', poster: 'static/images/posters/door.jpg',
-        badge: 'OOD &middot; unseen primitive', caption: 'Push the cabinet door shut.' },
-      { cells: [3, 4], group: 'ps', video: 'static/videos/string.mp4', poster: 'static/images/posters/string.jpg',
-        badge: 'OOD &middot; unseen task', caption: 'Pull the hanging string, a primitive seen only in human video.' },
-      { cells: [5, 6], group: 'hl', video: 'static/videos/highlighter.mp4', poster: 'static/images/posters/highlighter.jpg',
-        badge: 'OOD &middot; unseen object', caption: 'Place the unseen highlighter in the bowl.' }
+      { cells: [1, 2], group: 'cc', video: 'static/videos/ma10h_door_success.mp4', poster: 'static/images/posters/door.jpg',
+        model: 'FloMo', speed: '5&times;', badgeClass: 'ood', badge: 'OOD &middot; unseen primitive',
+        caption: 'Push the cabinet door shut.' },
+      { cells: [3, 4], group: 'ps', video: 'static/videos/ma10h_yoyo_success.mp4', poster: 'static/images/posters/string.jpg',
+        model: 'FloMo', speed: '5&times;', badgeClass: 'ood', badge: 'OOD &middot; unseen task',
+        caption: 'Pull the string on the toy in the air.' },
+      { cells: [5, 6], group: 'hl', video: 'static/videos/ma10h_highlighter_success2.mp4', poster: 'static/images/posters/highlighter.jpg',
+        model: 'FloMo', speed: '5&times;', badgeClass: 'ood', badge: 'OOD &middot; unseen object',
+        caption: 'Place the unseen highlighter in the bowl.' }
     ];
     var idx = 0;
-    slow(video); // 3x-real-time clips: play at half speed (listeners persist across src changes)
+    slow(video); // keep replacement clips at their annotated native speed
 
     function clearCols() {
       [].forEach.call(table.querySelectorAll('.col-active'), function (c) { c.classList.remove('col-active'); });
@@ -248,6 +271,13 @@
       highlight(it);
       if (status) status.innerHTML = it.badge;
       if (caption) caption.textContent = it.caption;
+      updateVideoOverlay(carousel, {
+        model: it.model,
+        speed: it.speed,
+        badgeClass: it.badgeClass,
+        badge: it.badge,
+        prompt: it.caption
+      });
       dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
       video.poster = it.poster;
       video.src = it.video;
@@ -275,7 +305,7 @@
     var vids = [].slice.call(document.querySelectorAll('.cmp-video'));
     if (!vids.length) return;
     vids.forEach(function (v) {
-      slow(v); // 3x-real-time clips: play at half speed (listeners attached before play)
+      slow(v); // keep replacement clips at their annotated native speed
       if (reduceMotion) { v.removeAttribute('autoplay'); v.pause(); return; }
       v.muted = true; // setting the property (not just the attribute) unlocks muted autoplay
       var p = v.play();

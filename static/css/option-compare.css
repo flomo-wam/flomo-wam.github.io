@@ -292,7 +292,7 @@ section[id], footer[id] { scroll-margin-top: 76px; }
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   width: 72px; height: 72px; border-radius: 50%; background: var(--flomo-orange);
   border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 18px rgba(0,0,0,.35); transition: transform .15s ease, background .15s ease; z-index: 3;
+  box-shadow: 0 4px 18px rgba(0,0,0,.35); transition: transform .15s ease, background .15s ease; z-index: 5;
 }
 .stage-play:hover { transform: translate(-50%, -50%) scale(1.07); background: var(--flomo-orange-dark); }
 .stage-play:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
@@ -303,6 +303,44 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .demo-meta { text-align: center; margin-top: 1rem; }
 .demo-status.vbadge { font-size: .72rem; padding: .22rem .7rem; }
 .demo-caption { color: var(--muted); margin: .55rem auto 0; max-width: 640px; }
+
+/* on-video annotation overlay, adapted from static/overlay-snippet.html */
+.video-overlay {
+  position: absolute; z-index: 4; pointer-events: none;
+}
+.video-overlay-top {
+  top: .7rem; left: .7rem; right: .7rem;
+  display: flex; gap: .4rem; flex-wrap: wrap; align-items: flex-start;
+}
+.video-overlay-bottom {
+  left: 0; right: 0; bottom: 0; padding: 1.4rem .9rem .8rem;
+  background: linear-gradient(to top, rgba(10,14,20,.72), rgba(10,14,20,0));
+}
+.ov-pill {
+  display: inline-flex; align-items: baseline; gap: .32rem;
+  border-radius: 999px; padding: .2rem .62rem;
+  font-family: var(--font-display); font-size: .72rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+  background: rgba(255,255,255,.92); color: var(--ink);
+  box-shadow: 0 1px 6px rgba(20,30,45,.28);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+}
+.ov-pill .k {
+  font-weight: 600; color: var(--muted); text-transform: uppercase; font-size: .62rem;
+}
+.ov-pill.model, .ov-pill.id { background: var(--soft-teal); color: var(--flomo-teal-dark); }
+.ov-pill.speed, .ov-pill.ood { background: var(--soft-orange); color: var(--flomo-orange-dark); }
+.ov-pill.ok { background: #e6f4ea; color: var(--success-green); }
+.ov-pill.fail { background: #fdecec; color: var(--fail-red); }
+.overlay-prompt {
+  color: #fff; font-size: .95rem; line-height: 1.35; margin: .45rem 0 0;
+  text-shadow: 0 1px 3px rgba(0,0,0,.6);
+}
+.overlay-prompt .k {
+  font-family: var(--font-display); font-size: .64rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.72);
+  margin-right: .4rem;
+}
 
 .thumb-strip { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
 .thumb {
@@ -527,7 +565,7 @@ html:not(.js) .ood-layout { grid-template-columns: 1fr; }
   border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-md);
 }
 .ood-arrow {
-  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
   width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer;
   background: rgba(13,17,23,.55); color: #fff; font-size: 1.5rem; line-height: 1;
   display: flex; align-items: center; justify-content: center;
@@ -550,7 +588,11 @@ html:not(.js) .ood-layout { grid-template-columns: 1fr; }
   overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
 }
 .cmp-card.win { border-color: var(--flomo-orange); box-shadow: 0 0 0 2px var(--orange-22), var(--shadow-sm); }
+.cmp-video-wrap { position: relative; background: #000; aspect-ratio: 16 / 9; }
 .cmp-video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #000; }
+.cmp-card .video-overlay-top { top: .45rem; left: .45rem; right: .45rem; gap: .25rem; }
+.cmp-card .ov-pill { font-size: .56rem; padding: .12rem .4rem; box-shadow: 0 1px 4px rgba(20,30,45,.24); }
+.cmp-card .ov-pill .k { font-size: .5rem; }
 .cmp-card figcaption {
   padding: .7rem .9rem .9rem; display: flex; flex-wrap: wrap; align-items: center; gap: .35rem;
 }

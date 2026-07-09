@@ -249,34 +249,48 @@
     <div class="js-only panel">
       <div class="chip-row" id="taskChips" role="tablist" aria-label="Rollout task selector">
         <button class="task-chip active" role="tab" aria-selected="true" data-task="oven"
-          data-video="static/videos/oven.mp4" data-poster="static/images/posters/oven.jpg"
+          data-video="static/videos/ma10h_oven_success.mp4" data-poster="static/images/posters/oven.jpg"
+          data-model="FloMo" data-speed="5&times;"
           data-badge="id" data-badge-text="In-distribution"
           data-caption="Open the oven, retrieve the croissant, place it on a plate.">Oven</button>
         <button class="task-chip" role="tab" aria-selected="false" data-task="toolbox"
-          data-video="static/videos/toolbox.mp4" data-poster="static/images/posters/toolbox.jpg"
+          data-video="static/videos/ma10h_toolbox_success.mp4" data-poster="static/images/posters/toolbox.jpg"
+          data-model="FloMo" data-speed="5&times;"
           data-badge="id" data-badge-text="In-distribution"
           data-caption="Open the hinged lid, grasp the screwdriver, place it inside.">Toolbox</button>
         <button class="task-chip" role="tab" aria-selected="false" data-task="corn"
-          data-video="static/videos/corn.mp4" data-poster="static/images/posters/corn.jpg"
+          data-video="static/videos/ma10h_corn_success.mp4" data-poster="static/images/posters/corn.jpg"
+          data-model="FloMo" data-speed="5&times;"
           data-badge="id" data-badge-text="In-distribution"
           data-caption="Grasp the corn cob and place it in the bowl.">Corn</button>
         <button class="task-chip" role="tab" aria-selected="false" data-task="highlighter"
-          data-video="static/videos/highlighter.mp4" data-poster="static/images/posters/highlighter.jpg"
+          data-video="static/videos/ma10h_highlighter_success2.mp4" data-poster="static/images/posters/highlighter.jpg"
+          data-model="FloMo" data-speed="5&times;"
           data-badge="ood" data-badge-text="OOD &middot; unseen object"
           data-caption="Place the unseen highlighter in the bowl.">Highlighter</button>
         <button class="task-chip" role="tab" aria-selected="false" data-task="string"
-          data-video="static/videos/string.mp4" data-poster="static/images/posters/string.jpg"
+          data-video="static/videos/ma10h_yoyo_success.mp4" data-poster="static/images/posters/string.jpg"
+          data-model="FloMo" data-speed="5&times;"
           data-badge="ood" data-badge-text="OOD &middot; unseen task"
-          data-caption="Pull the hanging string, a primitive seen only in human video.">Pull String</button>
+          data-caption="Pull the string on the toy in the air.">Pull String</button>
         <button class="task-chip" role="tab" aria-selected="false" data-task="door"
-          data-video="static/videos/door.mp4" data-poster="static/images/posters/door.jpg"
+          data-video="static/videos/ma10h_door_success.mp4" data-poster="static/images/posters/door.jpg"
+          data-model="FloMo" data-speed="5&times;"
           data-badge="ood" data-badge-text="OOD &middot; unseen primitive"
           data-caption="Push the cabinet door shut.">Close Cabinet</button>
       </div>
 
-      <div class="demo-stage" id="demoStage" data-video="static/videos/oven.mp4">
+      <div class="demo-stage" id="demoStage" data-video="static/videos/ma10h_oven_success.mp4">
+        <div class="video-overlay video-overlay-top" aria-hidden="true">
+          <span class="ov-pill model"><span class="k">Model</span> <span data-overlay="model">FloMo</span></span>
+          <span class="ov-pill speed"><span class="k">Speed</span> <span data-overlay="speed">5&times;</span></span>
+          <span class="ov-pill id" data-overlay="distribution">In-distribution</span>
+        </div>
         <img class="stage-poster" src="static/images/posters/oven.jpg" alt="Selected rollout poster">
         <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
+        <div class="video-overlay video-overlay-bottom" aria-hidden="true">
+          <p class="overlay-prompt"><span class="k">Prompt</span><span data-overlay="prompt">Open the oven, retrieve the croissant, place it on a plate.</span></p>
+        </div>
       </div>
 
       <div class="demo-meta">
@@ -297,12 +311,12 @@
     <!-- No-JS fallback: plain rollout grid -->
     <div class="nojs-fallback">
       <div class="vid-grid">
-        <div class="video-card"><video src="static/videos/oven.mp4" poster="static/images/posters/oven.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><br>Open the oven, retrieve the croissant, place it on a plate.</div></div>
-        <div class="video-card"><video src="static/videos/toolbox.mp4" poster="static/images/posters/toolbox.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div></div>
-        <div class="video-card"><video src="static/videos/corn.mp4" poster="static/images/posters/corn.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><br>Grasp the corn cob and place it in the bowl.</div></div>
-        <div class="video-card"><video src="static/videos/highlighter.mp4" poster="static/images/posters/highlighter.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">OOD &middot; unseen object</span><br>Place the unseen highlighter in the bowl.</div></div>
-        <div class="video-card"><video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">OOD &middot; unseen task</span><br>Pull the hanging string, a primitive seen only in human video.</div></div>
-        <div class="video-card"><video src="static/videos/door.mp4" poster="static/images/posters/door.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">OOD &middot; unseen primitive</span><br>Push the cabinet door shut.</div></div>
+        <div class="video-card"><video src="static/videos/ma10h_oven_success.mp4" poster="static/images/posters/oven.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><span class="vbadge ok">Success</span><br>Open the oven, retrieve the croissant, place it on a plate.</div></div>
+        <div class="video-card"><video src="static/videos/ma10h_toolbox_success.mp4" poster="static/images/posters/toolbox.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><span class="vbadge ok">Success</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div></div>
+        <div class="video-card"><video src="static/videos/ma10h_corn_success.mp4" poster="static/images/posters/corn.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><span class="vbadge ok">Success</span><br>Grasp the corn cob and place it in the bowl.</div></div>
+        <div class="video-card"><video src="static/videos/ma10h_highlighter_success2.mp4" poster="static/images/posters/highlighter.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">OOD &middot; unseen object</span><span class="vbadge ok">Success</span><br>Place the unseen highlighter in the bowl.</div></div>
+        <div class="video-card"><video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">OOD &middot; unseen task</span><span class="vbadge ok">Success</span><br>Pull the string on the toy in the air.</div></div>
+        <div class="video-card"><video src="static/videos/ma10h_door_success.mp4" poster="static/images/posters/door.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">OOD &middot; unseen primitive</span><span class="vbadge ok">Success</span><br>Push the cabinet door shut.</div></div>
       </div>
     </div>
   </div>
@@ -393,8 +407,16 @@
         <div class="ood-stage-wrap js-only">
           <div class="ood-carousel" id="oodCarousel">
             <button class="ood-arrow prev" id="oodPrev" type="button" aria-label="Previous OOD rollout">&#8249;</button>
+            <div class="video-overlay video-overlay-top" aria-hidden="true">
+              <span class="ov-pill model"><span class="k">Model</span> <span data-overlay="model">FloMo</span></span>
+              <span class="ov-pill speed"><span class="k">Speed</span> <span data-overlay="speed">5&times;</span></span>
+              <span class="ov-pill ood" data-overlay="distribution">OOD &middot; unseen primitive</span>
+            </div>
             <video id="oodVideo" class="ood-video" muted playsinline controls preload="auto"
               poster="static/images/posters/door.jpg" aria-label="Out-of-distribution rollout"></video>
+            <div class="video-overlay video-overlay-bottom" aria-hidden="true">
+              <p class="overlay-prompt"><span class="k">Prompt</span><span data-overlay="prompt">Push the cabinet door shut.</span></p>
+            </div>
             <button class="ood-arrow next" id="oodNext" type="button" aria-label="Next OOD rollout">&#8250;</button>
           </div>
           <div class="ood-dots" id="oodDots" aria-hidden="true">
@@ -501,30 +523,51 @@
     <header class="band-head">
       <p class="kicker">Side by side</p>
       <h2 class="band-title">Pull String (OOD): FloMo vs. baselines</h2>
-      <p class="band-sub">The same unseen task, same conditions, all three rollouts playing at once. FloMo succeeds where pixel-predicting baselines fail.</p>
+      <p class="band-sub">The same unseen task, same conditions, all three rollouts playing at once. FloMo succeeds where pixel-predicting baselines fail. Prompt: Pull the string on the toy in the air.</p>
     </header>
 
     <div class="cmp js-only">
       <div class="cmp-grid">
         <figure class="cmp-card win">
-          <video class="cmp-video" src="static/videos/string.mp4" poster="static/images/posters/string.jpg"
+          <div class="cmp-video-wrap">
+            <div class="video-overlay video-overlay-top" aria-hidden="true">
+              <span class="ov-pill model"><span class="k">Model</span> FloMo</span>
+              <span class="ov-pill speed"><span class="k">Speed</span> 5&times;</span>
+              <span class="ov-pill ood">OOD &middot; unseen task</span>
+            </div>
+          <video class="cmp-video" src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg"
             autoplay muted loop playsinline controls preload="auto" aria-label="Pull String rollout: FloMo"></video>
+          </div>
           <figcaption>
             <span class="cmp-name">FloMo</span><span class="vbadge ok">Success</span>
             <span class="cmp-desc">Grasps and pulls the hanging string, completing the unseen task.</span>
           </figcaption>
         </figure>
         <figure class="cmp-card">
-          <video class="cmp-video" src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg"
+          <div class="cmp-video-wrap">
+            <div class="video-overlay video-overlay-top" aria-hidden="true">
+              <span class="ov-pill model"><span class="k">Model</span> DreamZero</span>
+              <span class="ov-pill speed"><span class="k">Speed</span> 5&times;</span>
+              <span class="ov-pill ood">OOD &middot; unseen task</span>
+            </div>
+          <video class="cmp-video" src="static/videos/dreamzero_yoyo_failure.mp4" poster="static/images/posters/string_dreamzero.jpg"
             autoplay muted loop playsinline controls preload="auto" aria-label="Pull String rollout: DreamZero"></video>
+          </div>
           <figcaption>
             <span class="cmp-name">DreamZero</span><span class="vbadge fail">Failure</span>
             <span class="cmp-desc">A pixel-predicting baseline; never establishes the pull.</span>
           </figcaption>
         </figure>
         <figure class="cmp-card">
-          <video class="cmp-video" src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg"
+          <div class="cmp-video-wrap">
+            <div class="video-overlay video-overlay-top" aria-hidden="true">
+              <span class="ov-pill model"><span class="k">Model</span> BC (no pretraining)</span>
+              <span class="ov-pill speed"><span class="k">Speed</span> 5&times;</span>
+              <span class="ov-pill ood">OOD &middot; unseen task</span>
+            </div>
+          <video class="cmp-video" src="static/videos/bc_yoyo_failure.mp4" poster="static/images/posters/string_bc.jpg"
             autoplay muted loop playsinline controls preload="auto" aria-label="Pull String rollout: BC (no pretraining)"></video>
+          </div>
           <figcaption>
             <span class="cmp-name">BC (no pretraining)</span><span class="vbadge fail">Failure</span>
             <span class="cmp-desc">Never finds the string without a motion prior.</span>
@@ -536,9 +579,9 @@
     <!-- No-JS fallback: three labeled cards -->
     <div class="nojs-fallback">
       <div class="vid-grid">
-        <div class="video-card"><video src="static/videos/string.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">FloMo</span><span class="vbadge ok">Success</span></div></div>
-        <div class="video-card"><video src="static/videos/string_dreamzero.mp4" poster="static/images/posters/string_dreamzero.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">DreamZero</span><span class="vbadge fail">Failure</span></div></div>
-        <div class="video-card"><video src="static/videos/string_bc.mp4" poster="static/images/posters/string_bc.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">BC (no pretraining)</span><span class="vbadge fail">Failure</span></div></div>
+        <div class="video-card"><video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">FloMo</span><span class="vbadge ok">Success</span><br>Pull the string on the toy in the air.</div></div>
+        <div class="video-card"><video src="static/videos/dreamzero_yoyo_failure.mp4" poster="static/images/posters/string_dreamzero.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">DreamZero</span><span class="vbadge fail">Failure</span><br>Pull the string on the toy in the air.</div></div>
+        <div class="video-card"><video src="static/videos/bc_yoyo_failure.mp4" poster="static/images/posters/string_bc.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">BC (no pretraining)</span><span class="vbadge fail">Failure</span><br>Pull the string on the toy in the air.</div></div>
       </div>
     </div>
   </div>
