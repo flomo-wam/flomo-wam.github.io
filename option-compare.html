@@ -31,7 +31,6 @@
     </a>
     <ul class="nav-links">
       <li><a href="#method">Method</a></li>
-      <li><a href="#live-demo">Rollouts</a></li>
       <li><a href="#results">Results</a></li>
       <li><a href="#generalization">Human&nbsp;video</a></li>
       <li><a href="#comparison">Comparison</a></li>
@@ -87,28 +86,8 @@
   </div>
 </section>
 
-<!-- ===================== ABSTRACT ===================== -->
-<section class="band" id="abstract">
-  <div class="wrap">
-    <header class="band-head">
-      <p class="kicker">Abstract</p>
-      <h2 class="band-title">Motion mediates the transfer from video to action</h2>
-    </header>
-    <div class="prose">
-      <p>Pretrained video models carry internet-scale motion priors, but predicting full video is wasteful for action.
-      We argue dense <b>3D motion</b> is how that prior best transfers to action. <b>FloMo</b> is a 5B video model
-      fine-tuned to predict 3D scene flow and actions jointly: scene flow is rendered as RGB and encoded into the
-      video latent space, so no new tokenizer is needed. Co-trained on action-free human video and robot teleoperation,
-      it generalizes to unseen objects, motion primitives, and tasks.</p>
-      <p>Removing the motion objective hurts generalization; adding a video objective hurts success. Action tokens
-      attend roughly <b>3&times;</b> more to motion than to video. <b>Motion mediates the transfer from video
-      pretraining to action.</b></p>
-    </div>
-  </div>
-</section>
-
 <!-- ===================== CONTRIBUTIONS ===================== -->
-<section class="band band-soft" id="contributions">
+<section class="band" id="contributions">
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Contributions</p>
@@ -117,29 +96,28 @@
     <div class="contrib-grid">
       <div class="contrib-card">
         <span class="num">01</span>
-        <h4>Motion as the WAM prediction target</h4>
-        <p>We render 3D scene flow as RGB and encode it with the frozen video VAE, so motion shares the video latent
-        space. A single backbone flow-matches motion and action with no new tokenizer.</p>
+        <h4>Motion prediction as RGB video prediction</h4>
+        <p>We render 3D scene flow as RGB and encode it with the frozen video VAE, so motion shares the video latent space.
+        A single backbone flow-matches motion and action with no new tokenizer.</p>
       </div>
       <div class="contrib-card">
         <span class="num">02</span>
         <h4>Motion is the most effective target</h4>
-        <p>On real-robot manipulation, predicting motion gives higher in-distribution success and out-of-distribution
-        generalization than predicting video, or than jointly predicting video and motion. Adding a video target
-        <em>interferes</em> with action learning.</p>
+        <p>On real-robot manipulation, predicting motion gives improved out-of-distribution generalization compared to
+        predicting video; we find adding video prediction interferes with policy generalization.</p>
       </div>
       <div class="contrib-card">
         <span class="num">03</span>
         <h4>Generalization from human video</h4>
-        <p>FloMo transfers to objects, motion primitives, and tasks seen <em>only</em> in action-free human video,
-        such as string-pulling, never present in robot training.</p>
+        <p>FloMo transfers to objects, motion primitives, and tasks seen only in action-free human video and never present
+        in robot training.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== METHOD ===================== -->
-<section class="band" id="method">
+<section class="band band-soft" id="method">
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Method</p>
@@ -155,59 +133,47 @@
       (LoRA, rank 64).</p>
     </div>
 
-    <!-- ===== SIGNATURE 1: scene-flow tokenization gallery (driven by index.js #flowVideo) ===== -->
+    <!-- Scene-flow gallery (driven by compare-app.js #flowVideo) -->
     <h3 class="feature-title" style="margin-top:3rem;">Pixels vs. motion</h3>
     <p class="feature-sub">
-      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, the recovered <b>one-step 3D motion field</b> as
-      colour-coded arrows, and that flow rendered as an <b>RGB token</b>. The arrows track the moving hand and object,
-      staying invariant to the texture changes that confuse pixel-space predictors.
+      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, recovered <b>2D point tracks</b>, and the
+      <b>3D scene flow rendered as RGB</b> that FloMo uses as its motion target.
     </p>
 
     <!-- JS-powered explorer -->
     <div class="js-only">
-      <div class="chip-row" id="flowChips" role="tablist" aria-label="Scene-flow sample selector">
+      <div class="chip-row" id="flowChips" role="tablist" aria-label="Pixels versus motion sample selector">
         <button class="task-chip active" role="tab" aria-selected="true" data-sample="board"
-          data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg"
-          data-caption="&ldquo;Place a wooden board on the desk.&rdquo; The lifted board sweeps out a clean red&rarr;green gradient against a static background.">Lift board</button>
+          data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg">Lift board</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="weeds"
-          data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg"
-          data-caption="&ldquo;Clear the weeds and loosen the soil.&rdquo; A two-handed pull collapses into one bold, coherent red motion field while the leafy background stays still.">Clear weeds</button>
+          data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg">Clear weeds</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
-          data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg"
-          data-caption="&ldquo;Move jar and cup to the kitchen counter.&rdquo; A large bimanual reach produces a dense, fast motion field.">Jar &amp; cup</button>
+          data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg">Jar &amp; cup</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="bin"
-          data-video="static/videos/sceneflow/sceneflow_0209.mp4" data-poster="static/videos/sceneflow/sceneflow_0209.jpg"
-          data-caption="&ldquo;Wipe a bin with a cloth.&rdquo; A coherent back-and-forth wipe isolates as a clean magenta motion field.">Wipe bin</button>
+          data-video="static/videos/sceneflow/sceneflow_0209.mp4" data-poster="static/videos/sceneflow/sceneflow_0209.jpg">Wipe bin</button>
       </div>
 
       <div class="flow-stage">
         <video id="flowVideo" class="flow-video" autoplay muted loop playsinline controls preload="auto"
           poster="static/videos/sceneflow/sceneflow_0201.jpg"
           src="static/videos/sceneflow/sceneflow_0201.mp4"
-          aria-label="Scene-flow tokenization clip"></video>
+          aria-label="RGB, 2D point tracks, and 3D scene-flow comparison"></video>
       </div>
 
       <div class="flow-legend">
         <span><b>RGB</b> observation</span>
-        <span><b>One-step 3D flow</b> &middot; arrows colour-coded by direction</span>
-        <span><b>Scene flow as RGB</b> &middot; (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
-      </div>
-
-      <div class="thumb-strip" id="flowThumbs" aria-hidden="true">
-        <button class="thumb flow-thumb active" data-sample="board" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0201.jpg" alt=""></button>
-        <button class="thumb flow-thumb" data-sample="weeds" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0107.jpg" alt=""></button>
-        <button class="thumb flow-thumb" data-sample="dishes" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0108.jpg" alt=""></button>
-        <button class="thumb flow-thumb" data-sample="bin" tabindex="-1"><img src="static/videos/sceneflow/sceneflow_0209.jpg" alt=""></button>
+        <span><b>2D point tracks</b> &middot; arrows show tracked correspondences</span>
+        <span><b>3D scene flow as RGB</b> &middot; (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
       </div>
     </div>
 
     <!-- No-JS fallback: plain video grid -->
     <div class="nojs-fallback">
       <div class="vid-grid two">
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Jar &amp; cup</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0209.mp4" poster="static/videos/sceneflow/sceneflow_0209.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wipe bin</span><br>RGB &middot; one-step 3D flow &middot; scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Jar &amp; cup</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0209.mp4" poster="static/videos/sceneflow/sceneflow_0209.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wipe bin</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
       </div>
     </div>
 
@@ -230,100 +196,14 @@
       </div>
     </div>
     <p class="prose" style="margin-top:1.4rem;">
-      <b>At inference</b>, from an image and a language instruction, FloMo denoises for 10 UniPC steps, then executes
+      <b>At inference</b>, from an image and a language instruction, FloMo denoises for 10 flow-matching steps, then executes
       a chunk of 16 actions before re-planning.
     </p>
   </div>
 </section>
 
-<!-- ===================== LIVE DEMO: ROLLOUT EXPLORER (relocated above Results) ===================== -->
-<section class="band" id="live-demo">
-  <div class="wrap">
-    <header class="band-head">
-      <p class="kicker">Live demo</p>
-      <h2 class="band-title">Real-robot rollouts</h2>
-      <p class="band-sub">Pick a task. In-distribution and out-of-distribution rollouts from the same FloMo policy.</p>
-    </header>
-
-    <!-- Enhanced, JS-powered explorer -->
-    <div class="js-only panel">
-      <div class="chip-row" id="taskChips" role="tablist" aria-label="Rollout task selector">
-        <button class="task-chip active" role="tab" aria-selected="true" data-task="oven"
-          data-video="static/videos/ma10h_oven_success.mp4" data-poster="static/images/posters/oven.jpg"
-          data-model="FloMo" data-speed="5&times;"
-          data-badge="id" data-badge-text="In-distribution"
-          data-caption="Open the oven, retrieve the croissant, place it on a plate.">Oven</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="toolbox"
-          data-video="static/videos/ma10h_toolbox_success.mp4" data-poster="static/images/posters/toolbox.jpg"
-          data-model="FloMo" data-speed="5&times;"
-          data-badge="id" data-badge-text="In-distribution"
-          data-caption="Open the hinged lid, grasp the screwdriver, place it inside.">Toolbox</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="corn"
-          data-video="static/videos/ma10h_corn_success.mp4" data-poster="static/images/posters/corn.jpg"
-          data-model="FloMo" data-speed="5&times;"
-          data-badge="id" data-badge-text="In-distribution"
-          data-caption="Grasp the corn cob and place it in the bowl.">Corn</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="highlighter"
-          data-video="static/videos/ma10h_highlighter_success2.mp4" data-poster="static/images/posters/highlighter.jpg"
-          data-model="FloMo" data-speed="5&times;"
-          data-badge="ood" data-badge-text="OOD &middot; unseen object"
-          data-caption="Place the unseen highlighter in the bowl.">Highlighter</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="string"
-          data-video="static/videos/ma10h_yoyo_success.mp4" data-poster="static/images/posters/string.jpg"
-          data-model="FloMo" data-speed="5&times;"
-          data-badge="ood" data-badge-text="OOD &middot; unseen task"
-          data-caption="Pull the string on the toy in the air.">Pull String</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-task="door"
-          data-video="static/videos/ma10h_door_success.mp4" data-poster="static/images/posters/door.jpg"
-          data-model="FloMo" data-speed="5&times;"
-          data-badge="ood" data-badge-text="OOD &middot; unseen primitive"
-          data-caption="Push the cabinet door shut.">Close Cabinet</button>
-      </div>
-
-      <div class="demo-stage" id="demoStage" data-video="static/videos/ma10h_oven_success.mp4">
-        <div class="video-overlay video-overlay-top" aria-hidden="true">
-          <span class="ov-pill model"><span class="k">Model</span> <span data-overlay="model">FloMo</span></span>
-          <span class="ov-pill speed"><span class="k">Speed</span> <span data-overlay="speed">5&times;</span></span>
-          <span class="ov-pill id" data-overlay="distribution">In-distribution</span>
-        </div>
-        <img class="stage-poster" src="static/images/posters/oven.jpg" alt="Selected rollout poster">
-        <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
-        <div class="video-overlay video-overlay-bottom" aria-hidden="true">
-          <p class="overlay-prompt"><span class="k">Prompt</span><span data-overlay="prompt">Open the oven, retrieve the croissant, place it on a plate.</span></p>
-        </div>
-      </div>
-
-      <div class="demo-meta">
-        <span class="vbadge id demo-status" id="demoStatus">In-distribution</span>
-        <p class="demo-caption" id="demoCaption">Open the oven, retrieve the croissant, place it on a plate.</p>
-      </div>
-
-      <div class="thumb-strip" id="taskThumbs" aria-hidden="true">
-        <button class="thumb active" data-task="oven" tabindex="-1"><img src="static/images/posters/oven.jpg" alt=""></button>
-        <button class="thumb" data-task="toolbox" tabindex="-1"><img src="static/images/posters/toolbox.jpg" alt=""></button>
-        <button class="thumb" data-task="corn" tabindex="-1"><img src="static/images/posters/corn.jpg" alt=""></button>
-        <button class="thumb" data-task="highlighter" tabindex="-1"><img src="static/images/posters/highlighter.jpg" alt=""></button>
-        <button class="thumb" data-task="string" tabindex="-1"><img src="static/images/posters/string.jpg" alt=""></button>
-        <button class="thumb" data-task="door" tabindex="-1"><img src="static/images/posters/door.jpg" alt=""></button>
-      </div>
-    </div>
-
-    <!-- No-JS fallback: plain rollout grid -->
-    <div class="nojs-fallback">
-      <div class="vid-grid">
-        <div class="video-card"><video src="static/videos/ma10h_oven_success.mp4" poster="static/images/posters/oven.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><span class="vbadge ok">Success</span><br>Open the oven, retrieve the croissant, place it on a plate.</div></div>
-        <div class="video-card"><video src="static/videos/ma10h_toolbox_success.mp4" poster="static/images/posters/toolbox.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><span class="vbadge ok">Success</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div></div>
-        <div class="video-card"><video src="static/videos/ma10h_corn_success.mp4" poster="static/images/posters/corn.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><span class="vbadge ok">Success</span><br>Grasp the corn cob and place it in the bowl.</div></div>
-        <div class="video-card"><video src="static/videos/ma10h_highlighter_success2.mp4" poster="static/images/posters/highlighter.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">OOD &middot; unseen object</span><span class="vbadge ok">Success</span><br>Place the unseen highlighter in the bowl.</div></div>
-        <div class="video-card"><video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">OOD &middot; unseen task</span><span class="vbadge ok">Success</span><br>Pull the string on the toy in the air.</div></div>
-        <div class="video-card"><video src="static/videos/ma10h_door_success.mp4" poster="static/images/posters/door.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">OOD &middot; unseen primitive</span><span class="vbadge ok">Success</span><br>Push the cabinet door shut.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ===================== RESULTS ===================== -->
-<section class="band band-soft" id="results">
+<section class="band" id="results">
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Results</p>
@@ -369,16 +249,65 @@
       </div>
     </div>
 
+    <div class="rollout-block" id="id-rollouts">
+      <h3 class="feature-title">In-distribution rollouts</h3>
+      <p class="feature-sub">FloMo successes on the same three in-distribution evaluation tasks.</p>
+
+      <div class="js-only rollout-panel">
+        <div class="chip-row" id="taskChips" role="tablist" aria-label="In-distribution rollout task selector">
+          <button class="task-chip active" role="tab" aria-selected="true" data-task="oven"
+            data-video="static/videos/ma10h_oven_success.mp4" data-poster="static/images/posters/oven.jpg"
+            data-model="FloMo" data-speed="5&times;" data-badge="id" data-badge-text="In-distribution"
+            data-caption="Open the oven, retrieve the croissant, place it on a plate.">Oven</button>
+          <button class="task-chip" role="tab" aria-selected="false" data-task="toolbox"
+            data-video="static/videos/ma10h_toolbox_success.mp4" data-poster="static/images/posters/toolbox.jpg"
+            data-model="FloMo" data-speed="5&times;" data-badge="id" data-badge-text="In-distribution"
+            data-caption="Open the hinged lid, grasp the screwdriver, place it inside.">Toolbox</button>
+          <button class="task-chip" role="tab" aria-selected="false" data-task="corn"
+            data-video="static/videos/ma10h_corn_success.mp4" data-poster="static/images/posters/corn.jpg"
+            data-model="FloMo" data-speed="5&times;" data-badge="id" data-badge-text="In-distribution"
+            data-caption="Grasp the corn cob and place it in the bowl.">Corn</button>
+        </div>
+
+        <div class="demo-stage" id="demoStage" data-video="static/videos/ma10h_oven_success.mp4"
+          data-label="In-distribution robot rollout">
+          <div class="video-overlay video-overlay-top" aria-hidden="true">
+            <span class="ov-pill model"><span class="k">Model</span> <span data-overlay="model">FloMo</span></span>
+            <span class="ov-pill speed"><span class="k">Speed</span> <span data-overlay="speed">5&times;</span></span>
+            <span class="ov-pill id" data-overlay="distribution">In-distribution</span>
+          </div>
+          <img class="stage-poster" src="static/images/posters/oven.jpg" alt="Oven rollout poster">
+          <button class="stage-play" type="button" aria-label="Play rollout"><span class="play-tri"></span></button>
+          <div class="video-overlay video-overlay-bottom" aria-hidden="true">
+            <p class="overlay-prompt"><span class="k">Prompt</span><span data-overlay="prompt">Open the oven, retrieve the croissant, place it on a plate.</span></p>
+          </div>
+        </div>
+
+        <div class="demo-meta">
+          <span class="vbadge id demo-status" id="demoStatus">In-distribution</span>
+          <p class="demo-caption" id="demoCaption">Open the oven, retrieve the croissant, place it on a plate.</p>
+        </div>
+      </div>
+
+      <div class="nojs-fallback">
+        <div class="vid-grid">
+          <div class="video-card"><video src="static/videos/ma10h_oven_success.mp4" poster="static/images/posters/oven.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Oven</span><span class="vbadge id">In-dist</span><br>Open the oven, retrieve the croissant, place it on a plate.</div></div>
+          <div class="video-card"><video src="static/videos/ma10h_toolbox_success.mp4" poster="static/images/posters/toolbox.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Toolbox</span><span class="vbadge id">In-dist</span><br>Open the hinged lid, grasp the screwdriver, place it inside.</div></div>
+          <div class="video-card"><video src="static/videos/ma10h_corn_success.mp4" poster="static/images/posters/corn.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Corn</span><span class="vbadge id">In-dist</span><br>Grasp the corn cob and place it in the bowl.</div></div>
+        </div>
+      </div>
+    </div>
+
     <!-- OOD table + explorer -->
     <div class="ood-block">
       <h3 class="feature-title">Out-of-distribution generalization</h3>
       <p class="feature-sub">
         FloMo leads on all three OOD axes: an unseen primitive (<em>Close Cabinet</em>), task (<em>Pull String</em>),
-        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply. The rollouts auto-cycle, and the matching table columns highlight as each one plays.
+        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply.
       </p>
 
       <div class="ood-layout">
-        <div class="results-table table-wrap">
+        <div class="results-table table-wrap ood-table">
           <table id="oodTable">
             <thead>
               <tr>
@@ -403,9 +332,17 @@
             </tbody>
           </table>
         </div>
+        <p class="figure-caption">SR = successful rollouts / total &nbsp;&middot;&nbsp; TP = avg. fraction of subtasks completed (%).</p>
 
         <div class="ood-stage-wrap js-only">
-          <div class="ood-carousel" id="oodCarousel">
+          <h3 class="feature-title rollout-title">Out-of-distribution rollouts</h3>
+          <p class="feature-sub">FloMo successes across the unseen primitive, task, and object evaluations.</p>
+          <div class="chip-row" id="oodTabs" role="tablist" aria-label="Out-of-distribution rollout task selector">
+            <button class="task-chip active" type="button" role="tab" aria-selected="true" data-index="0">Close Cabinet</button>
+            <button class="task-chip" type="button" role="tab" aria-selected="false" data-index="1">Pull String</button>
+            <button class="task-chip" type="button" role="tab" aria-selected="false" data-index="2">Highlighter</button>
+          </div>
+          <div class="ood-carousel" id="oodCarousel" tabindex="0">
             <button class="ood-arrow prev" id="oodPrev" type="button" aria-label="Previous OOD rollout">&#8249;</button>
             <div class="video-overlay video-overlay-top" aria-hidden="true">
               <span class="ov-pill model"><span class="k">Model</span> <span data-overlay="model">FloMo</span></span>
@@ -413,22 +350,27 @@
               <span class="ov-pill ood" data-overlay="distribution">OOD &middot; unseen primitive</span>
             </div>
             <video id="oodVideo" class="ood-video" muted playsinline controls preload="auto"
-              poster="static/images/posters/door.jpg" aria-label="Out-of-distribution rollout"></video>
+              poster="static/videos/option-compare/door_landscape.jpg" aria-label="Out-of-distribution rollout"></video>
             <div class="video-overlay video-overlay-bottom" aria-hidden="true">
               <p class="overlay-prompt"><span class="k">Prompt</span><span data-overlay="prompt">Push the cabinet door shut.</span></p>
             </div>
             <button class="ood-arrow next" id="oodNext" type="button" aria-label="Next OOD rollout">&#8250;</button>
-          </div>
-          <div class="ood-dots" id="oodDots" aria-hidden="true">
-            <span class="ood-dot active"></span><span class="ood-dot"></span><span class="ood-dot"></span>
           </div>
           <div class="demo-meta">
             <span class="vbadge ood demo-status" id="oodStatus">OOD &middot; unseen primitive</span>
             <p class="demo-caption" id="oodCaption">Push the cabinet door shut.</p>
           </div>
         </div>
+
+        <div class="nojs-fallback">
+          <h3 class="feature-title rollout-title">Out-of-distribution rollouts</h3>
+          <div class="vid-grid">
+            <div class="video-card"><video src="static/videos/option-compare/door_landscape.mp4" poster="static/videos/option-compare/door_landscape.jpg" controls muted playsinline preload="none"></video><div class="vcap"><span class="task">Close Cabinet</span><span class="vbadge ood">Unseen primitive</span><br>Push the cabinet door shut.</div></div>
+            <div class="video-card"><video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" controls muted playsinline preload="none"></video><div class="vcap"><span class="task">Pull String</span><span class="vbadge ood">Unseen task</span><br>Pull the string on the toy in the air.</div></div>
+            <div class="video-card"><video src="static/videos/ma10h_highlighter_success2.mp4" poster="static/images/posters/highlighter.jpg" controls muted playsinline preload="none"></video><div class="vcap"><span class="task">Highlighter</span><span class="vbadge ood">Unseen object</span><br>Place the unseen highlighter in the bowl.</div></div>
+          </div>
+        </div>
       </div>
-      <p class="figure-caption">SR = successful rollouts / total &nbsp;&middot;&nbsp; TP = avg. fraction of subtasks completed (%).</p>
     </div>
 
     <!-- scaling + attention -->
@@ -456,7 +398,7 @@
 </section>
 
 <!-- ===================== GENERALIZATION FROM HUMAN VIDEO ===================== -->
-<section class="band" id="generalization">
+<section class="band band-soft" id="generalization">
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Generalization from human video</p>
@@ -518,7 +460,7 @@
 </section>
 
 <!-- ===================== PULL STRING: FloMo vs BASELINES ===================== -->
-<section class="band band-soft" id="comparison">
+<section class="band" id="comparison">
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Side by side</p>
@@ -588,7 +530,7 @@
 </section>
 
 <!-- ===================== CODE / RESOURCES ===================== -->
-<section class="band" id="code">
+<section class="band band-soft" id="code">
   <div class="wrap has-text-centered">
     <header class="band-head">
       <p class="kicker">Code</p>

@@ -8,9 +8,11 @@
   // Rollout clips from the replacement bundle are already encoded at the
   // annotated 5x speed, so keep playback at the media's native rate.
   var SLOW_RATE = 1;
+  var FLOW_RATE = 0.7;
   function slow(v) {
     if (!v) return;
-    function apply() { try { v.playbackRate = SLOW_RATE; } catch (e) {} }
+    var rate = v.id === 'flowVideo' ? FLOW_RATE : SLOW_RATE;
+    function apply() { try { v.playbackRate = rate; } catch (e) {} }
     apply();
     v.addEventListener('loadedmetadata', apply);
     v.addEventListener('play', apply);
@@ -128,16 +130,12 @@
     var status = document.getElementById('demoStatus');
     var caption = document.getElementById('demoCaption');
     var chips = [].slice.call(document.querySelectorAll('#taskChips .task-chip'));
-    var thumbs = [].slice.call(document.querySelectorAll('#taskThumbs .thumb'));
 
     function select(chip) {
       chips.forEach(function (c) {
         var on = c === chip;
         c.classList.toggle('active', on);
         c.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
-      thumbs.forEach(function (t) {
-        t.classList.toggle('active', t.dataset.task === chip.dataset.task);
       });
       api.reset(chip.dataset.video, chip.dataset.poster);
       status.className = 'vbadge ' + chip.dataset.badge + ' demo-status';
@@ -164,21 +162,13 @@
         }
       });
     });
-    thumbs.forEach(function (t) {
-      t.addEventListener('click', function () {
-        var chip = chips.filter(function (c) { return c.dataset.task === t.dataset.task; })[0];
-        if (chip) select(chip);
-      });
-    });
   }
 
   /* ---------- scene-flow tokenization gallery ---------- */
   function initFlowGallery() {
     var video = document.getElementById('flowVideo');
     if (!video) return;
-    var caption = document.getElementById('flowCaption');
     var chips = [].slice.call(document.querySelectorAll('#flowChips .task-chip'));
-    var thumbs = [].slice.call(document.querySelectorAll('#flowThumbs .thumb'));
 
     // Kick off playback explicitly: some browsers ignore the `autoplay`
     // attribute but allow a muted .play() call. Setting the muted *property*
@@ -197,16 +187,12 @@
         c.classList.toggle('active', on);
         c.setAttribute('aria-selected', on ? 'true' : 'false');
       });
-      thumbs.forEach(function (t) {
-        t.classList.toggle('active', t.dataset.sample === chip.dataset.sample);
-      });
       if (video.getAttribute('src') !== chip.dataset.video) {
         video.setAttribute('src', chip.dataset.video);
         video.setAttribute('poster', chip.dataset.poster);
         video.load();
         if (!reduceMotion) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
       }
-      if (caption) caption.textContent = chip.dataset.caption;
     }
 
     chips.forEach(function (chip, i) {
@@ -217,12 +203,6 @@
         } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
           e.preventDefault(); var p = chips[(i - 1 + chips.length) % chips.length]; p.focus(); select(p);
         }
-      });
-    });
-    thumbs.forEach(function (t) {
-      t.addEventListener('click', function () {
-        var chip = chips.filter(function (c) { return c.dataset.sample === t.dataset.sample; })[0];
-        if (chip) select(chip);
       });
     });
   }
@@ -237,11 +217,11 @@
     var prev = document.getElementById('oodPrev');
     var next = document.getElementById('oodNext');
     var carousel = document.getElementById('oodCarousel');
-    var dots = [].slice.call(document.querySelectorAll('#oodDots .ood-dot'));
+    var tabs = [].slice.call(document.querySelectorAll('#oodTabs .task-chip'));
 
     // The three OOD axes, in cycle order. cells = the table columns to highlight.
     var items = [
-      { cells: [1, 2], group: 'cc', video: 'static/videos/ma10h_door_success.mp4', poster: 'static/images/posters/door.jpg',
+      { cells: [1, 2], group: 'cc', video: 'static/videos/option-compare/door_landscape.mp4', poster: 'static/videos/option-compare/door_landscape.jpg',
         model: 'FloMo', speed: '5&times;', badgeClass: 'ood', badge: 'OOD &middot; unseen primitive',
         caption: 'Push the cabinet door shut.' },
       { cells: [3, 4], group: 'ps', video: 'static/videos/ma10h_yoyo_success.mp4', poster: 'static/images/posters/string.jpg',
@@ -278,7 +258,11 @@
         badge: it.badge,
         prompt: it.caption
       });
-      dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
+      tabs.forEach(function (tab, k) {
+        var active = k === idx;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
       video.poster = it.poster;
       video.src = it.video;
       video.load();
@@ -288,6 +272,16 @@
 
     if (prev) prev.addEventListener('click', function () { go(-1); });
     if (next) next.addEventListener('click', function () { go(1); });
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { show(i, true); });
+      tab.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault(); var n = tabs[(i + 1) % tabs.length]; n.focus(); show(i + 1, true);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault(); var p = tabs[(i - 1 + tabs.length) % tabs.length]; p.focus(); show(i - 1, true);
+        }
+      });
+    });
     // autocycle: advance to the next axis whenever a clip finishes
     video.addEventListener('ended', function () { go(1); });
     if (carousel) {
