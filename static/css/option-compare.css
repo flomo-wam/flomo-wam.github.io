@@ -90,6 +90,11 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 }
 .nav-links a:hover { color: var(--ink); background: var(--soft-bg); }
 .nav-links a.is-active { color: var(--flomo-orange-dark); background: var(--soft-orange); }
+.nav-links a.nav-paper {
+  border: 1px solid var(--flomo-teal-dark); background: var(--flomo-teal-dark); color: #fff;
+  border-radius: 999px; padding: .28rem .8rem; font-weight: 700; font-size: .82rem;
+}
+.nav-links a.nav-paper:hover { border-color: var(--flomo-teal); background: var(--flomo-teal); color: #fff; }
 .nav-links a.nav-code {
   border: 1px solid var(--flomo-orange); color: var(--flomo-orange-dark);
   border-radius: 999px; padding: .28rem .8rem; font-weight: 700; font-size: .82rem;
