@@ -70,23 +70,117 @@
   </div>
 </section>
 
-<!-- ===================== ANNOTATED ARCHITECTURE ===================== -->
-<section class="band band-soft" id="tldr">
+<!-- ===================== ARCHITECTURE ===================== -->
+<section class="band band-soft" id="method">
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Architecture</p>
       <h2 class="band-title">One backbone predicts motion and action</h2>
     </header>
     <figure class="panel arch-panel">
-      <div class="arch-wrap">
-        <img src="static/images/figure_arch.png" alt="FloMo architecture">
+      <div class="arch-crop">
+        <img src="static/images/figure_arch.png" alt="FloMo architecture: text, image, scene flow, and action feed a shared video-generation backbone">
       </div>
       <figcaption class="figure-caption">
         <b>FloMo architecture.</b> From an image and text prompt, a pretrained video backbone (Wan&nbsp;2.2 5B DiT)
-        flow-matches dense 3D motion and robot actions. 3D velocities are rendered as RGB and encoded by the backbone's
-        VAE, so motion shares the video latent space and needs no new tokenizer.
+        jointly flow-matches dense 3D motion and robot actions.
       </figcaption>
     </figure>
+  </div>
+</section>
+
+<!-- ===================== TOKENIZATION ===================== -->
+<section class="band" id="tokenization">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Motion tokenization</p>
+      <h2 class="band-title">3D motion in the video latent space</h2>
+      <p class="band-sub">Scene flow keeps task motion and discards the appearance details that do not determine action.</p>
+    </header>
+
+    <div class="prose">
+      <p>The action that creates a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. 2D optical
+      flow mixes camera motion with task motion, so FloMo predicts <b>3D scene flow</b>: the 3D displacement of each tracked
+      point in the first camera frame, isolating object and hand motion.</p>
+      <p>We render this as an RGB video and encode it with the <b>frozen Wan&nbsp;2.2 VAE</b>. Rendered flow lands in the same
+      latent space as video, so the pretrained DiT handles it with no new tokenizer. We fine-tune only the backbone
+      (LoRA, rank 64).</p>
+    </div>
+
+    <!-- Scene-flow gallery (driven by compare-app.js #flowVideo) -->
+    <h3 class="feature-title" style="margin-top:2.4rem;">Pixels vs. motion</h3>
+    <p class="feature-sub">
+      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, adjacent-frame <b>optical flow</b>, and the
+      <b>3D scene flow rendered as RGB</b> that FloMo uses as its motion target.
+    </p>
+
+    <!-- JS-powered explorer -->
+    <div class="js-only">
+      <div class="chip-row" id="flowChips" role="tablist" aria-label="Pixels versus motion sample selector">
+        <button class="task-chip active" role="tab" aria-selected="true" data-sample="board"
+          data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg">Lift board</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="weeds"
+          data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg">Clear weeds</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
+          data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg">Jar &amp; cup</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="bin"
+          data-video="static/videos/sceneflow/sceneflow_0209.mp4" data-poster="static/videos/sceneflow/sceneflow_0209.jpg">Wipe bin</button>
+      </div>
+
+      <div class="flow-stage">
+        <video id="flowVideo" class="flow-video" autoplay muted loop playsinline controls preload="auto"
+          poster="static/videos/sceneflow/sceneflow_0201.jpg"
+          src="static/videos/sceneflow/sceneflow_0201.mp4"
+          aria-label="RGB, adjacent-frame optical flow, and 3D scene-flow comparison"></video>
+      </div>
+
+      <div class="flow-legend">
+        <span><b>RGB</b> observation</span>
+        <span><b>Optical flow</b> &middot; short arrows show t&rarr;t+1 motion</span>
+        <span><b>3D scene flow as RGB</b> &middot; (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
+      </div>
+    </div>
+
+    <!-- No-JS fallback: plain video grid -->
+    <div class="nojs-fallback">
+      <div class="vid-grid two">
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; optical flow &middot; 3D scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB &middot; optical flow &middot; 3D scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Jar &amp; cup</span><br>RGB &middot; optical flow &middot; 3D scene flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0209.mp4" poster="static/videos/sceneflow/sceneflow_0209.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wipe bin</span><br>RGB &middot; optical flow &middot; 3D scene flow as RGB.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== TRAINING ===================== -->
+<section class="band band-soft" id="training">
+  <div class="wrap">
+    <header class="band-head">
+      <p class="kicker">Method</p>
+      <h2 class="band-title">Two-stage co-training</h2>
+      <p class="band-sub">FloMo is co-trained on a mixture of egocentric human video and bimanual robot teleoperation.</p>
+    </header>
+    <div class="stage-flow">
+      <div class="stage-card">
+        <span class="stage-num">Stage 1</span>
+        <h5>Mid-training</h5>
+        <p>Train on the full mixture. Human video supervises scene flow only; robot data supervises scene flow
+        <em>and</em> action. This builds a broad motion prior at scale.</p>
+      </div>
+      <div class="stage-link" aria-hidden="true">&rarr;</div>
+      <div class="stage-card s2">
+        <span class="stage-num">Stage 2</span>
+        <h5>Fine-tuning</h5>
+        <p>Train on robot video/action data only, dropping human video. This sharpens action prediction without diluting
+        the gradient with action-free samples.</p>
+      </div>
+    </div>
+    <p class="prose" style="margin-top:1.4rem;">
+      <b>At inference</b>, from an image and a language instruction, FloMo denoises for 10 flow-matching steps, then executes
+      a chunk of 16 actions before re-planning.
+    </p>
   </div>
 </section>
 
@@ -117,92 +211,6 @@
         in robot training.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ===================== METHOD ===================== -->
-<section class="band band-soft" id="method">
-  <div class="wrap">
-    <header class="band-head">
-      <p class="kicker">Method</p>
-      <h2 class="band-title">3D scene flow as the <span class="accent">video-action intermediate</span></h2>
-    </header>
-
-    <div class="prose">
-      <p>The action that creates a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. 2D optical
-      flow mixes camera motion with task motion, so FloMo predicts <b>3D scene flow</b>: the 3D displacement of each tracked
-      point in the first camera frame, isolating object and hand motion.</p>
-      <p>We render this as an RGB video and encode it with the <b>frozen Wan&nbsp;2.2 VAE</b>. Rendered flow lands in the same
-      latent space as video, so the pretrained DiT handles it with no new tokenizer. We fine-tune only the backbone
-      (LoRA, rank 64).</p>
-    </div>
-
-    <!-- Scene-flow gallery (driven by compare-app.js #flowVideo) -->
-    <h3 class="feature-title" style="margin-top:3rem;">Pixels vs. motion</h3>
-    <p class="feature-sub">
-      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, recovered <b>2D point tracks</b>, and the
-      <b>3D scene flow rendered as RGB</b> that FloMo uses as its motion target.
-    </p>
-
-    <!-- JS-powered explorer -->
-    <div class="js-only">
-      <div class="chip-row" id="flowChips" role="tablist" aria-label="Pixels versus motion sample selector">
-        <button class="task-chip active" role="tab" aria-selected="true" data-sample="board"
-          data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg">Lift board</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="weeds"
-          data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg">Clear weeds</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
-          data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg">Jar &amp; cup</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="bin"
-          data-video="static/videos/sceneflow/sceneflow_0209.mp4" data-poster="static/videos/sceneflow/sceneflow_0209.jpg">Wipe bin</button>
-      </div>
-
-      <div class="flow-stage">
-        <video id="flowVideo" class="flow-video" autoplay muted loop playsinline controls preload="auto"
-          poster="static/videos/sceneflow/sceneflow_0201.jpg"
-          src="static/videos/sceneflow/sceneflow_0201.mp4"
-          aria-label="RGB, 2D point tracks, and 3D scene-flow comparison"></video>
-      </div>
-
-      <div class="flow-legend">
-        <span><b>RGB</b> observation</span>
-        <span><b>2D point tracks</b> &middot; arrows show tracked correspondences</span>
-        <span><b>3D scene flow as RGB</b> &middot; (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
-      </div>
-    </div>
-
-    <!-- No-JS fallback: plain video grid -->
-    <div class="nojs-fallback">
-      <div class="vid-grid two">
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Jar &amp; cup</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0209.mp4" poster="static/videos/sceneflow/sceneflow_0209.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wipe bin</span><br>RGB &middot; 2D point tracks &middot; 3D scene flow as RGB.</div></div>
-      </div>
-    </div>
-
-    <!-- two-stage training -->
-    <h3 class="feature-title" style="margin-top:3rem;">Two-stage co-training</h3>
-    <p class="feature-sub">FloMo is co-trained on a mixture of egocentric human video and bimanual robot teleoperation.</p>
-    <div class="stage-flow">
-      <div class="stage-card">
-        <span class="stage-num">Stage 1</span>
-        <h5>Mid-training</h5>
-        <p>Train on the full mixture. Human video supervises scene flow only; robot data supervises scene flow
-        <em>and</em> action. This builds a broad motion prior at scale.</p>
-      </div>
-      <div class="stage-link" aria-hidden="true">&rarr;</div>
-      <div class="stage-card s2">
-        <span class="stage-num">Stage 2</span>
-        <h5>Fine-tuning</h5>
-        <p>Train on robot data only, dropping human video. This sharpens action prediction without diluting
-        the gradient with action-free samples.</p>
-      </div>
-    </div>
-    <p class="prose" style="margin-top:1.4rem;">
-      <b>At inference</b>, from an image and a language instruction, FloMo denoises for 10 flow-matching steps, then executes
-      a chunk of 16 actions before re-planning.
-    </p>
   </div>
 </section>
 
@@ -316,9 +324,9 @@
             <thead>
               <tr>
                 <th rowspan="2" class="lcell">Method</th>
-                <th colspan="2" data-group="cc">Close Cabinet</th>
-                <th colspan="2" data-group="ps">Pull String</th>
-                <th colspan="2" data-group="hl">Highlighter</th>
+                <th colspan="2">Close Cabinet</th>
+                <th colspan="2">Pull String</th>
+                <th colspan="2">Highlighter</th>
               </tr>
               <tr>
                 <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
@@ -378,25 +386,34 @@
     </div>
 
     <!-- scaling + attention -->
-    <h3 class="feature-title">Sample efficiency and attention</h3>
-    <p class="feature-sub">Two controlled probes into why motion is the better target: how efficiently it recovers actions, and where the action stream attends.</p>
-    <div class="results-split">
-      <figure class="panel fig-card">
-        <img class="lightboxable" src="static/images/figure_id_scaling.png" alt="Inverse-dynamics scaling">
-        <figcaption class="figure-caption">
-          <b>Sample efficiency.</b> Held-out action error vs. action-data scale for two <em>ground-truth</em> conditioning
-          signals (log-log). Recovering actions from motion is more sample-efficient than from video, with ~22% lower
-          error at 1% of the data.
-        </figcaption>
-      </figure>
-      <figure class="panel fig-card">
-        <img class="lightboxable" src="static/images/figure_attention_share.png" alt="Action attention by modality">
-        <figcaption class="figure-caption">
-          <b>Action attention concentrates on motion.</b> Share of action-query attention to each input modality across
-          DiT layers. Attention to motion rises through the trunk and dominates; action queries attend to motion roughly
-          <b>3&times;</b> more than to video.
-        </figcaption>
-      </figure>
+    <div class="insights-block" id="insights">
+      <header class="insights-head">
+        <p class="kicker">Why motion works</p>
+        <h3 class="insights-title">The action signal is both easier to learn and easier to find</h3>
+        <p>Two controlled probes point to the same conclusion: motion is a more direct bridge from observation to action than pixels.</p>
+      </header>
+      <div class="insights-grid">
+        <figure class="insight-card">
+          <div class="insight-stat"><strong>22%</strong><span>lower action error<br>with only 1% of the data</span></div>
+          <div class="insight-visual">
+            <img class="lightboxable" src="static/images/figure_id_scaling.png" alt="Inverse-dynamics scaling">
+          </div>
+          <figcaption>
+            <b>Motion is more sample-efficient.</b> Given ground-truth conditioning signals, recovering actions from motion
+            needs less action data than recovering them from video.
+          </figcaption>
+        </figure>
+        <figure class="insight-card">
+          <div class="insight-stat"><strong>3&times;</strong><span>more action attention<br>to motion than video</span></div>
+          <div class="insight-visual">
+            <img class="lightboxable" src="static/images/figure_attention_share.png" alt="Action attention by modality">
+          </div>
+          <figcaption>
+            <b>Action queries seek out motion.</b> Attention to motion rises through the DiT trunk and dominates attention
+            to video, revealing where the model finds action-relevant evidence.
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
@@ -486,7 +503,6 @@
           </div>
           <figcaption>
             <span class="cmp-name">FloMo</span><span class="vbadge ok">Success</span>
-            <span class="cmp-desc">Grasps and pulls the hanging string, completing the unseen task.</span>
           </figcaption>
         </figure>
         <figure class="cmp-card">
@@ -501,7 +517,6 @@
           </div>
           <figcaption>
             <span class="cmp-name">DreamZero</span><span class="vbadge fail">Failure</span>
-            <span class="cmp-desc">A pixel-predicting baseline; never establishes the pull.</span>
           </figcaption>
         </figure>
         <figure class="cmp-card">
@@ -516,7 +531,6 @@
           </div>
           <figcaption>
             <span class="cmp-name">BC (no pretraining)</span><span class="vbadge fail">Failure</span>
-            <span class="cmp-desc">Never finds the string without a motion prior.</span>
           </figcaption>
         </figure>
       </div>
@@ -525,9 +539,9 @@
     <!-- No-JS fallback: three labeled cards -->
     <div class="nojs-fallback">
       <div class="vid-grid">
-        <div class="video-card"><video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">FloMo</span><span class="vbadge ok">Success</span><br>Pull the string on the toy in the air.</div></div>
-        <div class="video-card"><video src="static/videos/dreamzero_yoyo_failure.mp4" poster="static/images/posters/string_dreamzero.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">DreamZero</span><span class="vbadge fail">Failure</span><br>Pull the string on the toy in the air.</div></div>
-        <div class="video-card"><video src="static/videos/bc_yoyo_failure.mp4" poster="static/images/posters/string_bc.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">BC (no pretraining)</span><span class="vbadge fail">Failure</span><br>Pull the string on the toy in the air.</div></div>
+        <div class="video-card"><video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">FloMo</span><span class="vbadge ok">Success</span></div></div>
+        <div class="video-card"><video src="static/videos/dreamzero_yoyo_failure.mp4" poster="static/images/posters/string_dreamzero.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">DreamZero</span><span class="vbadge fail">Failure</span></div></div>
+        <div class="video-card"><video src="static/videos/bc_yoyo_failure.mp4" poster="static/images/posters/string_bc.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">BC (no pretraining)</span><span class="vbadge fail">Failure</span></div></div>
       </div>
     </div>
   </div>

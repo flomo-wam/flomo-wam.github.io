@@ -219,36 +219,24 @@
     var carousel = document.getElementById('oodCarousel');
     var tabs = [].slice.call(document.querySelectorAll('#oodTabs .task-chip'));
 
-    // The three OOD axes, in cycle order. cells = the table columns to highlight.
+    // The three OOD axes, in cycle order.
     var items = [
-      { cells: [1, 2], group: 'cc', video: 'static/videos/option-compare/door_landscape.mp4', poster: 'static/videos/option-compare/door_landscape.jpg',
+      { video: 'static/videos/option-compare/door_landscape.mp4', poster: 'static/videos/option-compare/door_landscape.jpg',
         model: 'FloMo', speed: '5&times;', badgeClass: 'ood', badge: 'OOD &middot; unseen primitive',
         caption: 'Push the cabinet door shut.' },
-      { cells: [3, 4], group: 'ps', video: 'static/videos/ma10h_yoyo_success.mp4', poster: 'static/images/posters/string.jpg',
+      { video: 'static/videos/ma10h_yoyo_success.mp4', poster: 'static/images/posters/string.jpg',
         model: 'FloMo', speed: '5&times;', badgeClass: 'ood', badge: 'OOD &middot; unseen task',
         caption: 'Pull the string on the toy in the air.' },
-      { cells: [5, 6], group: 'hl', video: 'static/videos/ma10h_highlighter_success2.mp4', poster: 'static/images/posters/highlighter.jpg',
+      { video: 'static/videos/ma10h_highlighter_success2.mp4', poster: 'static/images/posters/highlighter.jpg',
         model: 'FloMo', speed: '5&times;', badgeClass: 'ood', badge: 'OOD &middot; unseen object',
         caption: 'Place the unseen highlighter in the bowl.' }
     ];
     var idx = 0;
     slow(video); // keep replacement clips at their annotated native speed
 
-    function clearCols() {
-      [].forEach.call(table.querySelectorAll('.col-active'), function (c) { c.classList.remove('col-active'); });
-    }
-    function highlight(item) {
-      clearCols();
-      [].forEach.call(table.tBodies[0].rows, function (r) {
-        item.cells.forEach(function (i) { if (r.cells[i]) r.cells[i].classList.add('col-active'); });
-      });
-      var th = table.querySelector('thead th[data-group="' + item.group + '"]');
-      if (th) th.classList.add('col-active');
-    }
     function show(i, autoplay) {
       idx = (i % items.length + items.length) % items.length;
       var it = items[idx];
-      highlight(it);
       if (status) status.innerHTML = it.badge;
       if (caption) caption.textContent = it.caption;
       updateVideoOverlay(carousel, {
