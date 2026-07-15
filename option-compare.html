@@ -99,7 +99,7 @@
     </header>
 
     <div class="prose">
-      <p>The action that creates a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. 2D optical
+      <p>The action that creates a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. Raw 2D optical
       flow mixes camera motion with task motion, so FloMo predicts <b>3D scene flow</b>: each tracked point's one-step 3D
       displacement, expressed in the current source camera frame after compensating for relative camera motion.</p>
       <p>We render this as an RGB video and encode it with the <b>frozen Wan&nbsp;2.2 VAE</b>. Rendered flow lands in the same
@@ -110,8 +110,8 @@
     <!-- Scene-flow gallery (driven by compare-app.js #flowVideo) -->
     <h3 class="feature-title" style="margin-top:2.4rem;">Pixels vs. motion</h3>
     <p class="feature-sub">
-      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, adjacent-frame <b>optical flow</b>, and the
-      <b>frame-local 3D scene flow rendered as RGB</b> that FloMo uses as its motion target.
+      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, camera-compensated <b>optical flow</b>, and the
+      <b>frame-local 3D scene flow rendered at current-frame positions</b> that FloMo uses as its motion target.
     </p>
 
     <!-- JS-powered explorer -->
@@ -131,13 +131,13 @@
         <video id="flowVideo" class="flow-video" autoplay muted loop playsinline controls preload="auto"
           poster="static/videos/sceneflow/sceneflow_0201.jpg"
           src="static/videos/sceneflow/sceneflow_0201.mp4"
-          aria-label="RGB, adjacent-frame optical flow, and frame-local 3D scene-flow comparison"></video>
+          aria-label="RGB, camera-compensated optical flow, and frame-local 3D scene-flow comparison"></video>
       </div>
 
       <div class="flow-legend">
         <span><b>RGB</b> observation</span>
-        <span><b>Optical flow</b> &middot; short arrows show t&rarr;t+1 motion</span>
-        <span><b>Frame-local 3D flow as RGB</b> &middot; (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
+        <span><b>Optical flow</b> &middot; camera-compensated t&rarr;t+1 motion</span>
+        <span><b>Frame-local 3D flow as RGB</b> &middot; current positions, (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
       </div>
     </div>
 
