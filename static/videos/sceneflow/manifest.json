@@ -14,17 +14,17 @@
     "frames": 15
   },
   {
-    "stem": 108,
-    "caption": "move jar and cup to kitchen counter",
-    "video": "sceneflow_0108.mp4",
-    "poster": "sceneflow_0108.jpg",
+    "stem": 1085,
+    "caption": "flatten dough, flip and flatten dough",
+    "video": "sceneflow_1085.mp4",
+    "poster": "sceneflow_1085.jpg",
     "frames": 15
   },
   {
-    "stem": 209,
-    "caption": "wipe bin with cloth",
-    "video": "sceneflow_0209.mp4",
-    "poster": "sceneflow_0209.jpg",
+    "stem": 1754,
+    "caption": "pick up tape, fasten ribbon onto gift box with tape",
+    "video": "sceneflow_1754.mp4",
+    "poster": "sceneflow_1754.jpg",
     "frames": 15
   }
 ]

@@ -53,8 +53,10 @@
         <span>for Learning from Human&nbsp;Video</span>
       </h1>
       <p class="hero-thesis">
-        Most world-action models predict <b>future pixels</b>. FloMo predicts dense <b>3D motion</b> instead.
-        Motion is the medium through which video pretraining transfers to action.
+        World-action models typically predict <b>RGB video</b>. We argue the right target is instead <b>3D motion</b>.
+        FloMo renders 3D scene flow into the latent space of a pretrained video generation model and fine-tunes a single
+        backbone to predict motion and action. Predicting motion instead of pixels gives better in-distribution success,
+        far stronger out-of-distribution generalization, and higher sample efficiency.
       </p>
       <p class="author-line">Authors omitted for double-blind review</p>
       <div class="hero-actions">
@@ -75,7 +77,7 @@
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Architecture</p>
-      <h2 class="band-title">One backbone predicts motion and action</h2>
+      <h2 class="band-title">Motion mediates the transfer from video to action</h2>
     </header>
     <figure class="panel arch-panel">
       <div class="arch-crop">
@@ -121,10 +123,10 @@
           data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg">Lift board</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="weeds"
           data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg">Clear weeds</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="dishes"
-          data-video="static/videos/sceneflow/sceneflow_0108.mp4" data-poster="static/videos/sceneflow/sceneflow_0108.jpg">Jar &amp; cup</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="bin"
-          data-video="static/videos/sceneflow/sceneflow_0209.mp4" data-poster="static/videos/sceneflow/sceneflow_0209.jpg">Wipe bin</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="dough"
+          data-video="static/videos/sceneflow/sceneflow_1085.mp4" data-poster="static/videos/sceneflow/sceneflow_1085.jpg">Flatten dough</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="gift"
+          data-video="static/videos/sceneflow/sceneflow_1754.mp4" data-poster="static/videos/sceneflow/sceneflow_1754.jpg">Wrap gift box</button>
       </div>
 
       <div class="flow-stage">
@@ -146,8 +148,8 @@
       <div class="vid-grid two">
         <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
         <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0108.mp4" poster="static/videos/sceneflow/sceneflow_0108.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Jar &amp; cup</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0209.mp4" poster="static/videos/sceneflow/sceneflow_0209.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wipe bin</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_1085.mp4" poster="static/videos/sceneflow/sceneflow_1085.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Flatten dough</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_1754.mp4" poster="static/videos/sceneflow/sceneflow_1754.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wrap gift box</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
       </div>
     </div>
 
@@ -220,7 +222,6 @@
     <header class="band-head">
       <p class="kicker">Results</p>
       <h2 class="band-title">Predicting motion beats predicting pixels</h2>
-      <p class="band-sub">Real-robot evaluation: in-distribution success, out-of-distribution generalization, and what makes motion the better target.</p>
     </header>
 
     <h3 class="feature-title">In-distribution success</h3>
@@ -399,8 +400,8 @@
             <img class="lightboxable" src="static/images/figure_id_scaling.png" alt="Inverse-dynamics scaling">
           </div>
           <figcaption>
-            <b>Motion is more sample-efficient.</b> Given ground-truth conditioning signals, recovering actions from motion
-            needs less action data than recovering them from video.
+            <b>Motion contains the information necessary to predict actions.</b> It reaches the same performance ceiling
+            as video despite containing less information, and is slightly more sample-efficient.
           </figcaption>
         </figure>
         <figure class="insight-card">
