@@ -77,7 +77,7 @@
   <div class="wrap">
     <header class="band-head">
       <p class="kicker">Architecture</p>
-      <h2 class="band-title">Motion mediates the transfer from video to action</h2>
+      <h2 class="band-title">Motion mediates transfer from video to action</h2>
     </header>
     <figure class="panel arch-panel">
       <div class="arch-crop">
@@ -101,9 +101,9 @@
     </header>
 
     <div class="prose">
-      <p>The action that creates a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. Raw 2D optical
-      flow mixes camera motion with task motion, so FloMo predicts <b>3D scene flow</b>: each tracked point's one-step 3D
-      displacement, expressed in the current source camera frame after compensating for relative camera motion.</p>
+      <p>The action that produces a future state depends on how the scene <em>moves</em>, not how it <em>looks</em>. 2D optical
+      flow captures motion but conflates camera ego-motion with task-relevant motion, so FloMo predicts <b>3D scene flow</b>
+      in a canonical frame: the cumulative 3D displacement of each tracked point, expressed in the first frame's camera.</p>
       <p>We render this as an RGB video and encode it with the <b>frozen Wan&nbsp;2.2 VAE</b>. Rendered flow lands in the same
       latent space as video, so the pretrained DiT handles it with no new tokenizer. We fine-tune only the backbone
       (LoRA, rank 64).</p>
@@ -112,8 +112,7 @@
     <!-- Scene-flow gallery (driven by compare-app.js #flowVideo) -->
     <h3 class="feature-title" style="margin-top:2.4rem;">Pixels vs. motion</h3>
     <p class="feature-sub">
-      Each clip plays left&rarr;right: the <b>raw RGB observation</b>, camera-compensated <b>optical flow</b>, and the
-      <b>frame-local 3D scene flow rendered at current-frame positions</b> that FloMo uses as its motion target.
+      <b>RGB observation</b> &middot; <b>2D tracks</b> &middot; <b>3D scene flow</b>
     </p>
 
     <!-- JS-powered explorer -->
@@ -123,8 +122,8 @@
           data-video="static/videos/sceneflow/sceneflow_0201.mp4" data-poster="static/videos/sceneflow/sceneflow_0201.jpg">Lift board</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="weeds"
           data-video="static/videos/sceneflow/sceneflow_0107.mp4" data-poster="static/videos/sceneflow/sceneflow_0107.jpg">Clear weeds</button>
-        <button class="task-chip" role="tab" aria-selected="false" data-sample="dough"
-          data-video="static/videos/sceneflow/sceneflow_1085.mp4" data-poster="static/videos/sceneflow/sceneflow_1085.jpg">Flatten dough</button>
+        <button class="task-chip" role="tab" aria-selected="false" data-sample="ring"
+          data-video="static/videos/sceneflow/sceneflow_1472.mp4" data-poster="static/videos/sceneflow/sceneflow_1472.jpg">Place ring in cup</button>
         <button class="task-chip" role="tab" aria-selected="false" data-sample="gift"
           data-video="static/videos/sceneflow/sceneflow_1754.mp4" data-poster="static/videos/sceneflow/sceneflow_1754.jpg">Wrap gift box</button>
       </div>
@@ -133,23 +132,23 @@
         <video id="flowVideo" class="flow-video" autoplay muted loop playsinline controls preload="auto"
           poster="static/videos/sceneflow/sceneflow_0201.jpg"
           src="static/videos/sceneflow/sceneflow_0201.mp4"
-          aria-label="RGB, camera-compensated optical flow, and frame-local 3D scene-flow comparison"></video>
+          aria-label="RGB observation, 2D tracks, and 3D scene flow comparison"></video>
       </div>
 
       <div class="flow-legend">
-        <span><b>RGB</b> observation</span>
-        <span><b>Optical flow</b> &middot; camera-compensated t&rarr;t+1 motion</span>
-        <span><b>Frame-local 3D flow as RGB</b> &middot; current positions, (&Delta;X,&Delta;Y,&Delta;Z)&rarr;(R,G,B)</span>
+        <span><b>RGB observation</b></span>
+        <span><b>2D tracks</b></span>
+        <span><b>3D scene flow</b></span>
       </div>
     </div>
 
     <!-- No-JS fallback: plain video grid -->
     <div class="nojs-fallback">
       <div class="vid-grid two">
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_1085.mp4" poster="static/videos/sceneflow/sceneflow_1085.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Flatten dough</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
-        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_1754.mp4" poster="static/videos/sceneflow/sceneflow_1754.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wrap gift box</span><br>RGB &middot; optical flow &middot; frame-local 3D flow as RGB.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Lift board</span><br>RGB observation &middot; 2D tracks &middot; 3D scene flow.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Clear weeds</span><br>RGB observation &middot; 2D tracks &middot; 3D scene flow.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_1472.mp4" poster="static/videos/sceneflow/sceneflow_1472.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Place ring in cup</span><br>RGB observation &middot; 2D tracks &middot; 3D scene flow.</div></div>
+        <div class="video-card"><video src="static/videos/sceneflow/sceneflow_1754.mp4" poster="static/videos/sceneflow/sceneflow_1754.jpg" controls muted loop playsinline preload="none"></video><div class="vcap"><span class="task">Wrap gift box</span><br>RGB observation &middot; 2D tracks &middot; 3D scene flow.</div></div>
       </div>
     </div>
 
@@ -487,7 +486,7 @@
     <header class="band-head">
       <p class="kicker">Side by side</p>
       <h2 class="band-title">Pull String (OOD): FloMo vs. baselines</h2>
-      <p class="band-sub">The same unseen task, same conditions, all three rollouts playing at once. FloMo succeeds where pixel-predicting baselines fail. Prompt: Pull the string on the toy in the air.</p>
+      <p class="band-sub">FloMo succeeds where pixel-predicting baselines fail. Prompt: Pull the string on the toy in the air.</p>
     </header>
 
     <div class="cmp js-only">
