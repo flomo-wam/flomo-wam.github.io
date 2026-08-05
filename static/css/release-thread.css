@@ -432,62 +432,6 @@ figure {
   font-weight: 800;
 }
 
-.conclusion-path {
-  display: grid;
-  max-width: 52rem;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: stretch;
-  gap: 0.75rem;
-}
-
-.conclusion-step {
-  display: flex;
-  min-width: 0;
-  padding: 1.1rem;
-  justify-content: center;
-  flex-direction: column;
-  background: var(--soft);
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--line-strong);
-  border-radius: 4px;
-}
-
-.conclusion-step-shared {
-  border-top-color: var(--teal);
-}
-
-.conclusion-step-final {
-  border-top-color: var(--orange);
-}
-
-.conclusion-step span {
-  color: var(--muted);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.conclusion-step strong {
-  margin-top: 0.35rem;
-  font-size: 0.94rem;
-  line-height: 1.35;
-}
-
-.conclusion-step small {
-  margin-top: 0.35rem;
-  color: var(--muted);
-  font-size: 0.72rem;
-  line-height: 1.4;
-}
-
-.conclusion-arrow {
-  align-self: center;
-  color: var(--orange-dark);
-  font-size: 1.35rem;
-  font-weight: 800;
-}
-
 .media-item {
   min-width: 0;
 }
@@ -899,14 +843,12 @@ figcaption strong {
   .evidence-pair,
   .ablation-grid,
   .training-flow,
-  .conclusion-path,
   .ood-summary-grid,
   .human-ablation-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .training-arrow,
-  .conclusion-arrow {
+  .training-arrow {
     justify-self: center;
     transform: rotate(90deg);
   }
