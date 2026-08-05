@@ -54,9 +54,11 @@
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 1 of 8">Copy</button>
           </header>
 
-          <div class="post-body opening-copy" data-post-body><strong class="opening-claim">[1/8] We’re introducing FloMo, a world-action model that learns from human and robot video by predicting 3D scene flow together with robot actions.</strong>
+          <div class="post-body opening-copy" data-post-body><strong class="opening-claim">[1/8] We’re introducing FloMo, a world-action model designed to make action-free egocentric human video more useful for robot learning.</strong>
 
-Most video-pretrained policies predict future RGB frames. We instead predict how points in the scene move in 3D. On real-robot manipulation, this target improves task success and generalization beyond the robot training distribution. 🧵</div>
+FloMo jointly predicts 3D scene flow and robot actions. Human clips supervise scene flow without action labels; robot demonstrations connect the same motion target to control.
+
+Most video-pretrained policies predict future RGB frames. We instead predict how points in the scene move in 3D. 🧵</div>
         </article>
       </li>
 
@@ -71,6 +73,8 @@ Most video-pretrained policies predict future RGB frames. We instead predict how
           <div class="post-body" data-post-body>[2/8] 3D scene flow records the cumulative 3D displacement of tracked points, expressed in the first camera frame.
 
 This removes appearance details such as texture and lighting while retaining the motion relevant to action. It also avoids a limitation of 2D optical flow, which mixes object motion with camera motion.
+
+Because it represents how the scene moves rather than whether a hand or gripper caused that motion, scene flow can carry manipulation knowledge across embodiments.
 
 The examples below show the RGB observation, point tracks, and corresponding 3D motion field.</div>
 
@@ -116,7 +120,7 @@ The examples below show the RGB observation, point tracks, and corresponding 3D 
 
           <div class="post-body" data-post-body>[3/8] FloMo reuses a pretrained Wan 2.2 5B video model rather than adding a separate motion encoder. We render the 3D motion field as color, pass it through the frozen video encoder, and fine-tune one backbone to predict motion and robot actions together.
 
-Training has two stages. First, human videos provide motion supervision while robot demonstrations provide motion and action supervision. We then fine-tune on robot data alone. At test time, an image and language instruction produce a 16-action chunk.</div>
+That shared target connects two data sources: action-free egocentric human video supplies motion supervision, while robot demonstrations connect motion to action. We first train across both sources, then fine-tune on robot data alone. At test time, an image and language instruction produce a 16-action chunk.</div>
 
           <figure class="evidence figure-evidence">
             <div class="figure-frame architecture-frame">
@@ -128,7 +132,7 @@ Training has two stages. First, human videos provide motion supervision while ro
           <div class="evidence training-flow" role="img" aria-label="Stage one mid-training uses human and robot data, followed by stage two fine-tuning on robot data">
             <div class="training-stage">
               <p class="training-label">Stage 1 · Mid-training</p>
-              <h3>Human video + robot teleoperation</h3>
+              <h3>Egocentric human video + robot teleoperation</h3>
               <p>Human: 3D scene flow</p>
               <p>Robot: 3D scene flow + action</p>
             </div>
@@ -185,6 +189,8 @@ Adding future-RGB prediction did not improve the policy; it substantially reduce
           </header>
 
           <div class="post-body" data-post-body>[5/8] We then tested three kinds of generalization beyond the robot demonstrations: a type of movement, a task, and an object that were absent from the robot data.
+
+All three were represented in the egocentric human videos, but not in the robot demonstrations.
 
 FloMo succeeded in 12 of 15 rollouts, or 80%. The matching variant that also predicted future RGB succeeded in 0 of 15.
 
@@ -268,15 +274,17 @@ Scene flow contains less visual information, but preserves a more direct signal 
         <article class="thread-post" aria-labelledby="post-seven">
           <header class="post-header">
             <span class="thread-number" aria-hidden="true">07</span>
-            <h2 id="post-seven">7 / 8 · Human-video transfer</h2>
+            <h2 id="post-seven">7 / 8 · Egocentric human video</h2>
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 7 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[7/8] The transfer depends on action-free human video. Human hands and robot grippers look different, but can produce similar 3D motion in the objects they manipulate.
+          <div class="post-body" data-post-body>[7/8] The main transfer result is that 3D motion makes action-free egocentric human video substantially more useful for robot learning. Human hands and robot grippers look different, but they can produce the same motion in the objects they manipulate.
 
-When we removed roughly 81 hours of human video while keeping the architecture and motion target fixed, average success on the three out-of-distribution evaluations fell from 80% to 7%.
+Holding the architecture and motion target fixed, removing only ~81 hours of egocentric human video reduced average OOD success from 80% to 7%.
 
-This ablation attributes most of the generalization gain to motion supervision from human activity video.</div>
+This isolates the role of the human data: it supplied most of the generalization to movements, tasks, and objects absent from the robot demonstrations.
+
+On a string-pulling task present only in human video, FloMo completed 3/5 trials, compared with 1/5 for DreamZero and 0/5 for behavior cloning.</div>
 
           <div class="evidence metric-card ablation-card human-ablation" role="img" aria-label="Average out-of-distribution success is 80 percent with human video and 7 percent without human video">
             <p class="metric-kicker">Remove only the ~81h human-video subset</p>
@@ -293,22 +301,6 @@ This ablation attributes most of the generalization gain to motion supervision f
             </div>
             <p class="metric-note">Same architecture and 3D scene-flow target · a 73-point drop</p>
           </div>
-        </article>
-      </li>
-
-      <li class="thread-item">
-        <article class="thread-post" aria-labelledby="post-eight">
-          <header class="post-header">
-            <span class="thread-number" aria-hidden="true">08</span>
-            <h2 id="post-eight">8 / 8 · Example and takeaway</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 8 of 8">Copy</button>
-          </header>
-
-          <div class="post-body conclusion-copy" data-post-body><strong class="conclusion-claim">[8/8] Pulling a toy’s string was present in the human videos but absent from the robot demonstrations. FloMo completed the task in 3/5 trials; DreamZero completed 1/5; behavior cloning without pretraining completed 0/5.</strong>
-
-Across these experiments, 3D motion was a more effective intermediate between human video and robot action than future-pixel reconstruction.
-
-Paper and videos: https://flomo-wam.github.io</div>
 
           <div class="evidence evidence-wide media-grid comparison-grid" aria-label="Side-by-side unseen-task comparison">
             <figure class="media-item">
@@ -335,6 +327,44 @@ Paper and videos: https://flomo-wam.github.io</div>
               </div>
               <figcaption>Behavior cloning from scratch</figcaption>
             </figure>
+          </div>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-eight">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">08</span>
+            <h2 id="post-eight">8 / 8 · Conclusion</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 8 of 8">Copy</button>
+          </header>
+
+          <div class="post-body conclusion-copy" data-post-body><strong class="conclusion-claim">[8/8] FloMo changes what a world-action model learns to predict. The video backbone retains the benefit of pretraining, but its downstream target is 3D motion rather than future pixels.</strong>
+
+That distinction allows action-free egocentric human video to contribute directly to robot learning: human clips teach the model how manipulation changes a scene; robot demonstrations teach it which robot actions produce those changes.
+
+In our experiments, this was a more effective route from human video to robot action than future-video prediction.
+
+Paper and videos: https://flomo-wam.github.io</div>
+
+          <div class="evidence conclusion-path" role="img" aria-label="Action-free egocentric human video provides 3D scene-flow supervision, which robot demonstrations connect to action">
+            <div class="conclusion-step">
+              <span>Action-free data</span>
+              <strong>Egocentric human video</strong>
+              <small>Broad motion supervision</small>
+            </div>
+            <span class="conclusion-arrow" aria-hidden="true">→</span>
+            <div class="conclusion-step conclusion-step-shared">
+              <span>Shared target</span>
+              <strong>3D scene flow</strong>
+              <small>Motion across embodiments</small>
+            </div>
+            <span class="conclusion-arrow" aria-hidden="true">→</span>
+            <div class="conclusion-step conclusion-step-final">
+              <span>Robot data</span>
+              <strong>Robot action</strong>
+              <small>Motion grounded in control</small>
+            </div>
           </div>
         </article>
       </li>
