@@ -8,10 +8,10 @@
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta property="og:type" content="article">
   <meta property="og:title" content="FloMo Release Thread">
-  <meta property="og:description" content="A ten-post thread introducing FloMo, its method, results, and analysis.">
+  <meta property="og:description" content="An eight-post thread introducing FloMo, its method, results, and analysis.">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="FloMo Release Thread">
-  <meta name="twitter:description" content="A ten-post thread introducing FloMo, its method, results, and analysis.">
+  <meta name="twitter:description" content="An eight-post thread introducing FloMo, its method, results, and analysis.">
   <!-- Anonymous submission: intentionally no author or institution metadata. -->
 
   <!-- Fully self-contained: all display assets are bundled locally. -->
@@ -32,7 +32,7 @@
         <nav class="header-actions" aria-label="Release thread links">
           <a href="option-compare.html">Project page</a>
           <a href="FloMo%20Paper.pdf" target="_blank">Paper</a>
-          <button class="copy-control copy-thread" type="button" data-copy-thread data-tooltip="Copy all ten posts" aria-label="Copy the complete release thread">Copy thread</button>
+          <button class="copy-control copy-thread" type="button" data-copy-thread data-tooltip="Copy all eight posts" aria-label="Copy the complete release thread">Copy thread</button>
         </nav>
       </div>
 
@@ -45,18 +45,18 @@
   </header>
 
   <main id="thread">
-    <ol class="thread-list" aria-label="Ten-post FloMo release thread">
+    <ol class="thread-list" aria-label="Eight-post FloMo release thread">
       <li class="thread-item">
         <article class="thread-post" aria-labelledby="post-one">
           <header class="post-header">
             <span class="thread-number" aria-hidden="true">01</span>
-            <h2 id="post-one">1 / 10 · Thesis</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 1 of 10">Copy</button>
+            <h2 id="post-one">1 / 8 · Motivation</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 1 of 8">Copy</button>
           </header>
 
-          <div class="post-body opening-copy" data-post-body><strong class="opening-claim">[1/10] World-action models usually predict future RGB. But robot actions depend on how a scene moves—not on reconstructing every texture and reflection.</strong>
+          <div class="post-body opening-copy" data-post-body><strong class="opening-claim">[1/8] We’re introducing FloMo, a world-action model that learns from human and robot video by predicting 3D scene flow together with robot actions.</strong>
 
-FloMo asks: what if a video-pretrained policy predicted 3D scene flow + actions instead of pixels? 🧵</div>
+Most video-pretrained policies predict future RGB frames. We instead predict how points in the scene move in 3D. On real-robot manipulation, this target improves task success and generalization beyond the robot training distribution. 🧵</div>
         </article>
       </li>
 
@@ -64,41 +64,41 @@ FloMo asks: what if a video-pretrained policy predicted 3D scene flow + actions 
         <article class="thread-post" aria-labelledby="post-two">
           <header class="post-header">
             <span class="thread-number" aria-hidden="true">02</span>
-            <h2 id="post-two">2 / 10 · Representation</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 2 of 10">Copy</button>
+            <h2 id="post-two">2 / 8 · Representation</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 2 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[2/10] What is 3D scene flow?
+          <div class="post-body" data-post-body>[2/8] 3D scene flow records the cumulative 3D displacement of tracked points, expressed in the first camera frame.
 
-For each tracked point, FloMo predicts its cumulative 3D displacement in the first camera frame. Unlike RGB, it discards appearance. Unlike 2D flow, it separates task motion from camera ego-motion.
+This removes appearance details such as texture and lighting while retaining the motion relevant to action. It also avoids a limitation of 2D optical flow, which mixes object motion with camera motion.
 
-3D scene flow becomes the shared language.</div>
+The examples below show the RGB observation, point tracks, and corresponding 3D motion field.</div>
 
           <div class="evidence evidence-wide" aria-label="RGB observations, point tracks, and 3D scene flow across human tasks">
             <div class="media-grid flow-grid">
               <figure class="media-item">
                 <div class="media-frame flow-frame">
-                  <video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Lift board shown as RGB observation, point tracks, and 3D scene flow"></video>
+                  <video src="static/videos/sceneflow/sceneflow_0201.mp4" poster="static/videos/sceneflow/sceneflow_0201.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Lifting a board shown as RGB observation, point tracks, and 3D scene flow"></video>
                 </div>
-                <figcaption>Lift board</figcaption>
+                <figcaption>Lift a board</figcaption>
               </figure>
               <figure class="media-item">
                 <div class="media-frame flow-frame">
-                  <video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Clear weeds shown as RGB observation, point tracks, and 3D scene flow"></video>
+                  <video src="static/videos/sceneflow/sceneflow_0107.mp4" poster="static/videos/sceneflow/sceneflow_0107.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Clearing weeds shown as RGB observation, point tracks, and 3D scene flow"></video>
                 </div>
                 <figcaption>Clear weeds</figcaption>
               </figure>
               <figure class="media-item">
                 <div class="media-frame flow-frame">
-                  <video src="static/videos/sceneflow/sceneflow_1472.mp4" poster="static/videos/sceneflow/sceneflow_1472.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Place ring in cup shown as RGB observation, point tracks, and 3D scene flow"></video>
+                  <video src="static/videos/sceneflow/sceneflow_1472.mp4" poster="static/videos/sceneflow/sceneflow_1472.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Placing a ring shown as RGB observation, point tracks, and 3D scene flow"></video>
                 </div>
-                <figcaption>Place ring in cup</figcaption>
+                <figcaption>Place a ring in a cup</figcaption>
               </figure>
               <figure class="media-item">
                 <div class="media-frame flow-frame">
-                  <video src="static/videos/sceneflow/sceneflow_1754.mp4" poster="static/videos/sceneflow/sceneflow_1754.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Wrap gift box shown as RGB observation, point tracks, and 3D scene flow"></video>
+                  <video src="static/videos/sceneflow/sceneflow_1754.mp4" poster="static/videos/sceneflow/sceneflow_1754.jpg" width="974" height="330" autoplay controls loop muted playsinline preload="metadata" aria-label="Wrapping a gift shown as RGB observation, point tracks, and 3D scene flow"></video>
                 </div>
-                <figcaption>Wrap gift box</figcaption>
+                <figcaption>Wrap a gift box</figcaption>
               </figure>
             </div>
             <p class="media-note">RGB observation · 2D point tracks · 3D scene flow</p>
@@ -110,39 +110,20 @@ For each tracked point, FloMo predicts its cumulative 3D displacement in the fir
         <article class="thread-post" aria-labelledby="post-three">
           <header class="post-header">
             <span class="thread-number" aria-hidden="true">03</span>
-            <h2 id="post-three">3 / 10 · Architecture</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 3 of 10">Copy</button>
+            <h2 id="post-three">3 / 8 · Model and training</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 3 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[3/10] How can a video model predict 3D scene flow?
+          <div class="post-body" data-post-body>[3/8] FloMo reuses a pretrained Wan 2.2 5B video model rather than adding a separate motion encoder. We render the 3D motion field as color, pass it through the frozen video encoder, and fine-tune one backbone to predict motion and robot actions together.
 
-FloMo renders scene flow as RGB, encodes it with the frozen Wan 2.2 VAE, and LoRA-tunes its 5B DiT to jointly flow-match scene flow + robot actions.
-
-No new tokenizer: it reuses the pretrained video latent space.</div>
+Training has two stages. First, human videos provide motion supervision while robot demonstrations provide motion and action supervision. We then fine-tune on robot data alone. At test time, an image and language instruction produce a 16-action chunk.</div>
 
           <figure class="evidence figure-evidence">
             <div class="figure-frame architecture-frame">
               <img src="static/images/figure_arch.png" width="1603" height="720" alt="FloMo architecture showing text, image, 3D scene-flow, and action tokens entering a shared video-generation backbone">
             </div>
-            <figcaption>One pretrained video backbone jointly predicts dense 3D scene flow and robot actions.</figcaption>
+            <figcaption>One pretrained video backbone predicts dense 3D scene flow and robot actions.</figcaption>
           </figure>
-        </article>
-      </li>
-
-      <li class="thread-item">
-        <article class="thread-post" aria-labelledby="post-four">
-          <header class="post-header">
-            <span class="thread-number" aria-hidden="true">04</span>
-            <h2 id="post-four">4 / 10 · Training</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 10">Copy</button>
-          </header>
-
-          <div class="post-body" data-post-body>[4/10] Training has two stages:
-
-1) Human video supervises scene flow; robot data supervises scene flow + action, building a broad prior.
-2) Robot-only fine-tuning sharpens action prediction.
-
-At test time, FloMo plans 16-action chunks from an image + instruction.</div>
 
           <div class="evidence training-flow" role="img" aria-label="Stage one mid-training uses human and robot data, followed by stage two fine-tuning on robot data">
             <div class="training-stage">
@@ -163,38 +144,89 @@ At test time, FloMo plans 16-action chunks from an image + instruction.</div>
       </li>
 
       <li class="thread-item">
-        <article class="thread-post" aria-labelledby="post-five">
+        <article class="thread-post" aria-labelledby="post-four">
           <header class="post-header">
-            <span class="thread-number" aria-hidden="true">05</span>
-            <h2 id="post-five">5 / 10 · In-distribution</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 10">Copy</button>
+            <span class="thread-number" aria-hidden="true">04</span>
+            <h2 id="post-four">4 / 8 · In-distribution results</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[5/10] Does the target matter? On Oven, Toolbox, and Corn, FloMo is best on every task.
+          <div class="post-body" data-post-body>[4/8] We first evaluated three contact-rich, bimanual manipulation tasks represented in the robot training distribution. FloMo performed best on every task and averaged 87% success.
 
-Average in-distribution success:
-• FloMo: 87%
-• Joint Video-Action: 47%
-• FloMo + Video: 40%
-• BC from scratch: 7%
+A joint video–action baseline averaged 47%, the FloMo variant trained to predict both motion and future RGB averaged 40%, and behavior cloning without video pretraining averaged 7%.
 
-Predicting 3D scene flow beats predicting pixels.</div>
+Adding future-RGB prediction did not improve the policy; it substantially reduced success.</div>
 
           <div class="evidence evidence-wide evidence-pair" aria-label="In-distribution results and example FloMo rollout">
             <figure class="media-item">
               <div class="figure-frame result-frame">
-                <img src="static/images/figure_policy_indist.png" width="1017" height="750" alt="In-distribution success across Oven, Toolbox, and Corn tasks for FloMo and baselines">
+                <img src="static/images/figure_policy_indist.png" width="1017" height="750" alt="In-distribution success across three contact-rich bimanual tasks for FloMo and baselines">
               </div>
-              <figcaption>FloMo is best on every in-distribution task.</figcaption>
+              <figcaption>Average success across three contact-rich bimanual tasks.</figcaption>
             </figure>
             <figure class="media-item">
               <div class="media-frame rollout-frame">
-                <video src="static/videos/ma10h_oven_success.mp4" poster="static/images/posters/oven.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo completes the in-distribution Oven task"></video>
-                <span class="video-badge">FloMo · Oven</span>
+                <video src="static/videos/ma10h_oven_success.mp4" poster="static/images/posters/oven.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo completes a multi-step articulated-object manipulation task"></video>
+                <span class="video-badge">FloMo · In-distribution</span>
                 <span class="speed-badge">5× speed</span>
               </div>
-              <figcaption>Open oven · retrieve croissant · place on plate</figcaption>
+              <figcaption>Representative multi-step, contact-rich rollout</figcaption>
             </figure>
+          </div>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-five">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">05</span>
+            <h2 id="post-five">5 / 8 · OOD results</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 8">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[5/8] We then tested three kinds of generalization beyond the robot demonstrations: a type of movement, a task, and an object that were absent from the robot data.
+
+FloMo succeeded in 12 of 15 rollouts, or 80%. The matching variant that also predicted future RGB succeeded in 0 of 15.
+
+The rollouts below show the robot closing a cabinet with a new movement, pulling a toy’s string in a new task, and placing a previously unseen object in a bowl.</div>
+
+          <div class="evidence evidence-wide">
+            <div class="ood-summary" role="img" aria-label="FloMo averages 80 percent out-of-distribution success across an unseen movement, task, and object">
+              <p class="metric-kicker">Out-of-distribution success · 12 / 15 rollouts</p>
+              <div class="ood-summary-grid">
+                <div class="ood-stat"><span>Unseen movement</span><strong>5/5</strong><small>Close an articulated door</small></div>
+                <div class="ood-stat"><span>Unseen task</span><strong>3/5</strong><small>Pull a suspended string</small></div>
+                <div class="ood-stat"><span>Unseen object</span><strong>4/5</strong><small>Place a novel marker</small></div>
+              </div>
+              <p class="metric-note">80% average success · adding future RGB gives 0/15</p>
+            </div>
+
+            <div class="media-grid rollout-grid rollout-gallery">
+              <figure class="media-item">
+                <div class="media-frame rollout-frame">
+                  <video src="static/videos/option-compare/door_landscape.mp4" poster="static/videos/option-compare/door_landscape.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo closes an articulated door using an unseen movement"></video>
+                  <span class="video-badge">Unseen movement</span>
+                  <span class="speed-badge">5× speed</span>
+                </div>
+                <figcaption>Close an articulated door</figcaption>
+              </figure>
+              <figure class="media-item">
+                <div class="media-frame rollout-frame">
+                  <video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo pulls a suspended string in an unseen task"></video>
+                  <span class="video-badge">Unseen task</span>
+                  <span class="speed-badge">5× speed</span>
+                </div>
+                <figcaption>Pull a suspended string</figcaption>
+              </figure>
+              <figure class="media-item">
+                <div class="media-frame rollout-frame">
+                  <video src="static/videos/ma10h_highlighter_success2.mp4" poster="static/images/posters/highlighter.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo places an unseen marker in a bowl"></video>
+                  <span class="video-badge">Unseen object</span>
+                  <span class="speed-badge">5× speed</span>
+                </div>
+                <figcaption>Place a novel marker</figcaption>
+              </figure>
+            </div>
           </div>
         </article>
       </li>
@@ -203,55 +235,31 @@ Predicting 3D scene flow beats predicting pixels.</div>
         <article class="thread-post" aria-labelledby="post-six">
           <header class="post-header">
             <span class="thread-number" aria-hidden="true">06</span>
-            <h2 id="post-six">6 / 10 · OOD generalization</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 10">Copy</button>
+            <h2 id="post-six">6 / 8 · Analysis</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[6/10] The gap widens OOD. FloMo leads on an unseen motion primitive, task, and object:
+          <div class="post-body" data-post-body>[6/8] Two controlled analyses help explain the result.
 
-• Close Cabinet: 5/5
-• Pull String: 3/5
-• Highlighter: 4/5
+In an inverse-dynamics probe, 3D scene flow reached the same action-prediction performance as RGB at full data scale. With only 1% of the data, it reduced action error by 22%.
 
-Pixel-predicting methods degrade sharply. A 3D scene-flow intermediate transfers beyond the robot training distribution.</div>
+When RGB and scene flow were both available, action tokens assigned about 3× more attention to scene flow across the transformer.
 
-          <div class="evidence evidence-wide">
-            <div class="ood-summary" role="img" aria-label="FloMo averages 80 percent out-of-distribution success across an unseen motion primitive, task, and object">
-              <p class="metric-kicker">Out-of-distribution success · 12 / 15 rollouts</p>
-              <div class="ood-summary-grid">
-                <div class="ood-stat"><span>Unseen primitive</span><strong>5/5</strong><small>Close Cabinet</small></div>
-                <div class="ood-stat"><span>Unseen task</span><strong>3/5</strong><small>Pull String</small></div>
-                <div class="ood-stat"><span>Unseen object</span><strong>4/5</strong><small>Highlighter</small></div>
+Scene flow contains less visual information, but preserves a more direct signal for action.</div>
+
+          <div class="evidence evidence-wide media-grid diagnostic-grid" aria-label="Sample-efficiency and attention analyses">
+            <figure class="media-item">
+              <div class="figure-frame scaling-frame">
+                <img src="static/images/figure_id_scaling.png" width="1467" height="991" alt="Inverse-dynamics action error using ground-truth 3D scene flow or video as action data increases">
               </div>
-              <p class="metric-note">80% average success · FloMo + future RGB succeeds on 0/15</p>
-            </div>
-
-            <div class="media-grid rollout-grid rollout-gallery">
-              <figure class="media-item">
-                <div class="media-frame rollout-frame">
-                  <video src="static/videos/option-compare/door_landscape.mp4" poster="static/videos/option-compare/door_landscape.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo closes a cabinet using an unseen motion primitive"></video>
-                  <span class="video-badge">Unseen primitive</span>
-                  <span class="speed-badge">5× speed</span>
-                </div>
-                <figcaption>Close Cabinet</figcaption>
-              </figure>
-              <figure class="media-item">
-                <div class="media-frame rollout-frame">
-                  <video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo pulls a toy string in an unseen task"></video>
-                  <span class="video-badge">Unseen task</span>
-                  <span class="speed-badge">5× speed</span>
-                </div>
-                <figcaption>Pull String</figcaption>
-              </figure>
-              <figure class="media-item">
-                <div class="media-frame rollout-frame">
-                  <video src="static/videos/ma10h_highlighter_success2.mp4" poster="static/images/posters/highlighter.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo places an unseen highlighter in a bowl"></video>
-                  <span class="video-badge">Unseen object</span>
-                  <span class="speed-badge">5× speed</span>
-                </div>
-                <figcaption>Highlighter</figcaption>
-              </figure>
-            </div>
+              <figcaption>At 1% action data, scene flow gives 22% lower error than RGB.</figcaption>
+            </figure>
+            <figure class="media-item">
+              <div class="figure-frame attention-frame">
+                <img src="static/images/figure_attention_share.png" width="1297" height="739" alt="Action attention shifts toward 3D scene flow and away from video across FloMo's transformer layers">
+              </div>
+              <figcaption>Action queries attend about 3× more to scene flow than video.</figcaption>
+            </figure>
           </div>
         </article>
       </li>
@@ -260,61 +268,15 @@ Pixel-predicting methods degrade sharply. A 3D scene-flow intermediate transfers
         <article class="thread-post" aria-labelledby="post-seven">
           <header class="post-header">
             <span class="thread-number" aria-hidden="true">07</span>
-            <h2 id="post-seven">7 / 10 · Sample efficiency</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 7 of 10">Copy</button>
+            <h2 id="post-seven">7 / 8 · Human-video transfer</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 7 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[7/10] Why does 3D scene flow work?
+          <div class="post-body" data-post-body>[7/8] The transfer depends on action-free human video. Human hands and robot grippers look different, but can produce similar 3D motion in the objects they manipulate.
 
-In controlled inverse-dynamics probes, scene flow reaches the same action-prediction ceiling as video despite containing less information—and with 1% of the data, it yields 22% lower action error.
+When we removed roughly 81 hours of human video while keeping the architecture and motion target fixed, average success on the three out-of-distribution evaluations fell from 80% to 7%.
 
-The useful signal is simpler to learn.</div>
-
-          <figure class="evidence figure-evidence">
-            <div class="figure-frame scaling-frame">
-              <img src="static/images/figure_id_scaling.png" width="1467" height="991" alt="Inverse-dynamics action error using ground-truth 3D scene flow or video as action data increases">
-            </div>
-            <figcaption>At low data scales, 3D scene flow exposes action-relevant structure more efficiently than RGB.</figcaption>
-          </figure>
-        </article>
-      </li>
-
-      <li class="thread-item">
-        <article class="thread-post" aria-labelledby="post-eight">
-          <header class="post-header">
-            <span class="thread-number" aria-hidden="true">08</span>
-            <h2 id="post-eight">8 / 10 · Attention</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 8 of 10">Copy</button>
-          </header>
-
-          <div class="post-body" data-post-body>[8/10] When RGB and 3D scene flow are both available, what does the action stream use?
-
-Across the DiT, action attention shifts toward scene flow, averaging ~3× more attention to 3D scene flow than video.
-
-The model itself seeks out the action-relevant representation.</div>
-
-          <figure class="evidence attention-evidence">
-            <div class="figure-frame attention-frame">
-              <img src="static/images/figure_attention_share.png" width="1297" height="739" alt="Action attention shifts toward 3D scene flow and away from video across FloMo's transformer layers">
-            </div>
-            <figcaption>Action-query attention concentrates on 3D scene flow through the DiT trunk.</figcaption>
-          </figure>
-        </article>
-      </li>
-
-      <li class="thread-item">
-        <article class="thread-post" aria-labelledby="post-nine">
-          <header class="post-header">
-            <span class="thread-number" aria-hidden="true">09</span>
-            <h2 id="post-nine">9 / 10 · Human-video transfer</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 9 of 10">Copy</button>
-          </header>
-
-          <div class="post-body" data-post-body>[9/10] Human video is where OOD transfer comes from.
-
-Human hands and robot grippers create similar 3D scene flow. Remove ~81h of action-free human video—same architecture and target—and average OOD success falls from 80% to 7%.
-
-3D scene flow makes human motion reusable.</div>
+This ablation attributes most of the generalization gain to motion supervision from human activity video.</div>
 
           <div class="evidence metric-card ablation-card human-ablation" role="img" aria-label="Average out-of-distribution success is 80 percent with human video and 7 percent without human video">
             <p class="metric-kicker">Remove only the ~81h human-video subset</p>
@@ -335,23 +297,23 @@ Human hands and robot grippers create similar 3D scene flow. Remove ~81h of acti
       </li>
 
       <li class="thread-item">
-        <article class="thread-post" aria-labelledby="post-ten">
+        <article class="thread-post" aria-labelledby="post-eight">
           <header class="post-header">
-            <span class="thread-number" aria-hidden="true">10</span>
-            <h2 id="post-ten">10 / 10 · Takeaway</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 10 of 10">Copy</button>
+            <span class="thread-number" aria-hidden="true">08</span>
+            <h2 id="post-eight">8 / 8 · Example and takeaway</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 8 of 8">Copy</button>
           </header>
 
-          <div class="post-body conclusion-copy" data-post-body><strong class="conclusion-claim">[10/10] Pull String appears only in human video. Robot success: FloMo 3/5; DreamZero 1/5; BC 0/5.</strong>
+          <div class="post-body conclusion-copy" data-post-body><strong class="conclusion-claim">[8/8] Pulling a toy’s string was present in the human videos but absent from the robot demonstrations. FloMo completed the task in 3/5 trials; DreamZero completed 1/5; behavior cloning without pretraining completed 0/5.</strong>
 
-Video pretraining shouldn’t mean predicting more pixels. 3D scene flow lets human video teach robots how the world moves—and how to act.
+Across these experiments, 3D motion was a more effective intermediate between human video and robot action than future-pixel reconstruction.
 
-https://flomo-wam.github.io</div>
+Paper and videos: https://flomo-wam.github.io</div>
 
-          <div class="evidence evidence-wide media-grid comparison-grid" aria-label="Side-by-side Pull String comparison">
+          <div class="evidence evidence-wide media-grid comparison-grid" aria-label="Side-by-side unseen-task comparison">
             <figure class="media-item">
               <div class="media-frame rollout-frame">
-                <video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo succeeds on Pull String"></video>
+                <video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo succeeds at pulling a suspended string"></video>
                 <span class="video-badge">FloMo</span>
                 <span class="speed-badge status-success">Success</span>
               </div>
@@ -359,7 +321,7 @@ https://flomo-wam.github.io</div>
             </figure>
             <figure class="media-item">
               <div class="media-frame rollout-frame">
-                <video src="static/videos/dreamzero_yoyo_failure.mp4" poster="static/images/posters/string_dreamzero.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="DreamZero fails on Pull String"></video>
+                <video src="static/videos/dreamzero_yoyo_failure.mp4" poster="static/images/posters/string_dreamzero.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="DreamZero fails at pulling a suspended string in the shown rollout"></video>
                 <span class="video-badge">DreamZero</span>
                 <span class="speed-badge status-failure">Failure</span>
               </div>
@@ -367,7 +329,7 @@ https://flomo-wam.github.io</div>
             </figure>
             <figure class="media-item">
               <div class="media-frame rollout-frame">
-                <video src="static/videos/bc_yoyo_failure.mp4" poster="static/images/posters/string_bc.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="Behavior cloning without pretraining fails on Pull String"></video>
+                <video src="static/videos/bc_yoyo_failure.mp4" poster="static/images/posters/string_bc.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="Behavior cloning without pretraining fails at pulling a suspended string"></video>
                 <span class="video-badge">BC · no pretraining</span>
                 <span class="speed-badge status-failure">Failure</span>
               </div>
