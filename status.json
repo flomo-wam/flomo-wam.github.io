@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-14T05:21:53Z",
+  "updated_utc": "2026-09-14T06:21:56Z",
   "robotwin_single5": {
     "current": "FastWAM admission passed on the production runtime: two real four-rank updates, 512 samples, complete optimizer state, checkpoint reload, and finite `[32, 14]` inference. Both four-GPU production lanes are live under the fail-closed controller. Scratch 20M BC admission independently passed two real updates, checkpoint reload, and finite `[2, 16, 20]` inference; its five productions are queued behind authoritative FastWAM lane-drain and physical-idle gates.",
     "next": "Accept exact final checkpoints from both production controllers, then run Easy100 on the graphics-proven PACE renderer.",
@@ -12,8 +12,8 @@
     "state": "admission_and_execution_active",
     "gate": "Complete875/all35 receipt accepted: tracks andVAE each875/875, zero identity anomalies,35 production-loader positives withtwo getitems each and35 genuine missing-text refusals. Integer and floating-roundoff codec regressions pass. MAabc8 admission is authorized; no final model checkpoint or scored evaluation is accepted.",
     "remaining": [
-      "Complete distinct fresh pi05abc5eight raw staging, preparation and real2-update admission; retain oldabc7 loss evidence and do not substitute its historical checkpoints",
-      "Complete MAabc8 real2-update admission using originalepoch28 initialization and the accepted selected875 corpus",
+      "Accept fresh pi05abc5eight production5000 with1280000 observed samples and native committed-checkpoint restoration; its real2-update/eight-device admission has passed",
+      "Accept MAabc8 strict ordered-action restoration and continue production from originalepoch28 initialization using the accepted selected875 corpus",
       "Preserve original epoch28 initializations and unchanged5000-update/globalbatch256 training; require real2-update admissions, native optimizer counters and final model/checkpoint restoration for every model",
       "Preserve existing Fast-WAM production while verifying actual progress and copying only committed artifacts; live GPUs and logs are not final5000 proof",
       "Accept5000-update outputs forMA,pi05,Fast-WAM before fixed60-cell2100-rollout evaluation; all RoboDojo task scores remain unmeasured"
@@ -26,7 +26,7 @@
       "state": "PENDING",
       "elapsed": "0:00",
       "node": "",
-      "reason": "(Dependency)",
+      "reason": "(DependencyNeverSatisfied)",
       "campaign": "other"
     },
     {
@@ -39,55 +39,19 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13173551_3",
-      "name": "mat5-super",
+      "id": "13094323",
+      "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "43:53",
-      "node": "atl1-1-01-003-13-2",
-      "reason": "atl1-1-01-003-13-2",
-      "campaign": "other"
-    },
-    {
-      "id": "13173551_0",
-      "name": "mat5-super",
-      "state": "RUNNING",
-      "elapsed": "44:02",
-      "node": "atl1-1-02-006-16-1",
-      "reason": "atl1-1-02-006-16-1",
-      "campaign": "other"
-    },
-    {
-      "id": "13173551_1",
-      "name": "mat5-super",
-      "state": "RUNNING",
-      "elapsed": "44:02",
-      "node": "atl1-1-02-009-7-2",
-      "reason": "atl1-1-02-009-7-2",
-      "campaign": "other"
-    },
-    {
-      "id": "13173551_2",
-      "name": "mat5-super",
-      "state": "RUNNING",
-      "elapsed": "44:02",
-      "node": "atl1-1-02-010-11-2",
-      "reason": "atl1-1-02-010-11-2",
-      "campaign": "other"
+      "elapsed": "2-05:03:30",
+      "node": "atl1-1-03-010-1-0",
+      "reason": "atl1-1-03-010-1-0",
+      "campaign": "robotwin"
     },
     {
       "id": "13156989",
       "name": "flomo-va-toolbox",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(BeginTime)",
-      "campaign": "robotwin"
-    },
-    {
-      "id": "13094323",
-      "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "2-04:03:27",
+      "elapsed": "53:52",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
