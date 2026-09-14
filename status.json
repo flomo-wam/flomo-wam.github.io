@@ -1,10 +1,10 @@
 {
-  "updated_utc": "2026-09-14T21:27:33Z",
+  "updated_utc": "2026-09-14T22:27:37Z",
   "robotwin_single5": {
-    "current": "The original dense-ActionDiT FastWAM productions were cancelled by user directive. Corrected FastWAM code uses MA-identical Wan LoRA, freezes dense ActionDiT, and trains an action-side partition of 175,118 against MA's 175,124 target. Native horizon-16 data admission has passed for all five tasks. No corrected production is yet accepted; BC remains unlaunched while its queued controller is repaired and migrated to the user's all-5k budget.",
-    "next": "Exercise corrected four-GPU optimizer/save/reload/inference, launch fresh FastWAM production lanes, and recover the staged BC controller with every task's effective budget verified at 5,000 updates before restoring lane approvals. Preflight: Latest native `--preflight-only` passed after freezing the entire model before enabling the declared partition. Exact measured trainables: Wan LoRA 161,218,560; ActionDiT LoRA 83,968; action input/output 29,710; proprio encoder 61,440; action side 175,118 (six below MA's 175,124); total 161,393,678. Dense ActionDiT, VAE, and text encoder stay frozen. Receipt: `evidence/single5-preflight-20260914-r1/receipts/adapter-preflight.json`, SHA256 `df37f9b636ebf64ffec54bff69ecd3df4b271c6ee91d03a2987fb0fcac6e62e4`. This is no-training proof, not an optimizer smoke. Data16: All five isolated 50-demo roots passed the pinned native reader with 17 raw frames and action tensors `[16,14]`, ten finite decoded samples per task, 250 source-HDF5 hash matches, and five distinct task-local statistics hashes. Old roots remain byte-identical; frame/video payloads are reused without duplication or re-encoding. Native admission took 74 seconds; preparation and staging overhead are excluded. Worker root: `/tmp/fastwam-single5-data16-r1/data16/<task>`. Durable receipt: `/storage/project/r-agarg35-0/sgovil9/robotwin-eval-results/campaigns/robotwin-fastwam-single5-20260913-r1/state/abc1-mirror/data16/data16-run-receipt.json`.",
-    "blocker": "FastWAM production requires corrected optimizer/save/reload smoke. BC approvals remain held during recovery from a truncated remote controller transfer and until the effective five-task 5,000-update cutover passes. Corrected steady-state throughput remains unmeasured.",
-    "status_line": "Active \u2014 corrected FastWAM instantiated-model and 16-step data admissions passed; native optimizer/save/reload gate pending; all five scratch BC policies are being cut over to 5,000 updates.",
+    "current": "Corrected FastWAM admission completed two actual optimizer updates and 512 samples on four GPUs, saved complete ZeRO state and the adapter checkpoint `51751ae4b774b1d366fa3567f74ba9a6c258e70e80fc29d1afef8c38edbd9481`, and restored finite `[16,14]` actions in a fresh process. The shared canonical worker/LoRA code is used; the proposed separate optimizer facade change was not applied. All five data16 roots passed admission. Every FastWAM and BC policy targets 5,000 updates.",
+    "next": "`CorrectSingle5Launch` launches and supervises FastWAM on abc1 after semantic statistics and five-task budget checks. `Abc7Single5Execution` owns cooldown \u2192 released/idle admission \u2192 BC migration, training, and ten-policy Easy100 execution. Keep abc1 BC approvals held until the old queued controller is safely handed off; never run duplicate BC producers. Preflight: Latest native `--preflight-only` passed after freezing the entire model before enabling the declared partition. Exact measured trainables: Wan LoRA 161,218,560; ActionDiT LoRA 83,968; action input/output 29,710; proprio encoder 61,440; action side 175,118 (six below MA's 175,124); total 161,393,678. Dense ActionDiT, VAE, and text encoder stay frozen. Receipt: `evidence/single5-preflight-20260914-r1/receipts/adapter-preflight.json`, SHA256 `df37f9b636ebf64ffec54bff69ecd3df4b271c6ee91d03a2987fb0fcac6e62e4`. This is no-training proof, not an optimizer smoke. Data16: All five isolated 50-demo roots passed the pinned native reader with 17 raw frames and action tensors `[16,14]`, ten finite decoded samples per task, 250 source-HDF5 hash matches, and five distinct task-local statistics hashes. Old roots remain byte-identical; frame/video payloads are reused without duplication or re-encoding. Native admission took 74 seconds; preparation and staging overhead are excluded. Worker root: `/tmp/fastwam-single5-data16-r1/data16/<task>`. Durable receipt: `/storage/project/r-agarg35-0/sgovil9/robotwin-eval-results/campaigns/robotwin-fastwam-single5-20260913-r1/state/abc1-mirror/data16/data16-run-receipt.json`.",
+    "blocker": "abc7 is gated by the user's 15-minute cooldown and fresh ownership/physical-idle checks. Exact BC parameter census and effective five-task launch composition remain required before BC production. Corrected steady-state FastWAM throughput is not yet measured; cold-smoke timing is not an ETA. Unsupported wall-clock estimates in the earlier smoke receipt are being replaced with observed artifact times.",
+    "status_line": "Active \u2014 corrected FastWAM optimizer/save/reload admission passed; abc1 production launch approved after final CPU bindings. User assigned abc7 to BC and single-task evaluation after a mandatory 15-minute untouched cooldown.",
     "checklist_done": 4,
     "checklist_total": 13
   },
@@ -103,15 +103,6 @@
       "campaign": "other"
     },
     {
-      "id": "13184364",
-      "name": "mat5-cont",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(DependencyNeverSatisfied)",
-      "campaign": "other"
-    },
-    {
       "id": "12885915",
       "name": "rt-rp-contr-controll-350846a2e006",
       "state": "PENDING",
@@ -124,16 +115,25 @@
       "id": "13194772",
       "name": "rdj-fastwam-native-backup-r1",
       "state": "RUNNING",
-      "elapsed": "3:45:05",
+      "elapsed": "4:45:10",
       "node": "atl1-1-02-002-27-1",
       "reason": "atl1-1-02-002-27-1",
+      "campaign": "other"
+    },
+    {
+      "id": "13203263",
+      "name": "rdj-fwm-lora-r4-native2",
+      "state": "RUNNING",
+      "elapsed": "50:39",
+      "node": "atl1-1-02-002-25-1",
+      "reason": "atl1-1-02-002-25-1",
       "campaign": "other"
     },
     {
       "id": "13202650",
       "name": "rdj-pi05-r2c-win01",
       "state": "RUNNING",
-      "elapsed": "14:40",
+      "elapsed": "1:14:45",
       "node": "atl1-1-03-003-1-1",
       "reason": "atl1-1-03-003-1-1",
       "campaign": "other"
@@ -142,7 +142,7 @@
       "id": "13202191",
       "name": "rdj-ma-budget-backup-r2",
       "state": "RUNNING",
-      "elapsed": "33:03",
+      "elapsed": "1:33:08",
       "node": "atl1-1-02-002-27-2",
       "reason": "atl1-1-02-002-27-2",
       "campaign": "other"
@@ -151,7 +151,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "15:59:29",
+      "elapsed": "16:59:34",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
