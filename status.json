@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-14T12:22:10Z",
+  "updated_utc": "2026-09-14T13:22:13Z",
   "robotwin_single5": {
     "current": "FastWAM admission passed on the production runtime: two real four-rank updates, 512 samples, complete optimizer state, checkpoint reload, and finite `[32, 14]` inference. Both four-GPU production lanes are live under the fail-closed controller. Scratch 20M BC admission independently passed two real updates, checkpoint reload, and finite `[2, 16, 20]` inference; its five productions are queued behind authoritative FastWAM lane-drain and physical-idle gates.",
     "next": "Accept exact final checkpoints from both production controllers, then run Easy100 on the graphics-proven PACE renderer.",
@@ -10,7 +10,7 @@
   },
   "robodojo": {
     "state": "admission_and_execution_active",
-    "gate": "Complete875/all35 and all three real2-update admissions are accepted; no final5000 checkpoint or scored evaluation is accepted. Actual align_blocks get_obs and MA official WebSocket single/batch inference now pass with finite16-step actions, terminal0 and0appliedactions/rollouts. Exact Wan cache localization and ffmpeg activation are verified. Native local relocation proceeds after shared ENOSPC; durable preservation, native WS hosting and strict nonzero isolation remain incomplete. Fast-WAM optimizer progress is under read-only investigation.",
+    "gate": "Complete875/all35 and all three real2-update admissions are accepted; no final5000 checkpoint or scored evaluation is accepted. MA and pi05 both pass actual align_blocks get_obs and official WebSocket single/batch inference with finite16-step actions, terminal0 and0appliedactions/rollouts. Fast-WAM's native2500 marker is independently observed; final optimizer/sample/restoration acceptance remains pending. Full Fast-WAM local relocation and WS proof, durable preservation and strict nonzero isolation remain incomplete. All production processes are unchanged.",
     "remaining": [
       "Accept fresh pi05abc5eight production5000 with1280000 observed samples and native committed-checkpoint restoration; its real2-update/eight-device admission has passed",
       "Accept MAabc8 production5000 with1280000 observed samples and strict policy restoration; its real2-update/eight-GPU admission has passed",
@@ -43,7 +43,7 @@
       "id": "13094323",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "2-11:03:45",
+      "elapsed": "2-12:03:47",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
@@ -52,7 +52,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "6:54:07",
+      "elapsed": "7:54:09",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
