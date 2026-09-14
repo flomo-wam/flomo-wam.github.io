@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-14T16:27:18Z",
+  "updated_utc": "2026-09-14T17:27:21Z",
   "robotwin_single5": {
     "current": "FastWAM admission passed on the production runtime: two real four-rank updates, 512 samples, complete optimizer state, checkpoint reload, and finite `[32, 14]` inference. Both four-GPU production lanes are live under the fail-closed controller. Scratch 20M BC admission independently passed two real updates, checkpoint reload, and finite `[2, 16, 20]` inference; its five productions are queued behind authoritative FastWAM lane-drain and physical-idle gates.",
     "next": "Accept exact final checkpoints from both production controllers, then run Easy100 on the graphics-proven PACE renderer.",
@@ -40,10 +40,19 @@
       "campaign": "robotwin"
     },
     {
+      "id": "13191628",
+      "name": "ytmr-out-arc",
+      "state": "RUNNING",
+      "elapsed": "40:59",
+      "node": "atl1-1-02-002-27-1",
+      "reason": "atl1-1-02-002-27-1",
+      "campaign": "other"
+    },
+    {
       "id": "13184360_0",
       "name": "mat5-super",
       "state": "RUNNING",
-      "elapsed": "2:33:31",
+      "elapsed": "3:33:34",
       "node": "atl1-1-02-006-22-1",
       "reason": "atl1-1-02-006-22-1",
       "campaign": "other"
@@ -52,7 +61,7 @@
       "id": "13184360_1",
       "name": "mat5-super",
       "state": "RUNNING",
-      "elapsed": "2:33:31",
+      "elapsed": "3:33:34",
       "node": "atl1-1-02-006-22-2",
       "reason": "atl1-1-02-006-22-2",
       "campaign": "other"
@@ -61,7 +70,7 @@
       "id": "13184360_2",
       "name": "mat5-super",
       "state": "RUNNING",
-      "elapsed": "2:33:31",
+      "elapsed": "3:33:34",
       "node": "atl1-1-02-006-23-2",
       "reason": "atl1-1-02-006-23-2",
       "campaign": "other"
@@ -70,7 +79,7 @@
       "id": "13184360_3",
       "name": "mat5-super",
       "state": "RUNNING",
-      "elapsed": "2:33:31",
+      "elapsed": "3:33:34",
       "node": "atl1-1-02-006-24-1",
       "reason": "atl1-1-02-006-24-1",
       "campaign": "other"
@@ -79,7 +88,7 @@
       "id": "13094323",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "2-15:08:52",
+      "elapsed": "2-16:08:55",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
@@ -88,7 +97,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "10:59:14",
+      "elapsed": "11:59:17",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
