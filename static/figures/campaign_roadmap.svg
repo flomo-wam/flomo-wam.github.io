@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1120" height="660" viewBox="0 0 1120 660" role="img" aria-labelledby="rm-title rm-desc">
   <title id="rm-title">Remaining campaign roadmaps: RoboTwin scaling (with exploration) and RoboDojo, parallel and sequential stages</title>
-  <desc id="rm-desc">Gantt-style stage chart from the September 13 21:30 UTC snapshot. RoboTwin block: scaling evaluations 600 trials on 5 GPUs, running, 4-8 hours; exploration grid 575 trials on 8 plus 8 staged GPUs, conditional, 1-4 hours; Fast-WAM training 5000 updates on 4 GPUs, not started until its smoke passes, about 12-24 hours after repair; Fast-WAM evaluations 375 trials on 5 GPUs, 2-4 hours after training. RoboDojo block: track 220 missing episodes on 24 GPUs, 2-4 hours after verified launch; data gate ledgers and loaders about 2-6 hours; Fast-WAM training already running on 8 GPUs with no verified rate, end unknown; MA/VA/VMA/pi0.5 training in parallel on 16 GPUs (4 each), 12-24 hours after the data gate; evaluation of all five models, 3500 rollouts on 24 GPUs, 6-12 hours, requires all five accepted checkpoints. Vertical dashed line marks the RoboTwin training deadline September 15 00:00 UTC at 26.5 hours.</desc>
+  <desc id="rm-desc">RoboTwin timing rows retain the September13 21:30UTC snapshot and conditional estimates. RoboDojo rows show September14 status, not time-scaled estimates:875 tracks/VAE and35 loader gates accepted; Fast-WAM production protected onabc6; MA/ pi0.5 admissions onabc8/abc5, eight GPUs each, before5000-update production. Evaluation is60cells and2100rollouts across MA/pi0.5/Fast-WAM, gated on all three accepted final checkpoints. VA/VMA are canceled andabc2/abc3 reassigned. RoboDojo production and evaluation durations are unmeasured.</desc>
 
   <defs>
     <pattern id="rm-hatch" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
@@ -19,7 +19,7 @@
 
     <!-- Title -->
     <text x="40" y="32" font-size="22" font-weight="bold" fill="#1f2933">Remaining campaigns — parallel and sequential stages</text>
-    <text x="40" y="56" font-size="15" fill="#5b6570">Hours from the September 13, 21:30 UTC snapshot. Hatched = conditional [INFERENCE]; solid = running now.</text>
+    <text x="40" y="56" font-size="15" fill="#5b6570">RoboTwin: September13 timing snapshot [INFERENCE]. RoboDojo: September14 status below, not time-scaled.</text>
 
     <!-- Legend -->
     <rect x="40" y="72" width="26" height="14" rx="3" fill="#2f7d4f"/>
@@ -72,30 +72,30 @@
     <text x="40" y="346" font-size="17" font-weight="bold" fill="#1f2933">RoboDojo</text>
 
     <!-- D1 -->
-    <text x="40" y="382" font-size="15" fill="#1f2933"><tspan font-weight="bold">Track remaining 159</tspan> · episodes · 24 GPUs</text>
-    <rect x="310" y="366" width="64.2" height="26" rx="6" fill="#2f7d4f"/>
-    <text x="388" y="384" font-size="14" fill="#5b6570">2–4 h · verified running 21:26 UTC</text>
+    <text x="40" y="382" font-size="15" fill="#1f2933"><tspan font-weight="bold">Tracking</tspan> · complete</text>
+    <rect x="310" y="366" width="770" height="26" rx="6" fill="#eef4ef"/>
+    <text x="330" y="384" font-size="14" fill="#2f7d4f">875 / 875 verified; recovered outputs durably preserved</text>
 
     <!-- D2 -->
-    <text x="40" y="426" font-size="15" fill="#1f2933"><tspan font-weight="bold">Data gate</tspan> · ledgers + loaders · CPU</text>
-    <rect x="374.2" y="410" width="96.25" height="26" rx="6" fill="url(#rm-hatch)" stroke="#2f7d4f" stroke-width="1.5"/>
-    <text x="484" y="428" font-size="14" fill="#5b6570">≈2–6 h</text>
+    <text x="40" y="426" font-size="15" fill="#1f2933"><tspan font-weight="bold">Data gate</tspan> · accepted</text>
+    <rect x="310" y="410" width="770" height="26" rx="6" fill="#eef4ef"/>
+    <text x="330" y="428" font-size="14" fill="#2f7d4f">35 real-loader positives + 35 genuine missing-text refusals</text>
 
     <!-- D3a -->
-    <text x="40" y="470" font-size="15" fill="#1f2933"><tspan font-weight="bold">Fast-WAM (running)</tspan> · 5,000 upd · 8 GPUs</text>
+    <text x="40" y="470" font-size="15" fill="#1f2933"><tspan font-weight="bold">Fast-WAM</tspan> · abc6 × 8 GPUs</text>
     <rect x="310" y="454" width="705.8" height="26" rx="6" fill="#2f7d4f"/>
-    <text x="560" y="472" font-size="14" font-weight="bold" fill="#ffffff">running since 14:53 UTC — no verified rate →</text>
+    <text x="330" y="472" font-size="14" font-weight="bold" fill="#ffffff">Live; target 5,000 updates; no verified steady-state rate →</text>
     <polygon points="1015.8,458 1036,467 1015.8,476" fill="#2f7d4f"/>
 
     <!-- D3b -->
-    <text x="40" y="514" font-size="15" fill="#1f2933"><tspan font-weight="bold">Train MA/VA/VMA/π0.5</tspan> · parallel ×4 · 16 GPUs</text>
-    <rect x="470.4" y="498" width="385" height="26" rx="6" fill="url(#rm-hatch)" stroke="#2f7d4f" stroke-width="1.5"/>
-    <text x="867" y="516" font-size="14" fill="#5b6570">12–24 h after gate</text>
+    <text x="40" y="514" font-size="15" fill="#1f2933"><tspan font-weight="bold">MA / pi0.5</tspan> · 8 GPUs each</text>
+    <rect x="310" y="498" width="770" height="26" rx="6" fill="#f6f8fa"/>
+    <text x="330" y="516" font-size="14" fill="#5b6570">Admission → 5,000 updates on abc8 / abc5; durations unmeasured</text>
 
     <!-- D4 -->
-    <text x="40" y="542" font-size="15" fill="#1f2933"><tspan font-weight="bold">Eval all five</tspan> · 3,500 rollouts · 24 GPUs</text>
-    <rect x="855.4" y="526" width="192.5" height="26" rx="6" fill="url(#rm-hatch)" stroke="#2f7d4f" stroke-width="1.5"/>
-    <text x="951.6" y="544" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle">6–12 h · after all 5 ckpts</text>
+    <text x="40" y="542" font-size="15" fill="#1f2933"><tspan font-weight="bold">Eval three</tspan> · 2,100 rollouts</text>
+    <rect x="310" y="526" width="770" height="26" rx="6" fill="#f6f8fa"/>
+    <text x="330" y="544" font-size="14" fill="#5b6570">Wait for all three accepted 5,000-update finals; 700 rollouts/model</text>
 
     <!-- Axis -->
     <line x1="310" y1="560" x2="1080" y2="560" stroke="#9aa4ae" stroke-width="1.5"/>
@@ -121,11 +121,11 @@
       <text x="983.75" y="584">42</text>
       <text x="1080"   y="584">48</text>
     </g>
-    <text x="695" y="608" font-size="14" font-style="italic" fill="#5b6570" text-anchor="middle">Hours after September 13, 21:30 UTC (0 = now)</text>
+    <text x="695" y="608" font-size="14" font-style="italic" fill="#5b6570" text-anchor="middle">Historical RoboTwin axis: hours after September13, 21:30 UTC</text>
 
     <!-- Footnotes -->
-    <text x="40" y="634" font-size="14" fill="#5b6570">Training anchor: measured 4-GPU, 5,000-update FloMo runs = 12–13.5 h; RoboDojo trains four models concurrently on 16 GPUs freed by tracking.</text>
-    <text x="40" y="652" font-size="14" fill="#5b6570">RoboTwin Fast-WAM starts only after its smoke passes; RoboDojo evaluation gates on all five accepted checkpoints.</text>
+    <text x="40" y="634" font-size="14" fill="#5b6570">RoboTwin timing basis is retained above. RoboDojo has no measured steady-state production or evaluation rate.</text>
+    <text x="40" y="652" font-size="14" fill="#5b6570">RoboDojo: MA / pi0.5 / Fast-WAM only; VA/VMA canceled; abc2/abc3 reassigned and off-limits.</text>
 
   </g>
 </svg>

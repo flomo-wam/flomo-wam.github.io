@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1120" height="578" viewBox="0 0 1120 578" role="img" aria-labelledby="ov-title ov-desc">
   <title id="ov-title">Pending-experiment progress: accepted evaluation trials and RoboDojo preparation pipeline</title>
-  <desc id="ov-desc">Accepted evaluation progress: RoboTwin scaling 800 of 1575 trials (50.8 percent), exploratory MA/VA/VMA grid 25 of 600 (the accepted abc2 canary counts inside the grid; the abc2 grid controller is recovering, abc3 staged), RoboDojo 0 of 3500. Empty progress bars do not mean zero policy success. RoboDojo data preparation: VAE features for all 875 episodes complete; 220 motion tracks recovering on a newly authorized 24-GPU pool (abc5+abc7+abc8) with launches unverified; Fast-WAM training live on eight abc6 GPUs with unverified optimizer progress. Zero of five final checkpoints accepted; evaluation not started.</desc>
+  <desc id="ov-desc">RoboTwin September13 snapshot: scaling800 of1575 trials, exploratory MA/VA/VMA25 of600. RoboDojo September14 update: MA/pi0.5/Fast-WAM only,0 of2100 scored trials; all875 tracks/VAE and35 real-loader tasks accepted; zero of three final checkpoints accepted. Existing Fast-WAM production onabc6 is protected; MA routes toabc8 andpi0.5 toabc5. VA/VMA are canceled andabc2/abc3 reassigned. Empty evaluation bars are not zero policy-success rates.</desc>
 
   <defs>
     <pattern id="ov-hatch-gray" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
@@ -35,9 +35,9 @@
 
     <!-- Row 3: RoboDojo -->
     <text x="40" y="292" font-size="18" font-weight="bold" fill="#1f2933">RoboDojo · evaluation trials</text>
-    <text x="1080" y="292" font-size="22" font-weight="bold" fill="#1f2933" text-anchor="end">0 / 3,500 accepted</text>
+    <text x="1080" y="292" font-size="22" font-weight="bold" fill="#1f2933" text-anchor="end">0 / 2,100 accepted</text>
     <rect x="40" y="304" width="1040" height="34" rx="8" fill="url(#ov-hatch-gray)" stroke="#d6dce2" stroke-width="1"/>
-    <text x="560" y="327" font-size="16" font-weight="bold" fill="#5b6570" text-anchor="middle">Evaluation waits for five accepted final checkpoints</text>
+    <text x="560" y="327" font-size="16" font-weight="bold" fill="#5b6570" text-anchor="middle">MA / pi0.5 / Fast-WAM — wait for three accepted final checkpoints</text>
 
     <!-- Divider + preparation section -->
     <line x1="40" y1="362" x2="1080" y2="362" stroke="#dfe3e8" stroke-width="1"/>
@@ -51,13 +51,13 @@
 
     <rect x="309" y="404" width="233" height="88" rx="8" fill="#f6f8fa" stroke="#d6dce2" stroke-width="1"/>
     <text x="323" y="432" font-size="16" font-weight="bold" fill="#1f2933">Motion tracks</text>
-    <text x="323" y="456" font-size="15" font-weight="bold" fill="#1f2933">655 / 875 terminal</text>
-    <text x="323" y="477" font-size="14" fill="#c9862b">220 recovering · 24 GPUs</text>
+    <text x="323" y="456" font-size="15" font-weight="bold" fill="#2f7d4f">875 / 875 verified</text>
+    <text x="323" y="477" font-size="14" fill="#2f7d4f">35 / 35 loader tasks pass</text>
 
     <rect x="578" y="404" width="233" height="88" rx="8" fill="#f6f8fa" stroke="#d6dce2" stroke-width="1"/>
     <text x="592" y="432" font-size="16" font-weight="bold" fill="#1f2933">Final checkpoints</text>
-    <text x="592" y="456" font-size="15" font-weight="bold" fill="#5b6570">0 / 5 accepted</text>
-    <text x="592" y="477" font-size="13" fill="#c9862b">Fast-WAM live (unverified)</text>
+    <text x="592" y="456" font-size="15" font-weight="bold" fill="#5b6570">0 / 3 accepted</text>
+    <text x="592" y="477" font-size="13" fill="#c9862b">Final 5,000-step proof pending</text>
 
     <rect x="847" y="404" width="233" height="88" rx="8" fill="#fbfcfd" stroke="#d6dce2" stroke-width="1" stroke-dasharray="6 4"/>
     <text x="861" y="434" font-size="16" font-weight="bold" fill="#1f2933">Evaluation</text>
@@ -68,10 +68,10 @@
     <text x="829" y="454" font-size="20" fill="#8a94a0" text-anchor="middle">→</text>
 
     <!-- Blockers -->
-    <text x="40" y="524" font-size="16" fill="#1f2933"><tspan font-weight="bold">Next:</tspan> verify RoboDojo tracker launches; repair the Fast-WAM smoke and abc2 grid controller; run remaining scaling cells.</text>
+    <text x="40" y="524" font-size="16" fill="#1f2933"><tspan font-weight="bold">Next:</tspan> MA / pi0.5 admissions and accepted finals; preserve live RoboDojo Fast-WAM. RoboTwin snapshot retained above.</text>
 
     <!-- Footnotes -->
-    <text x="40" y="550" font-size="14" fill="#5b6570">Snapshot: September 13 · 21:30 UTC · tracking pool claimed 20:47–20:58 UTC (launches unverified).</text>
+    <text x="40" y="550" font-size="14" fill="#5b6570">RoboTwin snapshot: September13, 21:30 UTC. RoboDojo update: September14, confirmed three-model scope.</text>
     <text x="40" y="570" font-size="14" fill="#5b6570">Exploration: the accepted abc2 canary counts inside the 600; Fast-WAM's 200 exploratory trials are separate.</text>
 
   </g>
