@@ -1,11 +1,11 @@
 {
-  "updated_utc": "2026-09-14T04:21:49Z",
+  "updated_utc": "2026-09-14T05:21:53Z",
   "robotwin_single5": {
-    "current": "All eight healthy abc1 GPUs are claimed. FastWAM single-task code is staged toward its exact-runtime smoke; the corrected eight-layer, 20M, scratch BC contract is being integrated.",
-    "next": "Pass FastWAM and scratch-BC real admission gates, then schedule both model families across abc1 without overlapping device ownership.",
-    "blocker": "None yet. The old four-rank FastWAM torch 2.7.1/cu128 runtime failed before its first optimizer update; the private torch 2.9.1/cu130 candidate is now being exercised. BC must instantiate the existing 20M/eight-layer shape from scratch, not reuse the superseded 5B pretrained action-only baseline.",
-    "status_line": "Active \u2014 abc1 claimed; FastWAM staging and BC admission.",
-    "checklist_done": 0,
+    "current": "FastWAM admission passed on the production runtime: two real four-rank updates, 512 samples, complete optimizer state, checkpoint reload, and finite `[32, 14]` inference. Both four-GPU production lanes are live under the fail-closed controller. Scratch 20M BC admission independently passed two real updates, checkpoint reload, and finite `[2, 16, 20]` inference; its five productions are queued behind authoritative FastWAM lane-drain and physical-idle gates.",
+    "next": "Accept exact final checkpoints from both production controllers, then run Easy100 on the graphics-proven PACE renderer.",
+    "blocker": "MicroAGI graphics is not validated for RoboTwin rendering, so final Easy100 evaluation remains routed to PACE. This does not block abc1 training.",
+    "status_line": "Active \u2014 FastWAM production running; scratch 20M BC queued behind lane drains.",
+    "checklist_done": 4,
     "checklist_total": 13
   },
   "robodojo": {
@@ -21,6 +21,15 @@
   },
   "jobs": [
     {
+      "id": "13173552",
+      "name": "mat5-cont",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
       "id": "12885915",
       "name": "rt-rp-contr-controll-350846a2e006",
       "state": "PENDING",
@@ -30,12 +39,39 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13173356",
-      "name": "mat-smoke",
+      "id": "13173551_3",
+      "name": "mat5-super",
       "state": "RUNNING",
-      "elapsed": "1:30",
-      "node": "atl1-1-02-002-28-1",
-      "reason": "atl1-1-02-002-28-1",
+      "elapsed": "43:53",
+      "node": "atl1-1-01-003-13-2",
+      "reason": "atl1-1-01-003-13-2",
+      "campaign": "other"
+    },
+    {
+      "id": "13173551_0",
+      "name": "mat5-super",
+      "state": "RUNNING",
+      "elapsed": "44:02",
+      "node": "atl1-1-02-006-16-1",
+      "reason": "atl1-1-02-006-16-1",
+      "campaign": "other"
+    },
+    {
+      "id": "13173551_1",
+      "name": "mat5-super",
+      "state": "RUNNING",
+      "elapsed": "44:02",
+      "node": "atl1-1-02-009-7-2",
+      "reason": "atl1-1-02-009-7-2",
+      "campaign": "other"
+    },
+    {
+      "id": "13173551_2",
+      "name": "mat5-super",
+      "state": "RUNNING",
+      "elapsed": "44:02",
+      "node": "atl1-1-02-010-11-2",
+      "reason": "atl1-1-02-010-11-2",
       "campaign": "other"
     },
     {
@@ -51,7 +87,7 @@
       "id": "13094323",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "2-03:03:24",
+      "elapsed": "2-04:03:27",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
