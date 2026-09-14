@@ -1,16 +1,16 @@
 {
-  "updated_utc": "2026-09-14T22:27:37Z",
+  "updated_utc": "2026-09-14T23:27:41Z",
   "robotwin_single5": {
-    "current": "Corrected FastWAM admission completed two actual optimizer updates and 512 samples on four GPUs, saved complete ZeRO state and the adapter checkpoint `51751ae4b774b1d366fa3567f74ba9a6c258e70e80fc29d1afef8c38edbd9481`, and restored finite `[16,14]` actions in a fresh process. The shared canonical worker/LoRA code is used; the proposed separate optimizer facade change was not applied. All five data16 roots passed admission. Every FastWAM and BC policy targets 5,000 updates.",
-    "next": "`CorrectSingle5Launch` launches and supervises FastWAM on abc1 after semantic statistics and five-task budget checks. `Abc7Single5Execution` owns cooldown \u2192 released/idle admission \u2192 BC migration, training, and ten-policy Easy100 execution. Keep abc1 BC approvals held until the old queued controller is safely handed off; never run duplicate BC producers. Preflight: Latest native `--preflight-only` passed after freezing the entire model before enabling the declared partition. Exact measured trainables: Wan LoRA 161,218,560; ActionDiT LoRA 83,968; action input/output 29,710; proprio encoder 61,440; action side 175,118 (six below MA's 175,124); total 161,393,678. Dense ActionDiT, VAE, and text encoder stay frozen. Receipt: `evidence/single5-preflight-20260914-r1/receipts/adapter-preflight.json`, SHA256 `df37f9b636ebf64ffec54bff69ecd3df4b271c6ee91d03a2987fb0fcac6e62e4`. This is no-training proof, not an optimizer smoke. Data16: All five isolated 50-demo roots passed the pinned native reader with 17 raw frames and action tensors `[16,14]`, ten finite decoded samples per task, 250 source-HDF5 hash matches, and five distinct task-local statistics hashes. Old roots remain byte-identical; frame/video payloads are reused without duplication or re-encoding. Native admission took 74 seconds; preparation and staging overhead are excluded. Worker root: `/tmp/fastwam-single5-data16-r1/data16/<task>`. Durable receipt: `/storage/project/r-agarg35-0/sgovil9/robotwin-eval-results/campaigns/robotwin-fastwam-single5-20260913-r1/state/abc1-mirror/data16/data16-run-receipt.json`.",
-    "blocker": "abc7 is gated by the user's 15-minute cooldown and fresh ownership/physical-idle checks. Exact BC parameter census and effective five-task launch composition remain required before BC production. Corrected steady-state FastWAM throughput is not yet measured; cold-smoke timing is not an ETA. Unsupported wall-clock estimates in the earlier smoke receipt are being replaced with observed artifact times.",
-    "status_line": "Active \u2014 corrected FastWAM optimizer/save/reload admission passed; abc1 production launch approved after final CPU bindings. User assigned abc7 to BC and single-task evaluation after a mandatory 15-minute untouched cooldown.",
+    "current": "FastWAM's `pick_dual_bottles` and `stack_bowls_two` productions run on abc1 under controller 1130339; native W&B histories directly showed 260/5,000 updates per lane and an observed-interval rate near 10.38 seconds/update. ABC7 claim `gpu-20260914T222150-a95ed322` followed the full 22:04:24Z\u201322:19:24Z cooldown and two idle probes. BC admission measured 21,939,476 trainable parameters across 237 tensors and passed two updates/512 samples plus fresh EEF20 reload; four productions are running under PIDs 930893/932524/933323/934134, with `hanging_mug` queued. Every policy targets 5,000 updates.",
+    "next": "`CorrectSingle5Launch` owns abc1 and the scoped abc8 FastWAM expansion, including a safe handover of the unstarted task without interrupting active trainers. `Abc7Single5Execution` owns BC completion, durable exports, and ten-policy Easy100 evaluation. The old abc1 BC controller is stopped; its roots remain preserved and no BC approval bridge runs there. Preflight: Latest native `--preflight-only` passed after freezing the entire model before enabling the declared partition. Exact measured trainables: Wan LoRA 161,218,560; ActionDiT LoRA 83,968; action input/output 29,710; proprio encoder 61,440; action side 175,118 (six below MA's 175,124); total 161,393,678. Dense ActionDiT, VAE, and text encoder stay frozen. Receipt: `evidence/single5-preflight-20260914-r1/receipts/adapter-preflight.json`, SHA256 `df37f9b636ebf64ffec54bff69ecd3df4b271c6ee91d03a2987fb0fcac6e62e4`. This is no-training proof, not an optimizer smoke. Data16: All five isolated 50-demo roots passed the pinned native reader with 17 raw frames and action tensors `[16,14]`, ten finite decoded samples per task, 250 source-HDF5 hash matches, and five distinct task-local statistics hashes. Old roots remain byte-identical; frame/video payloads are reused without duplication or re-encoding. Native admission took 74 seconds; preparation and staging overhead are excluded. Worker root: `/tmp/fastwam-single5-data16-r1/data16/<task>`. Durable receipt: `/storage/project/r-agarg35-0/sgovil9/robotwin-eval-results/campaigns/robotwin-fastwam-single5-20260913-r1/state/abc1-mirror/data16/data16-run-receipt.json`. Timing: With two FastWAM lanes, the observed-interval extrapolation gives the first two checkpoints near September 15 12:33Z and all five near September 16 17:24Z, excluding disruptions/save/staging overhead. A successfully admitted third four-GPU lane can reduce the longest queue from three runs to two, moving the all-five forecast toward September 16 03:00Z if staging finishes in time. BC production's provisional rate is about 5.5 microsteps/second with 16 microsteps/update: first four finals around September 15 03:05Z and the fifth around 07:05Z. These are checkpoint estimates, not scored-result guarantees.",
+    "blocker": "abc8 requires scoped ownership/runtime admission and a duplicate-free queue handoff. ABC7's end-to-end evaluation canary and graph-matched instruction protocol must pass before scored rollouts; neither is a prerequisite for continued BC training. Final artifacts must be exported durably before claim release.",
+    "status_line": "Active \u2014 two corrected FastWAM policies are training on abc1; four BC policies are training on abc7 with the fifth queued. User assigned abc8 GPUs 2\u20137 for added FastWAM capacity; GPUs 0\u20131 remain protected.",
     "checklist_done": 4,
     "checklist_total": 13
   },
   "robodojo": {
     "state": "admission_and_execution_active",
-    "gate": "All875/all35 data gates remain accepted; no final5000 or scored rollout is accepted. MA exact-budget production resumes from4650 with608 unchanged used optimizer slots; native4588/4650 backups are complete and replacement Slurm13202191 is waiting for5000 after worker preemption/transport failure. Pi05 r2 native2-update512-sample/eight-device restore and16x14 inference pass. FastWAM real preflight measured161218560 trunk and175118 action-side trainables, six below target; native optimizer/restore acceptance is still pending. Main froze a fresh R4 source archive with optimizer, recipe, serving and single-source cadence fixes, but has not deployed or launched it. Old dense2500 and failed LoRA attempts remain preserved and inadmissible.",
+    "gate": "All875/all35 data gates remain accepted. MA final5000, strict native restoration and PACE preservation are accepted; no scored rollouts have run. Pi05 r2 production and500-step preservation are active. FastWAM real8-GPU native2 proves161218560 trunk/175118 action-side trainables, exact256-sample updates and frozen dense ActionDiT; R5 real-observation restoration returns16 finite joint14 actions in single/batch modes. Full-node production is launched from unchanged original initialization while native2 preservation continues independently. Final FastWAM/pi05 acceptance and60-cell2100-rollout evaluation remain pending.",
     "remaining": [
       "Accept fresh pi05abc5eight production5000 with1280000 observed samples and native committed-checkpoint restoration; its real2-update/eight-device admission has passed",
       "Accept MAabc8 production5000 with1280000 observed samples and strict policy restoration; its real2-update/eight-GPU admission has passed",
@@ -21,6 +21,15 @@
     ]
   },
   "jobs": [
+    {
+      "id": "13204717",
+      "name": "rdj-fwm-r5-backup-2",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
     {
       "id": "13202652",
       "name": "rdj-pi05-r2b-win02",
@@ -115,16 +124,25 @@
       "id": "13194772",
       "name": "rdj-fastwam-native-backup-r1",
       "state": "RUNNING",
-      "elapsed": "4:45:10",
+      "elapsed": "5:45:13",
       "node": "atl1-1-02-002-27-1",
       "reason": "atl1-1-02-002-27-1",
+      "campaign": "other"
+    },
+    {
+      "id": "13204715",
+      "name": "rdj-fwm-r5-backup",
+      "state": "RUNNING",
+      "elapsed": "27:33",
+      "node": "atl1-1-03-003-11-2",
+      "reason": "atl1-1-03-003-11-2",
       "campaign": "other"
     },
     {
       "id": "13203263",
       "name": "rdj-fwm-lora-r4-native2",
       "state": "RUNNING",
-      "elapsed": "50:39",
+      "elapsed": "1:50:42",
       "node": "atl1-1-02-002-25-1",
       "reason": "atl1-1-02-002-25-1",
       "campaign": "other"
@@ -133,25 +151,16 @@
       "id": "13202650",
       "name": "rdj-pi05-r2c-win01",
       "state": "RUNNING",
-      "elapsed": "1:14:45",
+      "elapsed": "2:14:48",
       "node": "atl1-1-03-003-1-1",
       "reason": "atl1-1-03-003-1-1",
-      "campaign": "other"
-    },
-    {
-      "id": "13202191",
-      "name": "rdj-ma-budget-backup-r2",
-      "state": "RUNNING",
-      "elapsed": "1:33:08",
-      "node": "atl1-1-02-002-27-2",
-      "reason": "atl1-1-02-002-27-2",
       "campaign": "other"
     },
     {
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "16:59:34",
+      "elapsed": "17:59:37",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
