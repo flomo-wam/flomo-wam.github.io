@@ -1,16 +1,16 @@
 {
-  "updated_utc": "2026-09-14T17:27:21Z",
+  "updated_utc": "2026-09-14T18:27:23Z",
   "robotwin_single5": {
-    "current": "FastWAM admission passed on the production runtime: two real four-rank updates, 512 samples, complete optimizer state, checkpoint reload, and finite `[32, 14]` inference. Both four-GPU production lanes are live under the fail-closed controller. Scratch 20M BC admission independently passed two real updates, checkpoint reload, and finite `[2, 16, 20]` inference; its five productions are queued behind authoritative FastWAM lane-drain and physical-idle gates.",
-    "next": "Accept exact final checkpoints from both production controllers, then run Easy100 on the graphics-proven PACE renderer.",
-    "blocker": "MicroAGI graphics is not validated for RoboTwin rendering, so final Easy100 evaluation remains routed to PACE. This does not block abc1 training.",
+    "current": "The original dense-ActionDiT FastWAM productions were cancelled by user directive. The controller, two active training trees, and lane-approval bridge are stopped; all eight abc1 GPUs were verified with zero compute contexts and zero memory. BC remains queued and untouched. Corrected FastWAM code now uses the MA-identical Wan LoRA, freezes dense ActionDiT, budgets action-side LoRA plus required projections against 175,124, and uses a 16-step horizon.",
+    "next": "Instantiate the corrected model on abc1 and publish its exact pre-training parameter partition. Relaunch remains gated on that receipt.",
+    "blocker": "Corrected training cannot start until the instantiated-model preflight confirms the exact action-side count and no unexpected trainables.",
     "status_line": "Active \u2014 FastWAM production running; scratch 20M BC queued behind lane drains.",
     "checklist_done": 4,
     "checklist_total": 13
   },
   "robodojo": {
     "state": "admission_and_execution_active",
-    "gate": "All875/all35 data gates and three original real2-update admissions are accepted; no final5000 or scored evaluation is accepted. MA resumes verified4402 updates onabc8GPU0. pi05's incomplete2500 state is natively unrecoverable:155/156 train-state arrays have no committed chunks; fresh original-base5000 training on pod-local output requires its new config's own2-update admission. Fast-WAM remains active with its2500 marker observed. The73448767488-byte retained transfer prefix has matching source/destination SHA; missing33064041139 bytes are transferring as31 verified parts, with part000 accepted. CPU relocation is gated on complete archive publication.",
+    "gate": "All875/all35 data gates remain accepted; no final5000 or scored rollout is accepted. Original Fast-WAM dense training is noncompliant with the latest LoRA contract. MA native4588 is fully hash-verified on PACE scratch;4650 is preserved locally before an action-mask budget cutover. The unused action placeholder has no optimizer slot; all175124 real action parameters do. pi05 r2 prepare/smoke follows the fixed PATH loader. Full r4 archive relocation passes native verification with33 identical state-file hashes using the preserved source closure; it is historical evidence, not acceptance of the new LoRA recipe.",
     "remaining": [
       "Accept fresh pi05abc5eight production5000 with1280000 observed samples and native committed-checkpoint restoration; its real2-update/eight-device admission has passed",
       "Accept MAabc8 production5000 with1280000 observed samples and strict policy restoration; its real2-update/eight-GPU admission has passed",
@@ -22,12 +22,84 @@
   },
   "jobs": [
     {
+      "id": "13196610",
+      "name": "rdj-fwm-backup-window-9",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
+      "id": "13196609",
+      "name": "rdj-fwm-backup-window-8",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
+      "id": "13196608",
+      "name": "rdj-fwm-backup-window-7",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
+      "id": "13196607",
+      "name": "rdj-fwm-backup-window-6",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
+      "id": "13196606",
+      "name": "rdj-fwm-backup-window-5",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
+      "id": "13196605",
+      "name": "rdj-fwm-backup-window-4",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
+      "id": "13196604",
+      "name": "rdj-fwm-backup-window-3",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
+      "id": "13196603",
+      "name": "rdj-fwm-backup-window-2",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
       "id": "13184364",
       "name": "mat5-cont",
       "state": "PENDING",
       "elapsed": "0:00",
       "node": "",
-      "reason": "(Dependency)",
+      "reason": "(DependencyNeverSatisfied)",
       "campaign": "other"
     },
     {
@@ -40,64 +112,46 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13191628",
-      "name": "ytmr-out-arc",
+      "id": "13194772",
+      "name": "rdj-fastwam-native-backup-r1",
       "state": "RUNNING",
-      "elapsed": "40:59",
+      "elapsed": "44:56",
       "node": "atl1-1-02-002-27-1",
       "reason": "atl1-1-02-002-27-1",
       "campaign": "other"
     },
     {
-      "id": "13184360_0",
-      "name": "mat5-super",
+      "id": "13196668",
+      "name": "rdj-pi05-r2-win01",
       "state": "RUNNING",
-      "elapsed": "3:33:34",
-      "node": "atl1-1-02-006-22-1",
-      "reason": "atl1-1-02-006-22-1",
+      "elapsed": "12:09",
+      "node": "atl1-1-02-002-28-1",
+      "reason": "atl1-1-02-002-28-1",
       "campaign": "other"
     },
     {
-      "id": "13184360_1",
-      "name": "mat5-super",
+      "id": "13195958",
+      "name": "rdj-ma-budget-backup-r1",
       "state": "RUNNING",
-      "elapsed": "3:33:34",
-      "node": "atl1-1-02-006-22-2",
-      "reason": "atl1-1-02-006-22-2",
+      "elapsed": "24:47",
+      "node": "atl1-1-02-002-28-1",
+      "reason": "atl1-1-02-002-28-1",
       "campaign": "other"
     },
     {
-      "id": "13184360_2",
-      "name": "mat5-super",
+      "id": "13191628",
+      "name": "ytmr-out-arc",
       "state": "RUNNING",
-      "elapsed": "3:33:34",
-      "node": "atl1-1-02-006-23-2",
-      "reason": "atl1-1-02-006-23-2",
+      "elapsed": "1:41:02",
+      "node": "atl1-1-02-002-27-1",
+      "reason": "atl1-1-02-002-27-1",
       "campaign": "other"
-    },
-    {
-      "id": "13184360_3",
-      "name": "mat5-super",
-      "state": "RUNNING",
-      "elapsed": "3:33:34",
-      "node": "atl1-1-02-006-24-1",
-      "reason": "atl1-1-02-006-24-1",
-      "campaign": "other"
-    },
-    {
-      "id": "13094323",
-      "name": "flomo-va-toolbox",
-      "state": "RUNNING",
-      "elapsed": "2-16:08:55",
-      "node": "atl1-1-03-010-1-0",
-      "reason": "atl1-1-03-010-1-0",
-      "campaign": "robotwin"
     },
     {
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "11:59:17",
+      "elapsed": "12:59:20",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
