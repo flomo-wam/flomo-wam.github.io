@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-14T01:21:32Z",
+  "updated_utc": "2026-09-14T02:21:35Z",
   "robotwin_single5": {
     "current": "All eight healthy abc1 GPUs are claimed. FastWAM single-task code is staged toward its exact-runtime smoke; the corrected eight-layer, 20M, scratch BC contract is being integrated.",
     "next": "Pass FastWAM and scratch-BC real admission gates, then schedule both model families across abc1 without overlapping device ownership.",
@@ -10,10 +10,10 @@
   },
   "robodojo": {
     "state": "recovery_and_execution_active",
-    "gate": "Survivor provenance independently accepted. FloMo admission hardening is runtime-proven and deployed, with independent installed-hash checks onabc5/7. Last tracking outputs, VAE220 preservation, exact durable full875 identity and all35 real loaders remain required; no new model admission has launched.",
+    "gate": "Survivors and recovered220 are durably preserved; tracks andVAE each verify875/875 with zero identity anomalies. All35 real-loader acceptance is pending numerical/quaternion validation repairs. No new model admission or scored evaluation has launched.",
     "remaining": [
-      "Retain oldabc7 recovery/loss evidence; rearm the prepared distinct fresh pi05 run only after tracking relinquishes abc5 and the canonical full875/all35 gate passes",
-      "Protect surviving tracks/VAE/text and native committed artifacts on the available shared durable storage; recompute only missing selected scopes, consolidate full875, and pass all35 real-loader gates",
+      "Retain oldabc7 loss evidence; admit the distinct fresh pi05abc5eight run only after the canonical full875/all35 gate passes",
+      "Finish all35 production-flag loader positives and genuine missing-text negatives against the accepted immutable selected875 corpus",
       "Preserve original epoch28 initializations and unchanged5000-update/globalbatch256 training; require real2-update admissions, native optimizer counters and final model/checkpoint restoration for every model",
       "Preserve existing Fast-WAM production while verifying actual progress and copying only committed artifacts; live GPUs and logs are not final5000 proof",
       "Accept5000-update outputs forMA,VA,VMA,pi05,Fast-WAM before any fixed100-cell3500-rollout evaluation; all RoboDojo task scores remain unmeasured"
@@ -42,7 +42,7 @@
       "id": "13094323",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "2-00:03:07",
+      "elapsed": "2-01:03:09",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
