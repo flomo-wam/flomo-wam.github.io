@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiment Status — FloMo</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa; --card: #fff; --ink: #1a1a1a; --mut: #666; --line: #e5e5e5;
+      --green: #1a7f37; --greenbg: #dafbe1; --blue: #0969da; --bluebg: #ddf4ff;
+      --red: #cf222e; --redbg: #ffebe9; --gray: #57606a; --graybg: #f0f0f0;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink);
+           font: 15px/1.5 "Noto Sans", system-ui, sans-serif; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 48px; }
+    header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+    h1 { font-size: 26px; margin: 0; }
+    .updated { color: var(--mut); font-size: 13px; }
+    h2 { font-size: 18px; margin: 0 0 10px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+            padding: 18px 20px; margin-bottom: 16px; }
+    .sub { color: var(--mut); font-size: 13px; margin: -4px 0 12px; }
+    .row { display: flex; gap: 8px; margin: 6px 0; }
+    .row b { flex: 0 0 82px; font-weight: 600; font-size: 13px; color: var(--mut); padding-top: 1px; }
+    .row span { flex: 1; font-size: 14px; }
+    .chip { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 12px;
+            font-weight: 600; vertical-align: middle; }
+    .chip.run  { color: var(--green); background: var(--greenbg); }
+    .chip.pend { color: var(--blue); background: var(--bluebg); }
+    .chip.fail { color: var(--red); background: var(--redbg); }
+    .chip.done, .chip.misc { color: var(--gray); background: var(--graybg); }
+    .bar { height: 8px; background: var(--graybg); border-radius: 999px; overflow: hidden; margin: 10px 0 2px; }
+    .bar i { display: block; height: 100%; background: var(--green); }
+    .barlabel { font-size: 12px; color: var(--mut); margin-bottom: 10px; }
+    .blocker-warn { color: var(--red); }
+    ul.remain { margin: 6px 0 0; padding-left: 20px; }
+    ul.remain li { font-size: 13.5px; margin: 3px 0; color: #333; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th { text-align: left; color: var(--mut); font-weight: 600; font-size: 12px;
+         padding: 4px 8px; border-bottom: 1px solid var(--line); }
+    td { padding: 5px 8px; border-bottom: 1px solid var(--line); }
+    tr:last-child td { border-bottom: none; }
+    .tag { font-size: 11px; color: var(--gray); background: var(--graybg);
+           padding: 1px 7px; border-radius: 999px; }
+    .figures img { width: 100%; margin: 8px 0; border: 1px solid var(--line);
+                   border-radius: 8px; background: #fff; }
+    footer { margin-top: 24px; color: var(--mut); font-size: 12.5px; text-align: center; }
+    .err { color: var(--red); padding: 32px 0; text-align: center; }
+    a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Experiment Status</h1>
+    <span class="updated" id="updated"></span>
+  </header>
+
+  <div id="content"><div class="err">Loading status…</div></div>
+
+  <div class="card figures">
+    <h2>Campaign overview</h2>
+    <img src="static/figures/current_campaign_overview.svg" alt="Accepted evaluation progress and campaign stages">
+    <img src="static/figures/campaign_roadmap.svg" alt="Remaining campaign roadmaps">
+  </div>
+
+  <footer>
+    Auto-updated hourly from the cluster queue and campaign state files ·
+    <a href="index.html">FloMo project page</a>
+  </footer>
+</div>
+
+<script>
+const esc = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const JOB_CHIP = s => {
+  if (s === "RUNNING") return "run";
+  if (s === "PENDING") return "pend";
+  if (/FAIL|CANCEL|TIMEOUT|OUT_OF|NODE/.test(s)) return "fail";
+  if (/COMPLET/.test(s)) return "done";
+  return "misc";
+};
+
+function row(label, text, warn) {
+  return `<div class="row"><b>${label}</b><span class="${warn ? "blocker-warn" : ""}">${esc(text)}</span></div>`;
+}
+
+function robotwin(d) {
+  const pct = d.checklist_total ? Math.round(100 * d.checklist_done / d.checklist_total) : 0;
+  const blockerNone = /^none\b/i.test(d.blocker ?? "");
+  return `<div class="card">
+    <h2>RoboTwin — single-task policies</h2>
+    <div class="sub">FastWAM + scratch-BC, one policy per task × 5 tasks (pick_dual_bottles, stack_bowls_two,
+      open_laptop, hanging_mug, handover_mic) · 50 demos each · then 100-trial Easy eval per policy</div>
+    ${row("Status", d.status_line)}
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="barlabel">${d.checklist_done}/${d.checklist_total} campaign checklist items</div>
+    ${row("Current", d.current)}
+    ${row("Next", d.next)}
+    ${row("Blocker", d.blocker, !blockerNone)}
+  </div>`;
+}
+
+function robodojo(d) {
+  const state = (d.state ?? "").replaceAll("_", " ");
+  return `<div class="card">
+    <h2>RoboDojo — fewshot comparison</h2>
+    <div class="sub">5 models (FloMo MA / VA / VMA, π0.5, Fast-WAM) on 875 demos (35 tasks × 25) ·
+      eval: 12 seen + 8 held-out ("Open") tasks</div>
+    ${row("Phase", state)}
+    ${row("Data gate", d.gate)}
+    <div class="row"><b>Up next</b><span><ul class="remain">${d.remaining.map(r => `<li>${esc(r)}</li>`).join("")}</ul></span></div>
+  </div>`;
+}
+
+function jobs(jobs) {
+  if (!jobs.length) return `<div class="card"><h2>Cluster queue</h2>
+    <div class="sub">No experiment jobs on the queue right now.</div></div>`;
+  const rows = jobs.map(j => `<tr>
+    <td>${esc(j.id)}</td><td>${esc(j.name)}</td>
+    <td><span class="chip ${JOB_CHIP(j.state)}">${esc(j.state)}</span>${j.reason && j.reason !== j.node ? ` <small style="color:var(--mut)">(${esc(j.reason)})</small>` : ""}</td>
+    <td>${esc(j.elapsed)}</td>
+    <td><span class="tag">${esc(j.campaign || "other")}</span></td>
+  </tr>`).join("");
+  return `<div class="card"><h2>Cluster queue</h2>
+    <table><tr><th>Job</th><th>Name</th><th>State</th><th>Elapsed</th><th>Campaign</th></tr>${rows}</table>
+  </div>`;
+}
+
+(async () => {
+  try {
+    const r = await fetch("status.json", {cache: "no-store"});
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    document.getElementById("updated").textContent =
+      "updated " + d.updated_utc.replace("T", " ").replace("Z", " UTC");
+    document.getElementById("content").innerHTML =
+      robotwin(d.robotwin_single5) + robodojo(d.robodojo) + jobs(d.jobs);
+  } catch (e) {
+    document.getElementById("content").innerHTML =
+      `<div class="err">Status data unavailable (${esc(e.message)}) — try refreshing later.</div>`;
+  }
+})();
+</script>
+</body>
+</html>

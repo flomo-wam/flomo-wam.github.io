@@ -1,0 +1,51 @@
+{
+  "updated_utc": "2026-09-14T01:20:14Z",
+  "robotwin_single5": {
+    "current": "All eight healthy abc1 GPUs are claimed. FastWAM single-task code is staged toward its exact-runtime smoke; the corrected eight-layer, 20M, scratch BC contract is being integrated.",
+    "next": "Pass FastWAM and scratch-BC real admission gates, then schedule both model families across abc1 without overlapping device ownership.",
+    "blocker": "None yet. The old four-rank FastWAM torch 2.7.1/cu128 runtime failed before its first optimizer update; the private torch 2.9.1/cu130 candidate is now being exercised. BC must instantiate the existing 20M/eight-layer shape from scratch, not reuse the superseded 5B pretrained action-only baseline.",
+    "status_line": "Active \u2014 abc1 claimed; FastWAM staging and BC admission.",
+    "checklist_done": 0,
+    "checklist_total": 13
+  },
+  "robodojo": {
+    "state": "recovery_and_execution_active",
+    "gate": "Survivor provenance independently accepted. FloMo admission hardening is runtime-proven and deployed, with independent installed-hash checks onabc5/7. Last tracking outputs, VAE220 preservation, exact durable full875 identity and all35 real loaders remain required; no new model admission has launched.",
+    "remaining": [
+      "Retain oldabc7 recovery/loss evidence; rearm the prepared distinct fresh pi05 run only after tracking relinquishes abc5 and the canonical full875/all35 gate passes",
+      "Protect surviving tracks/VAE/text and native committed artifacts on the available shared durable storage; recompute only missing selected scopes, consolidate full875, and pass all35 real-loader gates",
+      "Preserve original epoch28 initializations and unchanged5000-update/globalbatch256 training; require real2-update admissions, native optimizer counters and final model/checkpoint restoration for every model",
+      "Preserve existing Fast-WAM production while verifying actual progress and copying only committed artifacts; live GPUs and logs are not final5000 proof",
+      "Accept5000-update outputs forMA,VA,VMA,pi05,Fast-WAM before any fixed100-cell3500-rollout evaluation; all RoboDojo task scores remain unmeasured"
+    ]
+  },
+  "jobs": [
+    {
+      "id": "12885915",
+      "name": "rt-rp-contr-controll-350846a2e006",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(DependencyNeverSatisfied)",
+      "campaign": "robotwin"
+    },
+    {
+      "id": "13156989",
+      "name": "flomo-va-toolbox",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(BeginTime)",
+      "campaign": "robotwin"
+    },
+    {
+      "id": "13094323",
+      "name": "flomo-va-toolbox",
+      "state": "RUNNING",
+      "elapsed": "2-00:01:48",
+      "node": "atl1-1-03-010-1-0",
+      "reason": "atl1-1-03-010-1-0",
+      "campaign": "robotwin"
+    }
+  ]
+}
