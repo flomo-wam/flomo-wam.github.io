@@ -1,20 +1,20 @@
 {
-  "updated_utc": "2026-09-15T19:28:47Z",
+  "updated_utc": "2026-09-15T20:28:51Z",
   "robotwin_single5": {
-    "status_line": "Active \u2014 all five BC Easy100 evaluations and FastWAM handover Easy100 are complete and published; handover scored 85/100. Four FastWAM trainers continue on abc1/abc7 with revised parallel evaluation continuations armed. Checkpoint and background shared-storage work do not delay or restart training/evaluation.",
-    "checklist_done": 8,
+    "status_line": "Active \u2014 all five BC Easy100 evaluations and FastWAM handover Easy100 are complete and published; handover scored 85/100. FastWAM pick/stack have accepted exact-5,000 finals and live scored Easy100 on abc1. Only open/mug training remains on abc7, with parallel evaluation continuations armed. Background preservation never gates training/evaluation.",
+    "checklist_done": 10,
     "checklist_total": 16
   },
   "robodojo": {
     "state": "admission_and_execution_active",
-    "gate": "MA final5000/restoration/PACE/officialWS accepted; zero scoredrollouts. Pi05 originalproduction4630/native4500, latest4500Lustre-protected; PACEthrough1000 verified. FastWAM oldproduction lostwithpod, no R8 launch yet; runtime/assets recovered, datasetconversion+durablecopy pending. User fixed1280000samples across8or12GPUs; actualbenchmark and fullnative sharedGTrestore gate production. Finalthree-modelacceptance and60cells/2100rollouts pending.",
+    "gate": "MA/pi05 native2500 protected/admitted. Seen evaluation active: abc8 MA stack_bowls0/10 partial; abc2 pi05 push_T andabc4 pi05 arrange_largest_number executing real actions. Prior stalled Open attempts preserved with40 partial episodes; no accepted full cell yet. FastWAM1000/256000samples protected19:22:03UTC; training continues5000, evaluation starts2500. Selected875 durablecopy accepted. Pi05final5000 shared protection completed18:48UTC; PACE chain remains pending. Strict FastWAM selected-checkpoint state/scheduler/epoch proof and60-cell2100-rolloutcompletion remain pending; noBCinRoboDojoscope.",
     "remaining": [
       "Accept fresh pi05abc5eight production5000 with1280000samples andnative committed-checkpoint restoration; repairPACEcontinuation andprotectfinal5000 withoutduplicatingworkers",
       "Evaluate protectedMA2500 usingits as-savedarchitecture/config andstrict optimizer2500/samples640000 admission; MAfinal5000 trainingacceptance isalreadycomplete",
       "Verify actualFastWAM productionprogress thennativefinal5000 with1280000samples onabc6/all8; retainknownR5recipe andno separatepreproduction smoke",
       "Preserve completeFastWAM nativecheckpoints every500updates andfinal onsharedGT withfsync/hash receipts andPACEsecondary; preserveallhistorical artifacts",
-      "Complete40MA/pi05cells and1400rollouts atnative2500 now; completeFastWAM20cells/700rollouts afterfinal5000acceptance",
-      "Finish node-localpolicy/simulatorruntime admission onabc8GPU0-1,abc2GPU0-3 andabc4GPU0; complete independentArchildatasetcopy/hash/native-reader proof"
+      "CompleteMA/pi0520cells700rollouts each atnative2500; launchFastWAM20cells700rollouts atprotectednative2500 whiletrainingcontinuesto5000; prioritize12seen tasks beforeunstartedOpen",
+      "Inspectactualseen-taskMA/pi05results andverifyFastWAMselected-checkpointadmission/inference usingits preservednativeconfig; independentArchildatasetcopy proof iscomplete"
     ]
   },
   "jobs": [
@@ -49,7 +49,7 @@
       "id": "13231705",
       "name": "rdj-pi05-r2f-win01",
       "state": "RUNNING",
-      "elapsed": "47:29",
+      "elapsed": "1:47:33",
       "node": "atl1-1-02-010-27-2",
       "reason": "atl1-1-02-010-27-2",
       "campaign": "other"
@@ -58,7 +58,7 @@
       "id": "13231130",
       "name": "rdj-fwm-r8-bkp",
       "state": "RUNNING",
-      "elapsed": "1:01:56",
+      "elapsed": "2:02:00",
       "node": "atl1-1-02-003-16-1",
       "reason": "atl1-1-02-003-16-1",
       "campaign": "other"
@@ -67,7 +67,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-14:00:44",
+      "elapsed": "1-15:00:48",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
