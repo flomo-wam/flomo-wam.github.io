@@ -1,7 +1,7 @@
 {
-  "updated_utc": "2026-09-15T21:28:55Z",
+  "updated_utc": "2026-09-15T22:28:58Z",
   "robotwin_single5": {
-    "status_line": "Active \u2014 all ten training endpoints are accepted at exactly 5,000 optimizer updates and 1,280,000 samples. All five BC Easy100 results and FastWAM handover (85/100) are published. The four remaining FastWAM lanes passed native renderer admission and are running their scored Easy100 continuations. Background preservation never gates evaluation.",
+    "status_line": "Active \u2014 all ten exact-5,000 training endpoints are accepted. Eight Easy100 results are published: all five BC, FastWAM handover (85/100), pick (20/100), and open laptop (68/100). Stack and mug continue scoring. User-authorized four-GPU mug continuation is being prepared without replaying the committed prefix; background preservation remains independent.",
     "checklist_done": 12,
     "checklist_total": 16
   },
@@ -19,6 +19,15 @@
   },
   "jobs": [
     {
+      "id": "13240450",
+      "name": "rdj-pi05-rh1-win02",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
+    {
       "id": "12885915",
       "name": "rt-rp-contr-controll-350846a2e006",
       "state": "PENDING",
@@ -28,10 +37,19 @@
       "campaign": "robotwin"
     },
     {
+      "id": "13240435",
+      "name": "rdj-pi05-rh1-win01",
+      "state": "RUNNING",
+      "elapsed": "50:24",
+      "node": "atl1-1-02-003-16-1",
+      "reason": "atl1-1-02-003-16-1",
+      "campaign": "other"
+    },
+    {
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-16:00:51",
+      "elapsed": "1-17:00:54",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
