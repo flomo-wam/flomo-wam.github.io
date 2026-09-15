@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-15T03:27:55Z",
+  "updated_utc": "2026-09-15T04:27:58Z",
   "robotwin_single5": {
     "next": "`FastWAMRecovery` replaces cancelled `CorrectSingle5Launch` for abc1 recovery/relaunch and abc8 FastWAM continuity. `Abc7Recovery` owns the entire abc7 BC/FastWAM launch path, including grants and their consumer, plus checkpoint persistence and evaluation. Main owns the static assignment: abc1 pick/stack only, abc8 handover only, abc7 open/mug only. ABC7 uses the existing launcher's canonical groups and ports: open on 4\u20137/29612, mug on 0\u20133/29611. Ordinary runtime/data admission remains required; shorter-save and durable-checkpoint verification must not delay ready training. Preflight: Latest native `--preflight-only` passed after freezing the entire model before enabling the declared partition. Exact measured trainables: Wan LoRA 161,218,560; ActionDiT LoRA 83,968; action input/output 29,710; proprio encoder 61,440; action side 175,118 (six below MA's 175,124); total 161,393,678. Dense ActionDiT, VAE, and text encoder stay frozen. Receipt: `evidence/single5-preflight-20260914-r1/receipts/adapter-preflight.json`, SHA256 `df37f9b636ebf64ffec54bff69ecd3df4b271c6ee91d03a2987fb0fcac6e62e4`. This is no-training proof, not an optimizer smoke. Data16: Before the wipe, all five isolated 50-demo roots passed the pinned native reader with 17 raw frames and action tensors `[16,14]`, ten finite decoded samples per task, 250 source-HDF5 hash matches, and five distinct task-local statistics hashes. The original frame/video payloads on abc1 are now lost: abc7's surviving small archive retained manifests and dangling symlinks, not four tasks' underlying data. Only handover data survived dereferenced staging. Re-derive the other four from the original read-only official demonstrations using the existing converter, then re-admit and preserve dereferenced data durably. Historical admission receipt: `/storage/project/r-agarg35-0/sgovil9/robotwin-eval-results/campaigns/robotwin-fastwam-single5-20260913-r1/state/abc1-mirror/data16/data16-run-receipt.json`. Timing: ABC8 handover's observed interval gives 9.7318 seconds/update and projects its final near September 15 14:42Z, excluding checkpoint-save overhead and disruptions. A new all-five FastWAM forecast awaits confirmed starts of the recovered lanes. Four BC finals are now accepted rather than estimated; the fifth began at 03:10:32Z. These are training states/estimates, not scored-result promises.",
     "blocker": "abc1's last inspected recovery bootstrap referenced a missing relative script; the replacement owner must establish real conversion/training progress rather than a shell PID. ABC7 data are ready and its asynchronous grant consumer is repaired, but grants must match native GPU-group/port constraints and the real admission\u2192production transition still needs confirmation. The second abc7 FastWAM group waits for BC mug. Checkpoint work remains parallel/nonblocking; accepted finals must be preserved before claim release. ## Wipe incident - Owner observations bound the wipe between September 14 23:29Z and 23:48Z. ABC1 source/data16/preflight/controllers disappeared, training wrappers died, and local run state was lost. `/tmp/shared-disk-permissions.log` is empty; the cause is not established. - Surviving staging: `/home/shitijgovil/stage-abc8` contains verified compressed assets, code, `env-train2`, campaign source, and real handover data. ABC7 retains source/preflight trees and task manifests; four tasks' data symlinks dangle and are not backups. SHA-bound recovery bundles now reside in `/home/shitijgovil/amplifyv2/robotwin-single5-abc7-20260914-r1/durable/`; PACE repository and receipt mirrors also remain available. - Recovery acceptance: preserve incident evidence, restore and hash-bound runtime/data, repeat ordinary native four-GPU admission, and restart lost policies from zero under new attempt identities. Verify improved checkpoint persistence concurrently, without delaying relaunch. Do not imply that pre-incident optimizer progress survived. ## Checkpoint safety - Last pre-wipe native observations reported by `CorrectSingle5Launch`: `pick_dual_bottles` 430 updates and `stack_bowls_two` 440 updates at 23:27:15Z, respectively 8.6% and 8.8% of their 5,000-update budgets. Exact death steps were not preserved. BC progress was unaffected. - The pre-wipe launcher derives `cfg.save_every` from `SAVE_EVERY=2500` in `baselines/fastwam/single5_contract.py`; at 10.38 seconds/update, its first production save was about 7.2 hours into training. The wiped attempts never reached that scheduled save. Admission checkpoints and their JSON receipts do not restore production progress. - Parallel checkpoint work: measure complete-checkpoint size and durable I/O, shorten the interval where safely applicable, publish complete optimizer/scheduler/RNG/trainer/model state atomically with hashes outside `/tmp`, and prove a fresh-process restore plus continued optimizer update separately from production launches. Receipt-only mirrors and final-only copies are insufficient. The user explicitly removed this new verification gate from relaunch; do not delay or restart active training for checkpoint improvements, and do not claim a changed cadence reached an already-running trainer without evidence. - Separate resume gap: `baselines/fastwam_robodojo/worker.py` rejects non-null `cfg.resume`, and the observed sample ledger is initialized in memory and written only after training. Full-state copying therefore does not yet prove campaign-level continuation. Verify/repair same-run resume and cumulative accounting separately; do not fabricate earlier sample observations or interrupt live training.",
@@ -21,87 +21,6 @@
   },
   "jobs": [
     {
-      "id": "13204717",
-      "name": "rdj-fwm-r5-backup-2",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13202652",
-      "name": "rdj-pi05-r2b-win02",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13196610",
-      "name": "rdj-fwm-backup-window-9",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13196609",
-      "name": "rdj-fwm-backup-window-8",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13196608",
-      "name": "rdj-fwm-backup-window-7",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13196607",
-      "name": "rdj-fwm-backup-window-6",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13196606",
-      "name": "rdj-fwm-backup-window-5",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13196605",
-      "name": "rdj-fwm-backup-window-4",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13196604",
-      "name": "rdj-fwm-backup-window-3",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
       "id": "12885915",
       "name": "rt-rp-contr-controll-350846a2e006",
       "state": "PENDING",
@@ -111,37 +30,10 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13196603",
-      "name": "rdj-fwm-backup-window-2",
-      "state": "RUNNING",
-      "elapsed": "1:45:20",
-      "node": "atl1-1-02-002-27-1",
-      "reason": "atl1-1-02-002-27-1",
-      "campaign": "other"
-    },
-    {
-      "id": "13204715",
-      "name": "rdj-fwm-r5-backup",
-      "state": "RUNNING",
-      "elapsed": "4:27:47",
-      "node": "atl1-1-03-003-11-2",
-      "reason": "atl1-1-03-003-11-2",
-      "campaign": "other"
-    },
-    {
-      "id": "13202650",
-      "name": "rdj-pi05-r2c-win01",
-      "state": "RUNNING",
-      "elapsed": "6:15:02",
-      "node": "atl1-1-03-003-1-1",
-      "reason": "atl1-1-03-003-1-1",
-      "campaign": "other"
-    },
-    {
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "21:59:51",
+      "elapsed": "22:59:54",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
