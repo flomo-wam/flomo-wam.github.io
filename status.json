@@ -1,13 +1,13 @@
 {
-  "updated_utc": "2026-09-15T20:28:51Z",
+  "updated_utc": "2026-09-15T21:28:55Z",
   "robotwin_single5": {
-    "status_line": "Active \u2014 all five BC Easy100 evaluations and FastWAM handover Easy100 are complete and published; handover scored 85/100. FastWAM pick/stack have accepted exact-5,000 finals and live scored Easy100 on abc1. Only open/mug training remains on abc7, with parallel evaluation continuations armed. Background preservation never gates training/evaluation.",
-    "checklist_done": 10,
+    "status_line": "Active \u2014 all ten training endpoints are accepted at exactly 5,000 optimizer updates and 1,280,000 samples. All five BC Easy100 results and FastWAM handover (85/100) are published. The four remaining FastWAM lanes passed native renderer admission and are running their scored Easy100 continuations. Background preservation never gates evaluation.",
+    "checklist_done": 12,
     "checklist_total": 16
   },
   "robodojo": {
     "state": "admission_and_execution_active",
-    "gate": "MA/pi05 native2500 protected/admitted. Seen evaluation active: abc8 MA stack_bowls0/10 partial; abc2 pi05 push_T andabc4 pi05 arrange_largest_number executing real actions. Prior stalled Open attempts preserved with40 partial episodes; no accepted full cell yet. FastWAM1000/256000samples protected19:22:03UTC; training continues5000, evaluation starts2500. Selected875 durablecopy accepted. Pi05final5000 shared protection completed18:48UTC; PACE chain remains pending. Strict FastWAM selected-checkpoint state/scheduler/epoch proof and60-cell2100-rolloutcompletion remain pending; noBCinRoboDojoscope.",
+    "gate": "MA/pi05 native2500 protected/admitted; matched stack_bowls+push_T complete with 25 distinct trials/cell: MA 0/50, pi05 6/50, 2/12 seen tasks per model. Four seen workers active after abc5 recovery. Prior Open partials retained. FastWAM1500/384000samples protected20:53:24UTC; training continues5000, evaluation starts2500. Selected875 durablecopy accepted. Pi05final5000 shared-protected; PACE chain needs source recovery after abc5 replacement. Strict FastWAM native verification and full60-cell2100-rolloutcompletion remain pending; noBCinRoboDojoscope.",
     "remaining": [
       "Accept fresh pi05abc5eight production5000 with1280000samples andnative committed-checkpoint restoration; repairPACEcontinuation andprotectfinal5000 withoutduplicatingworkers",
       "Evaluate protectedMA2500 usingits as-savedarchitecture/config andstrict optimizer2500/samples640000 admission; MAfinal5000 trainingacceptance isalreadycomplete",
@@ -19,24 +19,6 @@
   },
   "jobs": [
     {
-      "id": "13231709",
-      "name": "rdj-pi05-r2b-win02",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
-      "id": "13231132",
-      "name": "rdj-fwm-r8-bkp-2",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
-    {
       "id": "12885915",
       "name": "rt-rp-contr-controll-350846a2e006",
       "state": "PENDING",
@@ -46,28 +28,10 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13231705",
-      "name": "rdj-pi05-r2f-win01",
-      "state": "RUNNING",
-      "elapsed": "1:47:33",
-      "node": "atl1-1-02-010-27-2",
-      "reason": "atl1-1-02-010-27-2",
-      "campaign": "other"
-    },
-    {
-      "id": "13231130",
-      "name": "rdj-fwm-r8-bkp",
-      "state": "RUNNING",
-      "elapsed": "2:02:00",
-      "node": "atl1-1-02-003-16-1",
-      "reason": "atl1-1-02-003-16-1",
-      "campaign": "other"
-    },
-    {
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-15:00:48",
+      "elapsed": "1-16:00:51",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
