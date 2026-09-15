@@ -1,7 +1,7 @@
 {
-  "updated_utc": "2026-09-15T18:28:44Z",
+  "updated_utc": "2026-09-15T19:28:47Z",
   "robotwin_single5": {
-    "status_line": "Active \u2014 all five BC policies and Easy100 evaluations are complete and published; handover FastWAM has an accepted 5,000-update final and live scored Easy100. Four FastWAM trainers continue on abc1/abc7. Checkpoint and background shared-storage work do not delay or restart training/evaluation.",
+    "status_line": "Active \u2014 all five BC Easy100 evaluations and FastWAM handover Easy100 are complete and published; handover scored 85/100. Four FastWAM trainers continue on abc1/abc7 with revised parallel evaluation continuations armed. Checkpoint and background shared-storage work do not delay or restart training/evaluation.",
     "checklist_done": 8,
     "checklist_total": 16
   },
@@ -18,6 +18,15 @@
     ]
   },
   "jobs": [
+    {
+      "id": "13231709",
+      "name": "rdj-pi05-r2b-win02",
+      "state": "PENDING",
+      "elapsed": "0:00",
+      "node": "",
+      "reason": "(Dependency)",
+      "campaign": "other"
+    },
     {
       "id": "13231132",
       "name": "rdj-fwm-r8-bkp-2",
@@ -37,10 +46,19 @@
       "campaign": "robotwin"
     },
     {
+      "id": "13231705",
+      "name": "rdj-pi05-r2f-win01",
+      "state": "RUNNING",
+      "elapsed": "47:29",
+      "node": "atl1-1-02-010-27-2",
+      "reason": "atl1-1-02-010-27-2",
+      "campaign": "other"
+    },
+    {
       "id": "13231130",
       "name": "rdj-fwm-r8-bkp",
       "state": "RUNNING",
-      "elapsed": "1:52",
+      "elapsed": "1:01:56",
       "node": "atl1-1-02-003-16-1",
       "reason": "atl1-1-02-003-16-1",
       "campaign": "other"
@@ -49,7 +67,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-13:00:40",
+      "elapsed": "1-14:00:44",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
