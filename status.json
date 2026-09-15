@@ -1,8 +1,7 @@
 {
-  "updated_utc": "2026-09-15T06:28:04Z",
+  "updated_utc": "2026-09-15T07:28:07Z",
   "robotwin_single5": {
-    "blocker": "abc7's open launch was rejected because its grant serialized GPU UUIDs as a string and the consumer joined its characters into a regex, falsely matching BC GPUs 0\u20131 outside the granted 4\u20137 scope. The replacement owner is cutting producer/consumer over to UUID arrays and exact membership, correcting data/admission paths and reload CUDA scoping, and retaining one asynchronous dispatcher. Open still needs native execution proof; mug waits for BC completion. ABC1 recovery is admitted and live: the actual reload receipt is finite `[16,14]`; an earlier owner's `[32,14]` report was a prose typo. Checkpoint work remains nonblocking. ## Wipe incident - Owner observations bound the wipe between September 14 23:29Z and 23:48Z. ABC1 source/data16/preflight/controllers disappeared, training wrappers died, and local run state was lost. `/tmp/shared-disk-permissions.log` is empty; the cause is not established. - Surviving staging: `/home/shitijgovil/stage-abc8` contains verified compressed assets, code, `env-train2`, campaign source, and real handover data. ABC7 retains source/preflight trees and task manifests; four tasks' data symlinks dangle and are not backups. SHA-bound recovery bundles now reside in `/home/shitijgovil/amplifyv2/robotwin-single5-abc7-20260914-r1/durable/`; PACE repository and receipt mirrors also remain available. - Recovery acceptance: preserve incident evidence, restore and hash-bound runtime/data, repeat ordinary native four-GPU admission, and restart lost policies from zero under new attempt identities. Verify improved checkpoint persistence concurrently, without delaying relaunch. Do not imply that pre-incident optimizer progress survived. - ABC1 recovery milestone, September 15 05:42:58Z: both datasets match all 50 original episode hashes; native four-rank two-update admission and reload passed before fresh production. Reload evidence: `ssh://microagi-abc-1/tmp/fastwam-single5-work/runs/admission-smoke-pick_dual_bottles-r2/receipts/reload-inference.json`. Production budgets retain 5,000 updates, batch 256, seed 0, and the pinned source; neither restarted policy claims pre-wipe progress. ## Checkpoint safety - Last pre-wipe native observations reported by `CorrectSingle5Launch`: `pick_dual_bottles` 430 updates and `stack_bowls_two` 440 updates at 23:27:15Z, respectively 8.6% and 8.8% of their 5,000-update budgets. Exact death steps were not preserved. BC progress was unaffected. - The pre-wipe launcher derives `cfg.save_every` from `SAVE_EVERY=2500` in `baselines/fastwam/single5_contract.py`; at 10.38 seconds/update, its first production save was about 7.2 hours into training. The wiped attempts never reached that scheduled save. Admission checkpoints and their JSON receipts do not restore production progress. - Parallel checkpoint work: measure complete-checkpoint size and durable I/O, shorten the interval where safely applicable, publish complete optimizer/scheduler/RNG/trainer/model state atomically with hashes outside `/tmp`, and prove a fresh-process restore plus continued optimizer update separately from production launches. Receipt-only mirrors and final-only copies are insufficient. The user explicitly removed this new verification gate from relaunch; do not delay or restart active training for checkpoint improvements, and do not claim a changed cadence reached an already-running trainer without evidence. - Separate resume gap: `baselines/fastwam_robodojo/worker.py` rejects non-null `cfg.resume`, and the observed sample ledger is initialized in memory and written only after training. Full-state copying therefore does not yet prove campaign-level continuation. Verify/repair same-run resume and cumulative accounting separately; do not fabricate earlier sample observations or interrupt live training.",
-    "status_line": "Active \u2014 four BC policies have accepted 5,000-update finals; BC `hanging_mug` is running on abc7. FastWAM `handover_mic` trains on abc8; the abc1 restarts and abc7 BC\u2192FastWAM transition are in progress. Checkpoint improvements run in parallel and do not gate ready training. ABC8 GPUs 0\u20131 remain protected.",
+    "status_line": "Active \u2014 all five BC policies have accepted 5,000-update finals; all five FastWAM policies are natively training across abc1, abc7, and abc8. Checkpoint improvements remain independent: no live trainer was delayed or restarted for them. Easy100 evaluations are being placed on abc8 GPUs 2\u20133; GPUs 0\u20131 remain protected.",
     "checklist_done": 4,
     "checklist_total": 13
   },
@@ -59,7 +58,7 @@
       "id": "13210708",
       "name": "rdj-pi05-r2d-win01",
       "state": "RUNNING",
-      "elapsed": "57:45",
+      "elapsed": "1:57:48",
       "node": "atl1-1-02-005-2-1",
       "reason": "atl1-1-02-005-2-1",
       "campaign": "other"
@@ -68,7 +67,7 @@
       "id": "13210660",
       "name": "rdj-fwm-r5-rcv",
       "state": "RUNNING",
-      "elapsed": "1:06:07",
+      "elapsed": "2:06:10",
       "node": "atl1-1-02-002-25-2",
       "reason": "atl1-1-02-002-25-2",
       "campaign": "other"
@@ -77,7 +76,7 @@
       "id": "13210661",
       "name": "rdj-fwm-or2500-rcv",
       "state": "RUNNING",
-      "elapsed": "1:06:07",
+      "elapsed": "2:06:10",
       "node": "atl1-1-02-002-27-1",
       "reason": "atl1-1-02-002-27-1",
       "campaign": "other"
@@ -86,7 +85,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-01:00:00",
+      "elapsed": "1-02:00:03",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
