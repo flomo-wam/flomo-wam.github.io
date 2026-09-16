@@ -1,17 +1,17 @@
 {
-  "updated_utc": "2026-09-16T02:29:08Z",
+  "updated_utc": "2026-09-16T03:29:10Z",
   "robotwin_single5": {
     "status_line": "Scientific work and requested comparison figure complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published; all three GPU claims are DONE. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only independently owned CPU/network shared preservation remains.",
     "checklist_done": 14,
     "checklist_total": 16
   },
   "robodojo": {
-    "state": "compute_shutdown_complete_checkpoint_migration_active",
-    "gate": "User canceled the entire experiment and requested checkpoint relocation to shared data storage. All RoboDojo training, evaluations, queues, old transfers/watchers and backup Slurm jobs are stopped; all five GPU claims are finalized. FastWAM recovery never reached1501; valid1500/384000samples retained, partial2000 inadmissible. Only CPU checkpoint migration and verified source removal remain active. Pi05 completed Generalization12/12,300trials,7successes; latest matched6tasks MA0/150 vs pi056/150. No further experiment execution is authorized.",
+    "state": "compute_shutdown_complete_discarding_unbacked_checkpoints",
+    "gate": "All RoboDojo training, evaluations, launch queues and GPU claims are shut down. User explicitly chose to keep only existing protected shared backups and discard other campaign checkpoint copies, including unique complete unbacked snapshots; all further copying and storage troubleshooting are canceled. Shared MA2500/pi052500 and FastWAM500/1000/1500 remain protected. Pi05 Generalization7/300 and matched6-task MA0/150 vs pi056/150 are final accepted results. Only guarded deletion, temporary-transfer teardown and final receipts remain.",
     "remaining": [
-      "Inventory complete/partial checkpoint trees and archives on pod-local, sharedhome and PACE storage; move or identity-deduplicate them into/data/collab/gt/shared",
-      "Remove only source checkpoint copies with durable destination proof, record actual reclaimed storage and preserve small provenance receipts",
-      "Publish final canceled results, shutdown and relocation receipts, then close the campaign task without claiming full experimental completion"
+      "Discard inventoried campaign checkpoint copies outside existing protected shared backups while preserving results, provenance and excluded inputs",
+      "Stop remaining temporary transfer/controller/GCP infrastructure without touching unrelated services or waiting on inaccessible storage",
+      "Publish final retained paths, deletion accounting and inaccessible residuals, then close the canceled campaign"
     ]
   },
   "jobs": [
@@ -25,46 +25,10 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13243809_0",
-      "name": "rdj-fw-cancel-move-r2",
-      "state": "RUNNING",
-      "elapsed": "1:21:17",
-      "node": "atl1-1-02-002-23-2",
-      "reason": "atl1-1-02-002-23-2",
-      "campaign": "other"
-    },
-    {
-      "id": "13243809_1",
-      "name": "rdj-fw-cancel-move-r2",
-      "state": "RUNNING",
-      "elapsed": "1:21:17",
-      "node": "atl1-1-02-002-24-2",
-      "reason": "atl1-1-02-002-24-2",
-      "campaign": "other"
-    },
-    {
-      "id": "13243809_2",
-      "name": "rdj-fw-cancel-move-r2",
-      "state": "RUNNING",
-      "elapsed": "1:21:17",
-      "node": "atl1-1-02-002-26-1",
-      "reason": "atl1-1-02-002-26-1",
-      "campaign": "other"
-    },
-    {
-      "id": "13243809_3",
-      "name": "rdj-fw-cancel-move-r2",
-      "state": "RUNNING",
-      "elapsed": "1:21:17",
-      "node": "atl1-1-02-002-26-1",
-      "reason": "atl1-1-02-002-26-1",
-      "campaign": "other"
-    },
-    {
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-21:01:04",
+      "elapsed": "1-22:01:06",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
