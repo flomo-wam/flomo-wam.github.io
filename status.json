@@ -1,13 +1,13 @@
 {
-  "updated_utc": "2026-09-15T23:29:00Z",
+  "updated_utc": "2026-09-16T00:29:03Z",
   "robotwin_single5": {
-    "status_line": "Scientific work complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only bounded background preservation and final resource reconciliation remain.",
-    "checklist_done": 13,
+    "status_line": "Scientific work and requested comparison figure complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published; all three GPU claims are DONE. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only independently owned CPU/network shared preservation remains.",
+    "checklist_done": 14,
     "checklist_total": 16
   },
   "robodojo": {
     "state": "admission_and_execution_active",
-    "gate": "MA/pi05 native2500 protected/admitted; matched stack_bowls+push_T complete with 25 distinct trials/cell: MA 0/50, pi05 6/50, 2/12 seen tasks per model. Four seen workers and durable raw-result watchers active. FastWAM stopped22:19:16UTC during partial2000 sharedGT save/NCCLtimeout; protected1500/384000samples remains valid. Fresh native1500 recovery requires exact restore proof and full-state local staging/shared promotion; prior ETA withdrawn. Training target5000 and selected evaluation2500 unchanged. Pi05final5000 shared-protected; fresh PACE13240277/successor13240279 after abc5 replacement. Full60-cell2100-rolloutcompletion remains pending; noBCinRoboDojoscope.",
+    "gate": "MA/pi05 native2500 protected/admitted; 6/12 matched Generalization tasks complete with25 distinct trials/cell and durable raw results: MA0/150, pi056/150(4%). Open align_blocks separately0/50 each. Remaining Generalization work redistributed before furtherOpen launches, activeOpen cells preserved. FastWAM stopped22:19:16UTC during partial2000 sharedGT save/NCCLtimeout; protected1500/384000samples valid. Fresh local-stage/shared-promotion recovery has passed sampler suffix/epoch1 smoke and9 data-local admission tests; unchanged native1500 clone exists but source-receipt finalization must handle legacy-derived accounting before launch. PriorETAwithdrawn; targets5000training/2500evaluation unchanged. Full60-cell2100-rolloutcompletion pending; noBCinRoboDojoscope.",
     "remaining": [
       "Accept fresh pi05abc5eight production5000 with1280000samples andnative committed-checkpoint restoration; repairPACEcontinuation andprotectfinal5000 withoutduplicatingworkers",
       "Evaluate protectedMA2500 usingits as-savedarchitecture/config andstrict optimizer2500/samples640000 admission; MAfinal5000 trainingacceptance isalreadycomplete",
@@ -40,7 +40,7 @@
       "id": "13240435",
       "name": "rdj-pi05-rh1-win01",
       "state": "RUNNING",
-      "elapsed": "1:50:27",
+      "elapsed": "2:50:29",
       "node": "atl1-1-02-003-16-1",
       "reason": "atl1-1-02-003-16-1",
       "campaign": "other"
@@ -49,7 +49,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-18:00:57",
+      "elapsed": "1-19:00:59",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
