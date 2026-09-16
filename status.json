@@ -1,15 +1,14 @@
 {
-  "updated_utc": "2026-09-16T01:29:05Z",
+  "updated_utc": "2026-09-16T02:29:08Z",
   "robotwin_single5": {
     "status_line": "Scientific work and requested comparison figure complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published; all three GPU claims are DONE. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only independently owned CPU/network shared preservation remains.",
     "checklist_done": 14,
     "checklist_total": 16
   },
   "robodojo": {
-    "state": "user_canceled_shutdown_and_checkpoint_migration",
-    "gate": "User canceled the entire experiment and requested checkpoint relocation to shared data storage. FastWAM recovery/monitors stopped, no1501, abc6 all8 zero compute apps and claim finalized; valid1500/384000samples retained, partial2000 inadmissible. Evaluation shutdown/claim release and all-model checkpoint inventory/migration are in progress. Pi05 completed Generalization12/12,300trials,7successes; latest matched6tasks MA0/150 vs pi056/150. No further experiment completion is authorized.",
+    "state": "compute_shutdown_complete_checkpoint_migration_active",
+    "gate": "User canceled the entire experiment and requested checkpoint relocation to shared data storage. All RoboDojo training, evaluations, queues, old transfers/watchers and backup Slurm jobs are stopped; all five GPU claims are finalized. FastWAM recovery never reached1501; valid1500/384000samples retained, partial2000 inadmissible. Only CPU checkpoint migration and verified source removal remain active. Pi05 completed Generalization12/12,300trials,7successes; latest matched6tasks MA0/150 vs pi056/150. No further experiment execution is authorized.",
     "remaining": [
-      "Verify every RoboDojo process, queue, transfer, watcher and Slurm job is stopped except explicitly owned checkpoint-migration workers; release all campaign GPU claims",
       "Inventory complete/partial checkpoint trees and archives on pod-local, sharedhome and PACE storage; move or identity-deduplicate them into/data/collab/gt/shared",
       "Remove only source checkpoint copies with durable destination proof, record actual reclaimed storage and preserve small provenance receipts",
       "Publish final canceled results, shutdown and relocation receipts, then close the campaign task without claiming full experimental completion"
@@ -29,7 +28,7 @@
       "id": "13243809_0",
       "name": "rdj-fw-cancel-move-r2",
       "state": "RUNNING",
-      "elapsed": "21:15",
+      "elapsed": "1:21:17",
       "node": "atl1-1-02-002-23-2",
       "reason": "atl1-1-02-002-23-2",
       "campaign": "other"
@@ -38,7 +37,7 @@
       "id": "13243809_1",
       "name": "rdj-fw-cancel-move-r2",
       "state": "RUNNING",
-      "elapsed": "21:15",
+      "elapsed": "1:21:17",
       "node": "atl1-1-02-002-24-2",
       "reason": "atl1-1-02-002-24-2",
       "campaign": "other"
@@ -47,7 +46,7 @@
       "id": "13243809_2",
       "name": "rdj-fw-cancel-move-r2",
       "state": "RUNNING",
-      "elapsed": "21:15",
+      "elapsed": "1:21:17",
       "node": "atl1-1-02-002-26-1",
       "reason": "atl1-1-02-002-26-1",
       "campaign": "other"
@@ -56,7 +55,7 @@
       "id": "13243809_3",
       "name": "rdj-fw-cancel-move-r2",
       "state": "RUNNING",
-      "elapsed": "21:15",
+      "elapsed": "1:21:17",
       "node": "atl1-1-02-002-26-1",
       "reason": "atl1-1-02-002-26-1",
       "campaign": "other"
@@ -65,7 +64,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-20:01:02",
+      "elapsed": "1-21:01:04",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
