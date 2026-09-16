@@ -1,32 +1,21 @@
 {
-  "updated_utc": "2026-09-16T00:29:03Z",
+  "updated_utc": "2026-09-16T01:29:05Z",
   "robotwin_single5": {
     "status_line": "Scientific work and requested comparison figure complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published; all three GPU claims are DONE. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only independently owned CPU/network shared preservation remains.",
     "checklist_done": 14,
     "checklist_total": 16
   },
   "robodojo": {
-    "state": "admission_and_execution_active",
-    "gate": "MA/pi05 native2500 protected/admitted; 6/12 matched Generalization tasks complete with25 distinct trials/cell and durable raw results: MA0/150, pi056/150(4%). Open align_blocks separately0/50 each. Remaining Generalization work redistributed before furtherOpen launches, activeOpen cells preserved. FastWAM stopped22:19:16UTC during partial2000 sharedGT save/NCCLtimeout; protected1500/384000samples valid. Fresh local-stage/shared-promotion recovery has passed sampler suffix/epoch1 smoke and9 data-local admission tests; unchanged native1500 clone exists but source-receipt finalization must handle legacy-derived accounting before launch. PriorETAwithdrawn; targets5000training/2500evaluation unchanged. Full60-cell2100-rolloutcompletion pending; noBCinRoboDojoscope.",
+    "state": "user_canceled_shutdown_and_checkpoint_migration",
+    "gate": "User canceled the entire experiment and requested checkpoint relocation to shared data storage. FastWAM recovery/monitors stopped, no1501, abc6 all8 zero compute apps and claim finalized; valid1500/384000samples retained, partial2000 inadmissible. Evaluation shutdown/claim release and all-model checkpoint inventory/migration are in progress. Pi05 completed Generalization12/12,300trials,7successes; latest matched6tasks MA0/150 vs pi056/150. No further experiment completion is authorized.",
     "remaining": [
-      "Accept fresh pi05abc5eight production5000 with1280000samples andnative committed-checkpoint restoration; repairPACEcontinuation andprotectfinal5000 withoutduplicatingworkers",
-      "Evaluate protectedMA2500 usingits as-savedarchitecture/config andstrict optimizer2500/samples640000 admission; MAfinal5000 trainingacceptance isalreadycomplete",
-      "Verify actualFastWAM productionprogress thennativefinal5000 with1280000samples onabc6/all8; retainknownR5recipe andno separatepreproduction smoke",
-      "Preserve completeFastWAM nativecheckpoints every500updates andfinal onsharedGT withfsync/hash receipts andPACEsecondary; preserveallhistorical artifacts",
-      "CompleteMA/pi0520cells700rollouts each atnative2500; launchFastWAM20cells700rollouts atprotectednative2500 whiletrainingcontinuesto5000; prioritize12seen tasks beforeunstartedOpen",
-      "Inspectactualseen-taskMA/pi05results andverifyFastWAMselected-checkpointadmission/inference usingits preservednativeconfig; independentArchildatasetcopy proof iscomplete"
+      "Verify every RoboDojo process, queue, transfer, watcher and Slurm job is stopped except explicitly owned checkpoint-migration workers; release all campaign GPU claims",
+      "Inventory complete/partial checkpoint trees and archives on pod-local, sharedhome and PACE storage; move or identity-deduplicate them into/data/collab/gt/shared",
+      "Remove only source checkpoint copies with durable destination proof, record actual reclaimed storage and preserve small provenance receipts",
+      "Publish final canceled results, shutdown and relocation receipts, then close the campaign task without claiming full experimental completion"
     ]
   },
   "jobs": [
-    {
-      "id": "13240450",
-      "name": "rdj-pi05-rh1-win02",
-      "state": "PENDING",
-      "elapsed": "0:00",
-      "node": "",
-      "reason": "(Dependency)",
-      "campaign": "other"
-    },
     {
       "id": "12885915",
       "name": "rt-rp-contr-controll-350846a2e006",
@@ -37,19 +26,46 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13240435",
-      "name": "rdj-pi05-rh1-win01",
+      "id": "13243809_0",
+      "name": "rdj-fw-cancel-move-r2",
       "state": "RUNNING",
-      "elapsed": "2:50:29",
-      "node": "atl1-1-02-003-16-1",
-      "reason": "atl1-1-02-003-16-1",
+      "elapsed": "21:15",
+      "node": "atl1-1-02-002-23-2",
+      "reason": "atl1-1-02-002-23-2",
+      "campaign": "other"
+    },
+    {
+      "id": "13243809_1",
+      "name": "rdj-fw-cancel-move-r2",
+      "state": "RUNNING",
+      "elapsed": "21:15",
+      "node": "atl1-1-02-002-24-2",
+      "reason": "atl1-1-02-002-24-2",
+      "campaign": "other"
+    },
+    {
+      "id": "13243809_2",
+      "name": "rdj-fw-cancel-move-r2",
+      "state": "RUNNING",
+      "elapsed": "21:15",
+      "node": "atl1-1-02-002-26-1",
+      "reason": "atl1-1-02-002-26-1",
+      "campaign": "other"
+    },
+    {
+      "id": "13243809_3",
+      "name": "rdj-fw-cancel-move-r2",
+      "state": "RUNNING",
+      "elapsed": "21:15",
+      "node": "atl1-1-02-002-26-1",
+      "reason": "atl1-1-02-002-26-1",
       "campaign": "other"
     },
     {
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-19:00:59",
+      "elapsed": "1-20:01:02",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
