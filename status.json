@@ -1,18 +1,14 @@
 {
-  "updated_utc": "2026-09-16T03:29:10Z",
+  "updated_utc": "2026-09-16T04:29:13Z",
   "robotwin_single5": {
     "status_line": "Scientific work and requested comparison figure complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published; all three GPU claims are DONE. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only independently owned CPU/network shared preservation remains.",
     "checklist_done": 14,
     "checklist_total": 16
   },
   "robodojo": {
-    "state": "compute_shutdown_complete_discarding_unbacked_checkpoints",
-    "gate": "All RoboDojo training, evaluations, launch queues and GPU claims are shut down. User explicitly chose to keep only existing protected shared backups and discard other campaign checkpoint copies, including unique complete unbacked snapshots; all further copying and storage troubleshooting are canceled. Shared MA2500/pi052500 and FastWAM500/1000/1500 remain protected. Pi05 Generalization7/300 and matched6-task MA0/150 vs pi056/150 are final accepted results. Only guarded deletion, temporary-transfer teardown and final receipts remain.",
-    "remaining": [
-      "Discard inventoried campaign checkpoint copies outside existing protected shared backups while preserving results, provenance and excluded inputs",
-      "Stop remaining temporary transfer/controller/GCP infrastructure without touching unrelated services or waiting on inaccessible storage",
-      "Publish final retained paths, deletion accounting and inaccessible residuals, then close the canceled campaign"
-    ]
+    "state": "canceled_closed",
+    "gate": "The canceled campaign and all reported residual cleanup are complete. All five GPU claims remain released. Followup cleared179686764544 allocated bytes of abc6 checkpoint/receiver temporary files and1081872384 bytes of abc8 deferred/partial storage, with exact paths absent and no matching open descriptors. Prior PACE/sharedhome reclamation remains849341337600 allocated bytes. Protected shared backups, results and unrelated workloads remain unchanged; no retries, transfers or recovery work remain queued.",
+    "remaining": []
   },
   "jobs": [
     {
@@ -28,7 +24,7 @@
       "id": "13156989",
       "name": "flomo-va-toolbox",
       "state": "RUNNING",
-      "elapsed": "1-22:01:06",
+      "elapsed": "1-23:01:09",
       "node": "atl1-1-03-010-1-0",
       "reason": "atl1-1-03-010-1-0",
       "campaign": "robotwin"
