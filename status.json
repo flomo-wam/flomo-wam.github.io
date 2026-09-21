@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-21T01:34:46Z",
+  "updated_utc": "2026-09-21T02:34:51Z",
   "robotwin_single5": {
     "status_line": "Scientific work and requested comparison figure complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published; all three GPU claims are DONE. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only independently owned CPU/network shared preservation remains.",
     "checklist_done": 14,
@@ -21,12 +21,12 @@
       "campaign": "robotwin"
     },
     {
-      "id": "13399189",
+      "id": "13400524",
       "name": "flomo-release",
       "state": "RUNNING",
-      "elapsed": "6:19",
-      "node": "atl1-1-02-006-25-1",
-      "reason": "atl1-1-02-006-25-1",
+      "elapsed": "6:16",
+      "node": "atl1-1-01-002-23-1",
+      "reason": "atl1-1-01-002-23-1",
       "campaign": "robotwin"
     }
   ]
