@@ -1,0 +1,285 @@
+{
+  "sources": {
+    "oven": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/ma10h_oven_success.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.0,
+      "frames": 1200,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_oven.jpg",
+      "decodable_frames": 1134
+    },
+    "toolbox": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/ma10h_toolbox_success.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.0,
+      "frames": 2240,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_toolbox.jpg",
+      "decodable_frames": 2082
+    },
+    "corn": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/ma10h_corn_success.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.0,
+      "frames": 398,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_corn.jpg",
+      "decodable_frames": 353
+    },
+    "cabinet": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/option-compare/door_landscape.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.0,
+      "frames": 346,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_cabinet.jpg",
+      "decodable_frames": 346
+    },
+    "yoyo": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/src/yoyo_sdr.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.0,
+      "frames": 449,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_yoyo.jpg",
+      "decodable_frames": 449
+    },
+    "highlighter": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/src/highlighter_sdr.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.0,
+      "frames": 261,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_highlighter.jpg",
+      "decodable_frames": 261
+    },
+    "dreamzero": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/dreamzero_yoyo_failure.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.0,
+      "frames": 335,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_dreamzero.jpg",
+      "decodable_frames": 236
+    },
+    "oven_hc": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo_release_tracks/rollouts/flomo_20260919_201408_1/front_img_1.mp4",
+      "width": 640,
+      "height": 480,
+      "fps": 15.0,
+      "frames": 1328,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_oven_hc.jpg",
+      "decodable_frames": 1328
+    },
+    "toolbox_hc": {
+      "path": "/storage/project/r-agarg35-0/sgovil9/flomo_release_tracks/rollouts/flomo_20260919_202449_1/front_img_1.mp4",
+      "width": 640,
+      "height": 480,
+      "fps": 15.0,
+      "frames": 1312,
+      "scrub": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/scrub_toolbox_hc.jpg",
+      "decodable_frames": 1312
+    }
+  },
+  "clips": [
+    {
+      "name": "id_oven",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/ma10h_oven_success.mp4",
+      "in_s": 7.0,
+      "out_s": 36.6,
+      "speed": 2.5,
+      "crop": null,
+      "site_look": null,
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/id_oven.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 355
+    },
+    {
+      "name": "id_toolbox",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/ma10h_toolbox_success.mp4",
+      "in_s": 39.0,
+      "out_s": 69.0,
+      "speed": 2.5,
+      "crop": null,
+      "site_look": null,
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/id_toolbox.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 360
+    },
+    {
+      "name": "id_corn",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/ma10h_corn_success.mp4",
+      "in_s": 5.0,
+      "out_s": 11.4,
+      "speed": 1.0,
+      "crop": null,
+      "site_look": null,
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/id_corn.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 192
+    },
+    {
+      "name": "id_oven_headcam",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo_release_tracks/rollouts/flomo_20260919_201408_1/front_img_1.mp4",
+      "in_s": 43.0,
+      "out_s": 60.0,
+      "speed": 2.0,
+      "crop": null,
+      "site_look": null,
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/id_oven_headcam.mp4",
+      "width": 960,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 255
+    },
+    {
+      "name": "id_toolbox_headcam",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo_release_tracks/rollouts/flomo_20260919_202449_1/front_img_1.mp4",
+      "in_s": 36.5,
+      "out_s": 54.0,
+      "speed": 2.0,
+      "crop": null,
+      "site_look": null,
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/id_toolbox_headcam.mp4",
+      "width": 960,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 262
+    },
+    {
+      "name": "ood_cabinet",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/option-compare/door_landscape.mp4",
+      "in_s": 1.4,
+      "out_s": 11.4,
+      "speed": 1.0,
+      "crop": null,
+      "site_look": null,
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/ood_cabinet.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 300
+    },
+    {
+      "name": "ood_string",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/src/yoyo_sdr.mp4",
+      "in_s": 5.8,
+      "out_s": 14.9,
+      "speed": 1.0,
+      "crop": null,
+      "site_look": {
+        "r": {
+          "gain": 1.1261,
+          "offset": -19.92,
+          "max_residual": 2.88
+        },
+        "g": {
+          "gain": 1.1474,
+          "offset": -19.55,
+          "max_residual": 1.32
+        },
+        "b": {
+          "gain": 1.1259,
+          "offset": -20.24,
+          "max_residual": 2.31
+        }
+      },
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/ood_string.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 273
+    },
+    {
+      "name": "ood_highlighter",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/src/highlighter_sdr.mp4",
+      "in_s": 2.0,
+      "out_s": 8.5,
+      "speed": 1.0,
+      "crop": null,
+      "site_look": {
+        "r": {
+          "gain": 1.1261,
+          "offset": -19.92,
+          "max_residual": 2.88
+        },
+        "g": {
+          "gain": 1.1474,
+          "offset": -19.55,
+          "max_residual": 1.32
+        },
+        "b": {
+          "gain": 1.1259,
+          "offset": -20.24,
+          "max_residual": 2.31
+        }
+      },
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/ood_highlighter.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 195
+    },
+    {
+      "name": "string_flomo",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/src/yoyo_sdr.mp4",
+      "in_s": 5.8,
+      "out_s": 14.9,
+      "speed": 1.0,
+      "crop": [
+        142,
+        80,
+        1778,
+        1000
+      ],
+      "site_look": {
+        "r": {
+          "gain": 1.1261,
+          "offset": -19.92,
+          "max_residual": 2.88
+        },
+        "g": {
+          "gain": 1.1474,
+          "offset": -19.55,
+          "max_residual": 1.32
+        },
+        "b": {
+          "gain": 1.1259,
+          "offset": -20.24,
+          "max_residual": 2.31
+        }
+      },
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/string_flomo.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 273
+    },
+    {
+      "name": "string_dreamzero",
+      "source": "/storage/project/r-agarg35-0/sgovil9/flomo-wam.github.io/static/videos/dreamzero_yoyo_failure.mp4",
+      "in_s": 0.0,
+      "out_s": 7.8,
+      "speed": 1.0,
+      "crop": [
+        372,
+        219,
+        1280,
+        720
+      ],
+      "site_look": null,
+      "output": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/footage/string_dreamzero.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 30.0,
+      "frames": 234
+    }
+  ]
+}

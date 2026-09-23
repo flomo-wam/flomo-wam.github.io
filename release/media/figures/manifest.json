@@ -1,0 +1,72 @@
+[
+  {
+    "name": "fig_id.png",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/paper/figures/figure_policy_indist.pdf",
+    "dpi": 600,
+    "size": [
+      2059,
+      1444
+    ]
+  },
+  {
+    "name": "fig_scaling.png",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/paper/figures/figure_id_scaling.pdf",
+    "dpi": 600,
+    "size": [
+      2675,
+      1822
+    ]
+  },
+  {
+    "name": "fig_robotwin_scaling.png",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/figures/paper_figures/robotwin_id_combined.pdf",
+    "dpi": 600,
+    "size": [
+      6192,
+      1968
+    ]
+  },
+  {
+    "name": "fig_attention.png",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/paper/figures/figure_attention_share.png",
+    "dpi": "native",
+    "size": [
+      1297,
+      739
+    ]
+  },
+  {
+    "name": "fig_arch.png",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/paper/figures/figure_arch.png",
+    "dpi": "native",
+    "size": [
+      1603,
+      720
+    ]
+  },
+  {
+    "name": "fig_robotwin.png",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/figures/paper_figures/robotwin_id_combined.pdf",
+    "note": "panel (a) of fig_robotwin_scaling.png, left of the divider at x=4078",
+    "size": [
+      3891,
+      1871
+    ]
+  },
+  {
+    "name": "wordmark.png",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/paper/logo/flomo_logo.pdf",
+    "dpi": 1345,
+    "size": [
+      1601,
+      391
+    ]
+  },
+  {
+    "name": "arch_boxes.json",
+    "source": "/storage/project/r-agarg35-0/sgovil9/AMPLIFYv2/paper/figures/figure_arch.png",
+    "note": "pixel boxes [x0,y0,x1,y1] in fig_arch.png; verified in arch_boxes_check.png",
+    "check": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/figures/arch_boxes_check.png",
+    "n_boxes": 29
+  }
+]
