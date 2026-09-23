@@ -1,7 +1,7 @@
 """FloMo v3 release: head-camera motion sets from SpatialTrackerV2 tracks.
 
 White-theme 960x720 panes for the release deck: rgb, 2D trails, cumulative
-displacement arrows and the velocity raster (scene flow as RGB) for six
+displacement arrows and the training-target raster (scene flow as RGB) for six
 robot/human head-cam sets, plus a per-set labelled contact sheet. Loaders and
 geometry are reused from video/release/motion.py (v1).
 Provenance: extracted training target from SpatialTrackerV2 tracks, not a model prediction.
@@ -22,7 +22,6 @@ import h5py
 import numpy as np
 from einops import rearrange
 from PIL import Image, ImageDraw, ImageFont
-from scipy.ndimage import uniform_filter
 
 DATA = Path('/storage/project/r-agarg35-0/shared/v2r/real_yam')
 TRACKS = DATA / 'uniform_4096_reinit_16'
@@ -32,10 +31,6 @@ WIN = 16
 HOLD = 4           # output frames per window frame (single-window sets)
 HOLD_SEQ = 2       # output frames per window frame when a set plays consecutive windows
 LAST_HOLD = 30     # extra output frames holding the last window frame
-VEL_SMOOTH = 3     # velocity raster: one-step displacement t->t+1 (website figure_flow_video --flow-gap 1)
-                   # x (WIN-1) so it shares the cumulative colour scale; splatted at each point's
-                   # current position (the raster moves with the object), KxK normalised box on the 64x64 grid
-FADE_MM = (3.0, 6.0)  # one-step |d| fades to zero-motion colour below 3 mm (depth jitter <= ~2 mm/step), full at 6 mm
 FPS = 30
 PANE = (960, 720)
 TRACK_SPACE = 256
@@ -66,9 +61,8 @@ SETS = [
 ]
 KINDS = ['rgb', 'tracks', 'arrows', 'flow']
 COLOUR_NOTE = ('colour = clip((d-low)/(high-low),0,1)*255 per channel; zero displacement is (128,110,136) by design. '
-               'tracks/arrows: d = cumulative displacement from frame 0; flow raster: d = one-step velocity t->t+1 x (WIN-1), '
-               'splatted at the current point positions, VEL_SMOOTH x VEL_SMOOTH normalised box on the 64x64 grid, '
-               'faded to zero below FADE_MM')
+               'd = cumulative displacement from frame 0 for every kind; flow raster = the model input '
+               '(modalities._traj_to_flow_grid, cumulative_disp): 64x64 query grid "(w h) -> h w", bilinear up')
 PROVENANCE = 'extracted training target from SpatialTrackerV2 tracks, not a model prediction'
 
 
@@ -149,14 +143,6 @@ def pattern(spec):
     return [(w, t) for w in range(nw) for t in range(WIN) for _ in range(hold)] + [(nw - 1, WIN - 1)] * LAST_HOLD
 
 
-def velocity(xyz):
-    """One-step velocity t->t+1 (last frame repeats t-1->t), x (WIN-1) for the cumulative scale."""
-    vel = np.empty_like(xyz)
-    vel[:-1] = (xyz[1:] - xyz[:-1]) * (WIN - 1)
-    vel[-1] = vel[-2]
-    return vel
-
-
 def pane(frame):
     return Image.fromarray(frame).resize(PANE, Image.Resampling.LANCZOS)
 
@@ -177,7 +163,7 @@ def draw_arrow(d, a, b, color, shaft, head, halfw, min_len):
     d.polygon([tuple(b), tuple(base + perp * 0.5 * head_len), tuple(base - perp * 0.5 * head_len)], fill=col)
 
 
-def build_frames(raw, xy, vis, vel, cols, low, high, ts):
+def build_frames(raw, xy, vis, cols, ts):
     """Frame arrays for the window indices ts, per kind."""
     pts4 = subsample_ids(4)  # tracks: every 4th query (16x16)
     pts3 = subsample_ids(3)  # arrows: every 3rd query (22x22)
@@ -215,19 +201,9 @@ def build_frames(raw, xy, vis, vel, cols, low, high, ts):
         base.alpha_composite(ov.resize(PANE, Image.Resampling.LANCZOS))
         arrows[t] = np.asarray(base.convert('RGB'))
 
-    for t in ts:  # re-anchored every frame: each visible point's velocity lands at its position in frame t
-        cell = np.clip((xy[t, vis_pt[t]] * 64 / TRACK_SPACE).astype(np.int64), 0, 63)  # (M,2) x,y
-        idx = cell[:, 1] * 64 + cell[:, 0]
-        acc = np.zeros((64 * 64, 3))
-        np.add.at(acc, idx, vel[t, vis_pt[t]])
-        acc = rearrange(acc, '(h w) d -> h w d', h=64, w=64)
-        cnt = rearrange(np.bincount(idx, minlength=64 * 64).astype(np.float64), '(h w) -> h w', h=64, w=64)
-        num = uniform_filter(acc, size=(VEL_SMOOTH, VEL_SMOOTH, 1), mode='constant')
-        den = uniform_filter(cnt, size=VEL_SMOOTH, mode='constant')
-        field = num / np.maximum(den, 1e-9)[..., None] * (den > 0)[..., None]  # empty cells = no motion
-        mm = np.linalg.norm(field, axis=-1, keepdims=True) / (WIN - 1) * 1000
-        field = field * np.clip((mm - FADE_MM[0]) / (FADE_MM[1] - FADE_MM[0]), 0, 1)  # website-style noise fade
-        flow[t] = np.asarray(Image.fromarray(disp_colors(field, low, high)).resize(PANE, Image.Resampling.BILINEAR))
+    for t in ts:  # training target: query grid (w h) -> image (h w), not re-anchored
+        grid = rearrange(cols[t], '(w h) d -> h w d', w=64, h=64)
+        flow[t] = np.asarray(Image.fromarray(grid).resize(PANE, Image.Resampling.BILINEAR))
 
     return {'rgb': rgb, 'tracks': tracks, 'arrows': arrows, 'flow': flow}
 
@@ -297,7 +273,7 @@ def render_set(job):
         disp = xyz - xyz[:1]  # (16,4096,3), displacement in the window's first camera frame
         cols = disp_colors(disp, job['low'], job['high'])
         ts = sorted({t for ww, t in seq if ww == w})
-        fw = build_frames(raw, xy, vis, velocity(xyz), cols, job['low'], job['high'], ts)
+        fw = build_frames(raw, xy, vis, cols, ts)
         for k in KINDS:
             frames[k].update({(w, t): fw[k][t] for t in ts})
     counts = {}
@@ -392,7 +368,8 @@ def full(args):
         for fr in frags:
             manifest['sets'][fr['name']] = entry_of(fr, out)
         cm = manifest['colour_map']
-        cm['vel_smooth'], cm['note'] = VEL_SMOOTH, COLOUR_NOTE
+        cm.pop('vel_smooth')
+        cm['note'] = COLOUR_NOTE
         (out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
         print(f'updated {out / "manifest.json"} for {args.sets} ({time.time() - t0:.0f} s)', flush=True)
         return
@@ -409,8 +386,7 @@ def full(args):
         'hold_pattern': hold_dict(),
         'colour_map': {'stats_path': str(STATS), 'cum_disp_pct_low': [float(x) for x in low],
                        'cum_disp_pct_high': [float(x) for x in high],
-                       'note': COLOUR_NOTE,
-                       'vel_smooth': VEL_SMOOTH},
+                       'note': COLOUR_NOTE},
         'sheet_jpg': str(out / 'sheet.jpg'),
         'sets': sets,
         'slurm_job_id': os.environ.get('SLURM_JOB_ID', ''),

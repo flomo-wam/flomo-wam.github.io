@@ -29,8 +29,7 @@
       0.05896010249853134,
       0.033313214778900146
     ],
-    "note": "colour = clip((d-low)/(high-low),0,1)*255 per channel; zero displacement is (128,110,136) by design. tracks/arrows: d = cumulative displacement from frame 0; flow raster: d = one-step velocity t->t+1 x (WIN-1), splatted at the current point positions, VEL_SMOOTH x VEL_SMOOTH normalised box on the 64x64 grid, faded to zero below FADE_MM",
-    "vel_smooth": 3
+    "note": "colour = clip((d-low)/(high-low),0,1)*255 per channel; zero displacement is (128,110,136) by design. d = cumulative displacement from frame 0 for every kind; flow raster = the model input (modalities._traj_to_flow_grid, cumulative_disp): 64x64 query grid \"(w h) -> h w\", bilinear up"
   },
   "sheet_jpg": "/storage/project/r-agarg35-0/sgovil9/flomo_release_work/v3/media/motion/sheet.jpg",
   "sets": {
@@ -91,13 +90,14 @@
         3
       ],
       "chosen_start": 44,
+      "windows": 1,
       "score": 0.013929315842688084,
       "n_vis": 3174,
       "hold_pattern": {
         "window_frames": 16,
         "hold_per_frame": 4,
-        "last_frame_hold": 30,
-        "clip_frames": 94
+        "hold_per_frame_seq": 2,
+        "last_frame_hold": 30
       },
       "clip_frames": {
         "rgb": 94,

@@ -49,9 +49,8 @@ BEATS = [
         labels=["RGB", "3D point tracks", "Scene flow as RGB"],
         notes="Sec. III-B: 64x64 query grid, T = 16 frames, first-frame camera frame (invariant to "
               "ego-motion). One training window (motion_hc robot_oven: carry to the plate). The raster "
-              "shows one-step velocity t->t+1, re-anchored every frame at each point's current position "
-              "(website figure_flow_video --flow-gap 1), so it moves with the arm; the training target is the cumulative "
-              "displacement. Mauve gray is zero displacement.",
+              "is the training target itself: cumulative displacement from frame 0 on the 64x64 query "
+              "grid, colour-mapped with the dataset's percentile bounds. Mauve gray is zero displacement.",
     ),
     dict(
         id="tokenize", kind="spotlight", dur=10.0,
@@ -148,19 +147,10 @@ BEATS = [
         headline="Transfer from human video",
         duel=[("60%", "FloMo"), ("7%", "FloMo (no human video)")],
         duel_label="Out-of-distribution success rate",
-        media=dict(left="motion/human_oven_arrows.mp4", right="motion/robot_oven_arrows.mp4"),
+        media=dict(left="motion/human_oven_tracks.mp4", right="motion/robot_oven_tracks.mp4"),
         labels=["Human video", "Robot teleoperation"],
         notes="Sec. IV-C: the ablation removes the 81 h EgoVerse subset and the 0.7 h internal human "
               "demos: 0/5, 1/5 and 0/5. It begins each task but rarely completes the novel motion.",
-    ),
-    dict(
-        id="string", kind="pair", dur=9.0,
-        headline="Pull String, observed only in human video",
-        media=dict(left="footage/string_flomo.mp4", right="footage/string_dreamzero.mp4"),
-        labels=["FloMo, 7/10", "DreamZero, 1/10"],
-        badges=["success", "failure"],
-        notes="Sec. IV-B.2 results paragraph and IV-C. FloMo clip: grasp, pull to the top, release. "
-              "Colours as on the website (footage_figs.site_levels); same apparent scale.",
     ),
     dict(
         id="robotwin", kind="chart_fig", dur=7.0,
