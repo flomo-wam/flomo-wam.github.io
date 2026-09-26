@@ -17,15 +17,15 @@
 <rect id="swatch_error" x="311.00" y="3.50" width="14.00" height="8.00" fill="#D55E00" stroke="none" stroke-width="1.0" opacity="0.4"/>
 <text id="label_ground_truth" xml:space="preserve" x="243.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">ground truth</text>
 <path id="swatch_gt" d="M225.00,7.50 L239.00,7.50" fill="none" stroke="#1A1A1A" stroke-width="0.8" stroke-linecap="butt" stroke-linejoin="round" stroke-dasharray="2,1.6"/>
-<text id="label_Seq_Flow" xml:space="preserve" x="171.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">Seq-Flow</text>
+<text id="label_renoise" xml:space="preserve" x="177.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">renoise</text>
 <g id="swatch_rollout">
-<path d="M153.00,7.50 L163.70,7.50" fill="none" stroke="#CC79A7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
-<path d="M167.00,7.50 L161.50,10.53 L161.50,4.47 Z" fill="#CC79A7" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M159.00,7.50 L169.70,7.50" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
+<path d="M173.00,7.50 L167.50,10.53 L167.50,4.47 Z" fill="#0072B2" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
-<text id="label_flow" xml:space="preserve" x="121.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">flow</text>
+<text id="label_flow" xml:space="preserve" x="127.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">flow</text>
 <g id="swatch_flow">
-<path d="M103.00,7.50 L113.70,7.50" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M117.00,7.50 L111.50,10.53 L111.50,4.47 Z" fill="#0072B2" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M109.00,7.50 L119.70,7.50" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M123.00,7.50 L117.50,10.53 L117.50,4.47 Z" fill="#0072B2" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </g>
 <g id="chunk_bracket">
@@ -71,13 +71,13 @@
 <path id="renoised_prediction" d="M160.00,101.68 L161.23,100.96 L162.46,100.66 L163.69,100.54 L164.92,100.49 L166.15,100.47 L167.38,100.37 L168.62,100.08 L169.85,99.75 L171.08,99.65 L172.31,99.82 L173.54,100.02 L174.77,99.94 L176.00,99.47 L177.23,98.83 L178.46,98.27 L179.69,97.84 L180.92,97.47 L182.15,97.26 L183.38,97.48 L184.62,98.15 L185.85,98.99 L187.08,99.66 L188.31,99.96 L189.54,99.70 L190.77,98.79 L192.00,97.58 L193.23,96.77 L194.46,96.73 L195.69,97.10 L196.92,97.25 L198.15,96.93 L199.38,96.28 L200.62,95.62 L201.85,95.27 L203.08,95.34 L204.31,95.61 L205.54,95.81 L206.77,96.06 L208.00,96.71" fill="none" stroke="#56A0D3" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 <g id="label_source">
-<text id="line1" xml:space="preserve" x="184.00" y="71.80" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="middle" fill="#CC79A7">own</text>
-<text id="line2" xml:space="preserve" x="184.00" y="82.80" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="middle" fill="#CC79A7">prediction</text>
+<text id="line1" xml:space="preserve" x="184.00" y="71.80" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="middle" fill="#0072B2">own</text>
+<text id="line2" xml:space="preserve" x="184.00" y="82.80" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="middle" fill="#0072B2">prediction</text>
 </g>
 <g id="self_rollout">
 <g id="renoise_arrow">
-<path d="M114.00,157.00 L118.00,157.00 L118.00,101.80 L151.20,101.80" fill="none" stroke="#CC79A7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
-<path d="M154.50,101.80 L149.00,104.83 L149.00,98.78 Z" fill="#CC79A7" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M114.00,157.00 L118.00,157.00 L118.00,101.80 L151.20,101.80" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
+<path d="M154.50,101.80 L149.00,104.83 L149.00,98.78 Z" fill="#0072B2" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 <text id="label_plus_noise" xml:space="preserve" x="134.25" y="97.80" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="9.5" text-anchor="middle" fill="#4D4D4D">+ noise</text>
 </g>
@@ -110,8 +110,8 @@
 </g>
 <g id="self_rollout_2">
 <g id="renoise_arrow_2">
-<path d="M213.00,157.00 L225.00,157.00 L225.00,101.80 L262.20,101.80" fill="none" stroke="#CC79A7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
-<path d="M265.50,101.80 L260.00,104.83 L260.00,98.78 Z" fill="#CC79A7" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M213.00,157.00 L225.00,157.00 L225.00,101.80 L262.20,101.80" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
+<path d="M265.50,101.80 L260.00,104.83 L260.00,98.78 Z" fill="#0072B2" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 <text id="label_plus_noise_2" xml:space="preserve" x="243.25" y="97.80" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="9.5" text-anchor="middle" fill="#4D4D4D">+ noise</text>
 </g>
@@ -128,11 +128,11 @@
 <text id="label_t3" xml:space="preserve" x="295.00" y="185.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="11" text-anchor="middle" fill="#1A1A1A"><tspan font-size="11.00" font-style="italic">t</tspan><tspan font-size="11.00"> = 3</tspan></text>
 </g>
 <g id="continues">
-<path d="M324.00,157.00 L334.00,157.00" fill="none" stroke="#CC79A7" stroke-width="1.1" stroke-linecap="butt" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
+<path d="M324.00,157.00 L334.00,157.00" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="butt" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
 <g id="dots">
-<circle cx="341.00" cy="157.00" r="1.20" fill="#CC79A7" stroke="none" stroke-width="1.0"/>
-<circle cx="346.00" cy="157.00" r="1.20" fill="#CC79A7" stroke="none" stroke-width="1.0"/>
-<circle cx="351.00" cy="157.00" r="1.20" fill="#CC79A7" stroke="none" stroke-width="1.0"/>
+<circle cx="341.00" cy="157.00" r="1.20" fill="#0072B2" stroke="none" stroke-width="1.0"/>
+<circle cx="346.00" cy="157.00" r="1.20" fill="#0072B2" stroke="none" stroke-width="1.0"/>
+<circle cx="351.00" cy="157.00" r="1.20" fill="#0072B2" stroke="none" stroke-width="1.0"/>
 </g>
 </g>
 </g>
