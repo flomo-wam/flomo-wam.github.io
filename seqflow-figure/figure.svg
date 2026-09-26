@@ -17,15 +17,15 @@
 <rect id="swatch_error" x="311.00" y="3.50" width="14.00" height="8.00" fill="#D55E00" stroke="none" stroke-width="1.0" opacity="0.4"/>
 <text id="label_ground_truth" xml:space="preserve" x="243.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">ground truth</text>
 <path id="swatch_gt" d="M225.00,7.50 L239.00,7.50" fill="none" stroke="#1A1A1A" stroke-width="0.8" stroke-linecap="butt" stroke-linejoin="round" stroke-dasharray="2,1.6"/>
-<text id="label_self_rollout" xml:space="preserve" x="161.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">self-rollout</text>
+<text id="label_Seq_Flow" xml:space="preserve" x="171.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">Seq-Flow</text>
 <g id="swatch_rollout">
-<path d="M143.00,7.50 L153.70,7.50" fill="none" stroke="#CC79A7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
-<path d="M157.00,7.50 L151.50,10.53 L151.50,4.47 Z" fill="#CC79A7" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M153.00,7.50 L163.70,7.50" fill="none" stroke="#CC79A7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5,2"/>
+<path d="M167.00,7.50 L161.50,10.53 L161.50,4.47 Z" fill="#CC79A7" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
-<text id="label_flow" xml:space="preserve" x="111.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">flow</text>
+<text id="label_flow" xml:space="preserve" x="121.00" y="11.00" font-family="'Times New Roman', 'Liberation Serif', Times, serif" font-size="10" text-anchor="start" fill="#1A1A1A">flow</text>
 <g id="swatch_flow">
-<path d="M93.00,7.50 L103.70,7.50" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M107.00,7.50 L101.50,10.53 L101.50,4.47 Z" fill="#0072B2" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M103.00,7.50 L113.70,7.50" fill="none" stroke="#0072B2" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M117.00,7.50 L111.50,10.53 L111.50,4.47 Z" fill="#0072B2" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </g>
 <g id="chunk_bracket">
