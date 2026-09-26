@@ -28,15 +28,5 @@
   <p>At paper width (5.5 in, \textwidth):</p>
   <div class="fig"><img src="figure.svg?v=method_figure_v29a_20260926 2026-09-26T07:10Z" alt="Seq-Flow method figure at paper width"></div>
 </div>
-<script>
-// GitHub Pages caches pages for 10 min; always fetch the newest version stamp and reload the images.
-fetch("version.txt?t=" + Date.now(), {cache: "no-store"}).then(r => r.text()).then(v => {
-  v = v.trim();
-  document.getElementById("ver").textContent = v;
-  const q = encodeURIComponent(v);
-  document.querySelectorAll(".fig img").forEach(i => { i.src = "figure.svg?v=" + q; });
-  document.querySelectorAll(".meta a").forEach(a => { a.href = a.getAttribute("href").split("?")[0] + "?v=" + q; });
-});
-</script>
 </body>
 </html>
