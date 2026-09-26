@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>Seq-Flow method figure</title>
 <style>
   body { margin: 0; padding: 24px; font-family: Georgia, serif; background: #f4f4f4; color: #222; }
@@ -19,13 +20,23 @@
 <body>
 <h1>Seq-Flow method figure</h1>
 <div class="meta">
-  <span id="ver">method_figure_v25_20260926 2026-09-26T04:22Z</span> &middot;
+  <span id="ver">method_figure_v25_20260926 2026-09-26T04:25Z</span> &middot;
   <a href="figure.svg">SVG</a><a href="figure.pdf">PDF</a><a href="figure.png">PNG</a>
 </div>
-<div class="fig"><img src="figure.svg?v=method_figure_v25_20260926 2026-09-26T04:22Z" alt="Seq-Flow method figure"></div>
+<div class="fig"><img src="figure.svg?v=method_figure_v25_20260926 2026-09-26T04:25Z" alt="Seq-Flow method figure"></div>
 <div class="paper">
   <p>At paper width (5.5 in, \textwidth):</p>
-  <div class="fig"><img src="figure.svg?v=method_figure_v25_20260926 2026-09-26T04:22Z" alt="Seq-Flow method figure at paper width"></div>
+  <div class="fig"><img src="figure.svg?v=method_figure_v25_20260926 2026-09-26T04:25Z" alt="Seq-Flow method figure at paper width"></div>
 </div>
+<script>
+// GitHub Pages caches pages for 10 min; always fetch the newest version stamp and reload the images.
+fetch("version.txt?t=" + Date.now(), {cache: "no-store"}).then(r => r.text()).then(v => {
+  v = v.trim();
+  document.getElementById("ver").textContent = v;
+  const q = encodeURIComponent(v);
+  document.querySelectorAll(".fig img").forEach(i => { i.src = "figure.svg?v=" + q; });
+  document.querySelectorAll(".meta a").forEach(a => { a.href = a.getAttribute("href").split("?")[0] + "?v=" + q; });
+});
+</script>
 </body>
 </html>
