@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-28T18:48:32Z",
+  "updated_utc": "2026-09-28T19:48:35Z",
   "robotwin_single5": {
     "status_line": "Scientific work and requested comparison figure complete \u2014 all ten exact-5,000 training endpoints and all ten Easy100 results are accepted and published; all three GPU claims are DONE. FastWAM scores are 20/27/68/5/85; BC scores are 25/0/66/0/5 for pick/bowls/laptop/mug/handover. Only independently owned CPU/network shared preservation remains.",
     "checklist_done": 14,
@@ -19,6 +19,15 @@
       "node": "",
       "reason": "(DependencyNeverSatisfied)",
       "campaign": "robotwin"
+    },
+    {
+      "id": "13684705",
+      "name": "abparity-cpu-v2",
+      "state": "RUNNING",
+      "elapsed": "49:59",
+      "node": "atl1-1-02-005-13-2",
+      "reason": "atl1-1-02-005-13-2",
+      "campaign": "other"
     }
   ]
 }
