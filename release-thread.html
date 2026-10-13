@@ -59,12 +59,11 @@
 
 It starts from a pretrained video model, but predicts 3D motion and actions instead of future RGB frames. On our three real-robot tasks, that gave 91% success, versus 40% for video + action.</div>
 
-          <figure class="evidence rollout-evidence">
-            <div class="media-frame rollout-frame">
-              <video src="static/videos/ma10h_oven_success.mp4" poster="static/images/posters/oven.jpg" width="1920" height="1080" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo opens the oven, retrieves the croissant, and places it on a plate"></video>
-              <span class="speed-badge">5× speed</span>
+          <figure class="evidence figure-evidence">
+            <div class="figure-frame architecture-frame">
+              <img src="static/images/figure_arch.png" width="1603" height="720" alt="FloMo method overview: human video is represented as 3D scene flow, rendered as RGB, and encoded by a frozen video VAE; a shared pretrained backbone jointly predicts motion and robot actions">
             </div>
-            <figcaption>Attach 1 video: <a href="static/videos/ma10h_oven_success.mp4" download>oven rollout</a> · 5× speed.</figcaption>
+            <figcaption>Attach 1 image: <a href="static/images/figure_arch.png" download>FloMo method overview</a> · model architecture and flow tokenization from the <a href="https://flomo-icra.github.io/">project website</a>.</figcaption>
           </figure>
 
         </article>
@@ -104,10 +103,10 @@ We map the x/y/z displacements to RGB channels and use the video model's frozen 
 Human clips supply motion targets without action labels. Robot demos supply both. We then fine-tune on robot data alone, keeping the VAE and text encoder frozen.</div>
 
           <figure class="evidence figure-evidence">
-            <div class="figure-frame architecture-frame">
-              <img src="static/images/figure_arch.png" width="1603" height="720" alt="FloMo architecture showing text, image, 3D scene-flow, and action tokens entering a shared video-generation backbone">
+            <div class="figure-frame">
+              <img src="static/images/figure_training.png" width="1425" height="586" alt="FloMo two-stage training: mid-train on human video and robot demonstrations, with motion supervision for human clips and motion plus action supervision for robot clips; then fine-tune on robot data alone">
             </div>
-            <figcaption>Attach 1 image: <a href="static/images/figure_arch.png" download>model architecture</a>.</figcaption>
+            <figcaption>Attach 1 image: <a href="static/images/figure_training.png" download>two-stage training</a> · exported from the <a href="https://flomo-icra.github.io/#training">website’s training section</a>.</figcaption>
           </figure>
 
         </article>
