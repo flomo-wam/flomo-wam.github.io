@@ -1,2 +1,5 @@
 # flomo-wam.github.io
-flomowam
+
+The collaborator release draft is at [release-thread.html](https://flomo-wam.github.io/release-thread.html). Its eight posts use results from the September 16, 2026 ICRA 2027 manuscript, linked on the [current project page](https://flomo-icra.github.io/).
+
+The thread includes updated in-distribution and RoboTwin figures and reports the different OOD trial counts for the full-data model (18/30) and no-human-video ablation (1/15). Other pages and the earlier release video remain unchanged.
