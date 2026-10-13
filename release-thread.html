@@ -104,9 +104,9 @@ Human clips supply motion targets without action labels. Robot demos supply both
 
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/figure_training.png" width="1425" height="586" alt="FloMo two-stage training: mid-train on human video and robot demonstrations, with motion supervision for human clips and motion plus action supervision for robot clips; then fine-tune on robot data alone">
+              <img src="static/images/figure_training_data.png" width="1655" height="1115" alt="FloMo training data: 81.7 hours of human video with no action labels supervise 3D scene flow; 14.1 hours of teleoperated bimanual YAM robot demos supervise 3D scene flow and robot actions. Stage 1 trains on both; stage 2 fine-tunes on in-house robot data only.">
             </div>
-            <figcaption>Attach 1 image: <a href="static/images/figure_training.png" download>two-stage training</a> · exported from the <a href="https://flomo-icra.github.io/#training">website’s training section</a>.</figcaption>
+            <figcaption>Attach 1 image: <a href="static/images/figure_training_data.png" download>training data</a> · hours from Sec. IV-A of the paper.</figcaption>
           </figure>
 
         </article>
@@ -202,9 +202,9 @@ We removed ~81h of EgoVerse and 0.7h of in-house human demos. This suggests the 
 
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/figure_human_ablation.png" alt="FloMo OOD success: 60% with human video, 18 of 30 rollouts; 7% without, 1 of 15. Same model and motion target; different evaluation trial counts.">
+              <img src="static/images/figure_ood_human_video.png" width="1779" height="1060" alt="OOD success with and without human video. FloMo: Close Cabinet 6 of 10, Pull String 7 of 10, Highlighter 5 of 10, 18 of 30 overall. Without human video: 0 of 5, 1 of 5, 0 of 5, 1 of 15 overall.">
             </div>
-            <figcaption>Attach 1 image: <a href="static/images/figure_human_ablation.png" download>human-video ablation</a> · 10 rollouts per task with human video, 5 without · Table I.</figcaption>
+            <figcaption>Attach 1 image: <a href="static/images/figure_ood_human_video.png" download>human-video ablation</a> · bar labels are successes/trials · Table I.</figcaption>
           </figure>
 
         </article>

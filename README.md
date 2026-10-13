@@ -6,6 +6,6 @@ The thread includes updated in-distribution and RoboTwin figures and reports the
 
 The thread uses one video in posts 2 and 5; one image in posts 1, 3, 4, 6, and 7; and two images in post 8. Each caption links to the actual attachment. This avoids depending on mixed-media support and fits the [X API attachment rules](https://docs.x.com/x-api/posts/create-post). Copy buttons include only the post text.
 
-The scene-flow attachment is a 1280×720 H.264 export of the existing board-lifting example, padded without cropping. The human-video ablation is exported as a PNG so it can be attached directly rather than recreated from the webpage.
+The scene-flow attachment is a 1280×720 H.264 export of the existing board-lifting example, padded without cropping. Post 7 uses a per-task bar chart of the Table I ablation, with successes/trials on each bar, in the paper's figure style.
 
-Post 1 leads with the website’s architecture and flow-tokenization figure, not a robot rollout. Post 3 uses a PNG export of the website’s two-stage training section so the overview figure is not repeated.
+Post 1 leads with the website’s architecture and flow-tokenization figure, not a robot rollout. Post 3 uses a training-data figure built from a human-video frame, its scene flow, and a robot frame, with data hours from Sec. IV-A. No attachment is a website screenshot.
