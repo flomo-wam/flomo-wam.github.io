@@ -554,6 +554,7 @@ section[id], footer[id] { scroll-margin-top: 76px; }
 .results-table tr.ours .lcell { color: var(--flomo-orange-dark); }
 .metric-sub { color: var(--muted); font-size: .78rem; font-weight: 400; }
 
+.sim-fig { max-width: 980px; margin: 0 auto; }
 .ood-layout { margin-top: 1.2rem; }
 .ood-table { max-width: 980px; }
 .ood-stage-wrap { margin-top: 2.8rem; }

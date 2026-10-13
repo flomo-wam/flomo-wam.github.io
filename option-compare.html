@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FloMo: 3D Scene Flow as a World-Action Model Intermediate</title>
-  <meta name="description" content="FloMo: 3D Scene Flow as a World-Action Model Intermediate for Learning from Human Video. Anonymous CoRL 2026 submission.">
+  <title>FloMo: 3D Scene Flow as a World Action Model Intermediate</title>
+  <meta name="description" content="FloMo: 3D Scene Flow as a World Action Model Intermediate for Learning from Human Video. Anonymous ICRA 2027 submission.">
   <!-- No author / institution metadata: anonymous submission -->
 
   <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png">
@@ -32,9 +32,10 @@
     <ul class="nav-links">
       <li><a href="#method">Method</a></li>
       <li><a href="#results">Results</a></li>
+      <li><a href="#simulation">Simulation</a></li>
       <li><a href="#generalization">Human&nbsp;video</a></li>
       <li><a href="#comparison">Comparison</a></li>
-      <li><a class="nav-paper" href="FloMo%20Paper.pdf" target="_blank" rel="noopener">Paper</a></li>
+      <li><a class="nav-paper" href="https://drive.google.com/file/d/1yYZM2zidAS6CNFfW-2Dvza13XOHD43Sf/view?usp=sharing" target="_blank" rel="noopener">Paper</a></li>
       <li><a class="nav-code" href="#code">Code (soon)</a></li>
     </ul>
   </div>
@@ -46,21 +47,22 @@
 <section class="hero" id="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <div class="venue-pill">Anonymous Submission &middot; CoRL 2026 (under review)</div>
+      <div class="venue-pill">Anonymous Submission &middot; ICRA 2027 (under review)</div>
       <img class="flomo-logo" src="static/images/flomo_logo.png" alt="FloMo">
       <h1 class="paper-title">
-        3D Scene&nbsp;Flow as a World-Action&nbsp;Model Intermediate
+        3D Scene&nbsp;Flow as a World Action&nbsp;Model Intermediate
         <span>for Learning from Human&nbsp;Video</span>
       </h1>
       <p class="hero-thesis">
-        World-action models typically predict <b>RGB video</b>. We argue the right target is instead <b>3D motion</b>.
+        World action models typically predict <b>RGB video</b>. We argue the right target is instead <b>3D motion</b>.
         FloMo renders 3D scene flow into the latent space of a pretrained video generation model and fine-tunes a single
         backbone to predict motion and action. Predicting motion instead of pixels gives better in-distribution success,
-        far stronger out-of-distribution generalization, and higher sample efficiency.
+        far stronger out-of-distribution generalization, higher sample efficiency, and the best success on every
+        RoboTwin simulation task we evaluate.
       </p>
       <p class="author-line">Authors omitted for double-blind review</p>
       <div class="hero-actions">
-        <a class="btn btn-dark" href="FloMo%20Paper.pdf" target="_blank" rel="noopener">
+        <a class="btn btn-dark" href="https://drive.google.com/file/d/1yYZM2zidAS6CNFfW-2Dvza13XOHD43Sf/view?usp=sharing" target="_blank" rel="noopener">
           <span class="btn-ico" aria-hidden="true">&#9638;</span> Paper
         </a>
         <span class="btn btn-dark is-disabled" title="Released upon acceptance" aria-disabled="true">
@@ -202,8 +204,9 @@
       <div class="contrib-card">
         <span class="num">02</span>
         <h4>Motion is the most effective target</h4>
-        <p>On real-robot manipulation, predicting motion gives improved out-of-distribution generalization compared to
-        predicting video; we find adding video prediction interferes with policy generalization.</p>
+        <p>On real-robot manipulation, predicting motion gives higher in-distribution success and out-of-distribution
+        generalization than predicting video; adding video prediction interferes with action learning. FloMo also leads
+        every task on the RoboTwin simulation benchmark.</p>
       </div>
       <div class="contrib-card">
         <span class="num">03</span>
@@ -224,40 +227,38 @@
     </header>
 
     <h3 class="feature-title">In-distribution success</h3>
-    <p class="feature-sub">Three contact-rich bimanual tasks (<em>Oven</em>, <em>Toolbox</em>, <em>Corn</em>), evaluated on the real robot.</p>
+    <p class="feature-sub">Three contact-rich bimanual tasks (<em>Oven</em>, <em>Toolbox</em>, <em>Corn</em>), 15 real-robot
+    rollouts per task. The VMA (video&nbsp;+&nbsp;motion&nbsp;+&nbsp;action) and VA (video&nbsp;+&nbsp;action) variants
+    share FloMo's architecture and training protocol and differ only in prediction target.</p>
     <div class="results-split">
       <figure class="panel fig-card">
-        <img class="lightboxable" src="static/images/figure_policy_indist.png" alt="In-distribution success rates">
+        <img class="lightboxable" src="static/images/figure_policy_indist.png" alt="In-distribution success rates for FloMo, VMA, and VA on Oven, Toolbox, and Corn">
         <figcaption class="figure-caption">
-          <b>In-distribution success.</b> Predicting motion (ours) is the best target on every task; predicting only
-          video or video&nbsp;+&nbsp;motion lowers success.
+          <b>In-distribution success.</b> Across 15 rollouts FloMo performs best on every task; the matched
+          video&ndash;motion&ndash;action (VMA) and video&ndash;action (VA) variants lower success.
         </figcaption>
       </figure>
 
       <div class="panel rank-panel">
         <div class="panel-tab">Average in-distribution success (%)</div>
-        <div class="vbars" id="idBars" role="img" aria-label="Average in-distribution success rate: FloMo 87, Joint Video-Action 47, FloMo with Video 40, BC 7">
+        <div class="vbars" id="idBars" role="img" aria-label="Average in-distribution success rate: FloMo 91, VMA 51, VA 40">
           <div class="vbar-col">
-            <div class="vbar-plot"><span class="vbar-val" data-num="87">87</span><div class="vbar flomo" data-value="87"></div></div>
-            <span class="vbar-label">FloMo</span>
+            <div class="vbar-plot"><span class="vbar-val" data-num="91">91</span><div class="vbar flomo" data-value="91"></div></div>
+            <span class="vbar-label">FloMo<br>(motion)</span>
           </div>
           <div class="vbar-col">
-            <div class="vbar-plot"><span class="vbar-val" data-num="47">47</span><div class="vbar" data-value="47"></div></div>
-            <span class="vbar-label">Joint<br>Video-Action</span>
+            <div class="vbar-plot"><span class="vbar-val" data-num="51">51</span><div class="vbar" data-value="51"></div></div>
+            <span class="vbar-label">VMA<br>(video + motion)</span>
           </div>
           <div class="vbar-col">
             <div class="vbar-plot"><span class="vbar-val" data-num="40">40</span><div class="vbar" data-value="40"></div></div>
-            <span class="vbar-label">FloMo<br>w/ Video</span>
-          </div>
-          <div class="vbar-col">
-            <div class="vbar-plot"><span class="vbar-val" data-num="7">7</span><div class="vbar" data-value="7"></div></div>
-            <span class="vbar-label">BC<br>(scratch)</span>
+            <span class="vbar-label">VA<br>(video)</span>
           </div>
         </div>
-        <p class="rank-note">FloMo wins every task, averaging <b>87%</b> against <b>47%</b> for Joint Video-Action,
-        <b>40%</b> for FloMo&nbsp;w/&nbsp;Video, and <b>7%</b> for from-scratch BC. The gap is largest on <em>Oven</em>,
-        where 3D motion targets the gripper&ndash;handle contact directly while a video target wastes capacity
-        reconstructing reflections and textures.</p>
+        <p class="rank-note">FloMo wins every task, averaging <b>91%</b> against <b>51%</b> for VMA and <b>40%</b> for VA.
+        Adding video prediction to the motion&ndash;action objective costs 40 points; replacing motion with video costs 51.
+        The gap is largest on <em>Toolbox</em> (87% vs. 13% for both video variants), where opening the lid requires
+        locating a narrow crevice and executing precise, contact-rich motion.</p>
       </div>
     </div>
 
@@ -314,8 +315,9 @@
     <div class="ood-block">
       <h3 class="feature-title">Out-of-distribution generalization</h3>
       <p class="feature-sub">
-        FloMo leads on all three OOD axes: an unseen primitive (<em>Close Cabinet</em>), task (<em>Pull String</em>),
-        and object (<em>Highlighter</em>). Every pixel-predicting method degrades sharply.
+        FloMo is the only method that generalizes consistently across all three OOD axes: an unseen primitive
+        (<em>Close Cabinet</em>), task (<em>Pull String</em>), and object (<em>Highlighter</em>). Every method that
+        predicts pixels, through video or image-space 2D tracks, degrades sharply.
       </p>
 
       <div class="ood-layout">
@@ -327,24 +329,26 @@
                 <th colspan="2">Close Cabinet</th>
                 <th colspan="2">Pull String</th>
                 <th colspan="2">Highlighter</th>
+                <th colspan="2">Aggregate</th>
               </tr>
               <tr>
+                <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
                 <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
                 <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
                 <th>SR <span class="metric-sub">&uarr;</span></th><th>TP <span class="metric-sub">&uarr;</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr><td class="lcell">BC (no pretraining)</td><td>3/5</td><td>80</td><td>0/5</td><td>0</td><td>1/5</td><td>50</td></tr>
-              <tr><td class="lcell">Joint Video-Action</td><td>0/5</td><td>40</td><td>1/5</td><td>20</td><td>2/5</td><td>40</td></tr>
-              <tr><td class="lcell">FloMo w/ Video</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td></tr>
-              <tr><td class="lcell">AMPLIFY</td><td>2/5</td><td>60</td><td>0/5</td><td>0</td><td>0/5</td><td>0</td></tr>
-              <tr><td class="lcell">DreamZero</td><td>2/5</td><td>80</td><td>1/5</td><td>30</td><td>1/5</td><td>30</td></tr>
-              <tr class="ours"><td class="lcell">FloMo (ours)</td><td>5/5</td><td>100</td><td>3/5</td><td>60</td><td>4/5</td><td>80</td></tr>
+              <tr><td class="lcell">VMA (video + motion)</td><td>0/10</td><td>0</td><td>0/10</td><td>0</td><td>2/10</td><td>45</td><td>2/30</td><td>15</td></tr>
+              <tr><td class="lcell">VA (video)</td><td>0/10</td><td>20</td><td>1/10</td><td>10</td><td>1/10</td><td>15</td><td>2/30</td><td>15</td></tr>
+              <tr><td class="lcell">DreamZero</td><td>5/10</td><td>75</td><td>1/10</td><td>15</td><td>0/10</td><td>0</td><td>6/30</td><td>30</td></tr>
+              <tr><td class="lcell">AMPLIFY</td><td>6/10</td><td>70</td><td>0/10</td><td>0</td><td>0/10</td><td>0</td><td>6/30</td><td>23</td></tr>
+              <tr class="ours"><td class="lcell">FloMo (ours)</td><td>6/10</td><td>70</td><td>7/10</td><td>70</td><td>5/10</td><td>65</td><td>18/30</td><td>68</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="figure-caption">SR = successful rollouts / total &nbsp;&middot;&nbsp; TP = avg. fraction of subtasks completed (%).</p>
+        <p class="figure-caption">10 rollouts per condition (30 total) &nbsp;&middot;&nbsp; SR = successful rollouts / total &nbsp;&middot;&nbsp; TP = avg. fraction of task stages completed (%).
+        FloMo averages <b>60%</b> success and <b>68%</b> task progress, vs. 20% SR for AMPLIFY and DreamZero and 7% for VMA and VA.</p>
 
         <div class="ood-stage-wrap js-only">
           <h3 class="feature-title rollout-title">Out-of-distribution rollouts</h3>
@@ -383,6 +387,44 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- RoboTwin simulation benchmark -->
+    <div class="ood-block" id="simulation">
+      <h3 class="feature-title">Simulation: RoboTwin benchmark</h3>
+      <p class="feature-sub">
+        Single-task adaptation on five RoboTwin tasks spanning bimanual grasping, sequential placement, articulated
+        objects, precision placement, and bimanual transfer. Each policy is trained on the 50 official demonstrations
+        (5,000 gradient steps, batch size 256) and evaluated on 100 Easy-setting episodes per task and method.
+      </p>
+      <figure class="panel fig-card sim-fig">
+        <img class="lightboxable" src="static/images/figure_robotwin.png" alt="RoboTwin Easy success rates per task for FloMo, pi 0.5, FAST-WAM, and BC">
+        <figcaption class="figure-caption">
+          <b>RoboTwin single-task evaluation.</b> Easy-setting success over 100 episodes per task and method.
+          FloMo performs best on every task.
+        </figcaption>
+      </figure>
+      <p class="feature-foot">FloMo averages <b>63.6%</b> success against <b>44.8%</b> for the pretrained VLA
+      &pi;<sub>0.5</sub>, <b>41.0%</b> for the video-predicting world action model FAST-WAM (same rank-64 Wan-backbone
+      LoRA as FloMo), and <b>19.2%</b> for a 20M-parameter diffusion-policy BC baseline without video pretraining.</p>
+
+      <div class="results-table table-wrap ood-table" style="margin-top:1.6rem;">
+        <table>
+          <thead>
+            <tr>
+              <th class="lcell">Method</th>
+              <th>Pick Dual Bottles</th><th>Stack Two Bowls</th><th>Open Laptop</th><th>Hang Mug</th><th>Handover Mic</th><th>Average</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="lcell">BC (Diffusion Policy)</td><td>25</td><td>0</td><td>66</td><td>0</td><td>5</td><td>19.2</td></tr>
+            <tr><td class="lcell">FAST-WAM</td><td>20</td><td>27</td><td>68</td><td>5</td><td>85</td><td>41.0</td></tr>
+            <tr><td class="lcell">&pi;<sub>0.5</sub></td><td>49</td><td>46</td><td>58</td><td>1</td><td>70</td><td>44.8</td></tr>
+            <tr class="ours"><td class="lcell">FloMo (ours)</td><td>76</td><td>72</td><td>71</td><td>7</td><td>92</td><td>63.6</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="figure-caption">Success rate (%) over 100 RoboTwin Easy episodes per task and method.</p>
     </div>
 
     <!-- scaling + attention -->
@@ -432,12 +474,12 @@
 
     <!-- ablation duel: with vs without human video -->
     <div class="duel panel" data-metric="Avg. OOD success" data-unit="%" data-max="100" data-static="1">
-      <div class="panel-tab">Ablation &middot; remove only the ~81&thinsp;h human-video subset</div>
+      <div class="panel-tab">Ablation &middot; remove only the human video</div>
       <div class="duel-board">
         <div class="duel-side" data-side="a">
           <div class="duel-fixed-name">FloMo</div>
-          <div class="duel-score good" data-role="score-a" data-score="80" data-target="80" data-suffix="%">80%</div>
-          <div class="duel-meter"><div class="duel-fill" data-role="fill-a" data-score="80"></div></div>
+          <div class="duel-score good" data-role="score-a" data-score="60" data-target="60" data-suffix="%">60%</div>
+          <div class="duel-meter"><div class="duel-fill" data-role="fill-a" data-score="60"></div></div>
           <div class="duel-fixed-sub">with human video</div>
         </div>
         <div class="duel-vs" aria-hidden="true"><span>VS</span></div>
@@ -448,7 +490,7 @@
           <div class="duel-fixed-sub">no human video</div>
         </div>
       </div>
-      <p class="duel-verdict static" data-role="verdict">Same model, same motion target. Removing only the human-video subset drops average OOD success by <b>73 points</b>.</p>
+      <p class="duel-verdict static" data-role="verdict">Same model, same motion target. Removing only the human video drops average OOD success by <b>53 points</b>.</p>
     </div>
 
     <div class="results-table table-wrap wide">
@@ -466,16 +508,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="ours"><td class="lcell">FloMo</td><td>5/5</td><td>100</td><td>3/5</td><td>60</td><td>4/5</td><td>80</td><td>80%</td><td>80</td></tr>
-          <tr><td class="lcell">FloMo (no human video)</td><td>0/5</td><td>20</td><td>1/5</td><td>50</td><td>0/5</td><td>20</td><td>7%</td><td>30</td></tr>
+          <tr class="ours"><td class="lcell">FloMo</td><td>6/10</td><td>70</td><td>7/10</td><td>70</td><td>5/10</td><td>65</td><td>18/30</td><td>68</td></tr>
+          <tr><td class="lcell">FloMo (no human video)</td><td>0/5</td><td>20</td><td>1/5</td><td>50</td><td>0/5</td><td>20</td><td>1/15</td><td>30</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="figure-caption">Both models predict 3D motion and differ only in whether the ~81h EgoVerse human-video subset is in training. SR = successful rollouts / total; TP = avg. fraction of subtasks completed (%).</p>
+    <p class="figure-caption">Both models predict 3D motion and differ only in whether the ~81&thinsp;h EgoVerse subset and 0.7&thinsp;h of internal action-free human demonstrations are in training. FloMo uses 10 rollouts per condition; the no-human-video ablation uses 5. SR = successful rollouts / total; TP = avg. fraction of task stages completed (%).</p>
 
     <div class="prose" style="margin-top:1.2rem;">
-      <p>Same model, same motion target. Removing only the ~81&thinsp;h EgoVerse human-video subset drops average OOD success
-      from 80% to 7%. The generalization comes from human video, made transferable by the motion representation.</p>
+      <p>Same model, same motion target. Removing only the human video drops average OOD success from 60% to 7%. Without
+      it, the model can begin each task but rarely completes the novel motion: it contacts the cabinet on 2 of 5 trials but
+      never closes it, and grasps the string on 4 of 5 but pulls it on only one. The robot data contains no cabinets,
+      strings, or markers, while the human video covers all three motion classes. The generalization comes from human
+      video, made transferable by the motion representation.</p>
     </div>
   </div>
 </section>
@@ -486,7 +531,7 @@
     <header class="band-head">
       <p class="kicker">Side by side</p>
       <h2 class="band-title">Pull String (OOD): FloMo vs. baselines</h2>
-      <p class="band-sub">FloMo succeeds where pixel-predicting baselines fail. Prompt: Pull the string on the toy in the air.</p>
+      <p class="band-sub">FloMo succeeds on 7/10 Pull String rollouts; no baseline exceeds 1/10. Prompt: Pull the string on the toy in the air.</p>
     </header>
 
     <div class="cmp js-only">
@@ -566,7 +611,7 @@
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer-flomo" id="foot">
   <div class="wrap has-text-centered">
-    <p>Anonymous CoRL 2026 submission. This page intentionally omits author and institution information for double-blind review.</p>
+    <p>Anonymous ICRA 2027 submission. This page intentionally omits author and institution information for double-blind review.</p>
     <p style="margin-top:.4rem;">Page built on the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page</a> style.</p>
   </div>
 </footer>

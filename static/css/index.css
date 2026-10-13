@@ -139,6 +139,8 @@ body {
 .results-table tr.ours { background: var(--soft-orange); font-weight: 700; }
 .results-table tr.ours td:first-child { color: var(--flomo-orange-dark); }
 .metric-sub { color: var(--muted); font-size: .8rem; font-weight: 400; }
+/* Bulma's .table-container scrolls; keep that for wide results tables on mobile. */
+.results-table.table-container { overflow-x: auto; }
 
 /* ---- stat callout ---- */
 .stat-callout {
@@ -206,6 +208,8 @@ body {
   font-weight:700; font-size:1.15rem; color:var(--ink);
   margin: 2rem 0 1rem; text-align:center;
 }
+/* scene-flow strips: RGB | 2D tracks | 3D scene flow side by side */
+.video-card video.flow-strip { aspect-ratio: 974 / 330; }
 
 /* ---- bibtex ---- */
 .bibtex pre {
@@ -219,5 +223,7 @@ body {
 
 @media (max-width: 768px) {
   .paper-title { font-size: 1.55rem; }
+  .results-table.table-container th,
+  .results-table.table-container td { white-space: nowrap; }
   .flomo-logo { height: 3.6rem; }
 }
