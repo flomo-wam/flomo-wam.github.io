@@ -1,6 +1,6 @@
 [1/7] Are videos the right objective for World Action Models?
 
-FloMo adapts a pretrained video model to predict 3D motion and robot actions. Across three real-robot tasks, predicting motion gives higher success than predicting video.
+Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control. It jointly predicts scene flow and robot actions.
 
 ---
 
@@ -16,19 +16,19 @@ Human clips supervise motion prediction. Robot demonstrations supervise motion a
 
 ---
 
-[4/7] We compared three prediction targets with the same architecture and training protocol.
+[4/7] Predicting motion gives the highest success on every evaluated real-robot task.
 
-Motion + actions: 91% success
+Motion + actions: 91%
 Video + motion + actions: 51%
 Video + actions: 40%
 
-Averages across three real-robot tasks.
+Average success on Oven, Toolbox and Corn.
 
 ---
 
 [5/7] Adding action-free human video improves generalization.
 
-Across three real-robot transfer tasks, success is 60% with human video (18/30 trials), versus 7% without it (1/15).
+Across three real-robot transfer tasks, success is 60% with human video, versus 7% without it.
 
 ---
 

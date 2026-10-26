@@ -59,7 +59,7 @@
 
           <div class="post-body" data-post-body>[1/7] Are videos the right objective for World Action Models?
 
-FloMo adapts a pretrained video model to predict 3D motion and robot actions. Across three real-robot tasks, predicting motion gives higher success than predicting video.</div>
+Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control. It jointly predicts scene flow and robot actions.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
               <video src="static/videos/thread_overview.mp4" poster="static/images/posters/thread_overview.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo overview: RGB scene flow representation, joint motion and action prediction, real-robot results, and human-video transfer"></video>
@@ -100,7 +100,7 @@ Given an image and instruction, one pretrained backbone jointly predicts motion 
 Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/thread_shared_motion.png" width="1600" height="900" alt="Shared training target: human video supervises RGB scene flow; robot demonstrations supervise RGB scene flow and actions. Co-train on both, then fine-tune on robot demonstrations." loading="lazy">
+              <img src="static/images/thread_shared_motion.png" alt="Human hand and robot gripper carrying a croissant from the oven: matched RGB images with point tracks above, and their extracted RGB scene flow below." loading="lazy">
             </div>
           </figure>
         </article>
@@ -114,13 +114,13 @@ Human clips supervise motion prediction. Robot demonstrations supervise motion a
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[4/7] We compared three prediction targets with the same architecture and training protocol.
+          <div class="post-body" data-post-body>[4/7] Predicting motion gives the highest success on every evaluated real-robot task.
 
-Motion + actions: 91% success
+Motion + actions: 91%
 Video + motion + actions: 51%
 Video + actions: 40%
 
-Averages across three real-robot tasks.</div>
+Average success on Oven, Toolbox and Corn.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
               <img src="static/images/thread_policy_results.png" alt="Success on Oven, Toolbox, and Corn for motion plus actions, video plus motion plus actions, and video plus actions; 15 trials per task and method" loading="lazy">
@@ -139,10 +139,10 @@ Averages across three real-robot tasks.</div>
 
           <div class="post-body" data-post-body>[5/7] Adding action-free human video improves generalization.
 
-Across three real-robot transfer tasks, success is 60% with human video (18/30 trials), versus 7% without it (1/15).</div>
+Across three real-robot transfer tasks, success is 60% with human video, versus 7% without it.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/figure_ood_human_video.png" width="1779" height="1060" alt="Website human-video ablation plot: with human video, Close Cabinet 6/10, Pull String 7/10, Highlighter 5/10, 18/30 overall; without human video, 0/5, 1/5, 0/5, 1/15 overall. Labels show successes/trials." loading="lazy">
+              <img src="static/images/thread_transfer_results.png" alt="Human-video transfer success: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
             </div>
           </figure>
         </article>
