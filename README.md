@@ -14,13 +14,13 @@ The header also links to [FloMo-release-thread.zip](FloMo-release-thread.zip), t
 | --- | --- | --- | --- |
 | 1 | Motion versus video prediction | `static/videos/thread_overview.mp4` | `static/images/posters/thread_overview.jpg` |
 | 2 | RGB scene flow, frozen video VAE, joint prediction | `static/images/thread_method.png` | — |
-| 3 | Shared human/robot motion target | `static/images/thread_shared_motion.jpg` | — |
+| 3 | Shared human/robot motion target | `static/images/thread_shared_motion.png` | — |
 | 4 | Matched prediction-target results | `static/images/thread_policy_results.png` | — |
-| 5 | Human-video transfer | `static/images/thread_transfer.jpg` | — |
+| 5 | Human-video transfer | `static/images/figure_ood_human_video.png` | — |
 | 6 | Action-token attention | `static/images/figure_attention_share.png` | — |
 | 7 | Collaborators and links | None | — |
 
-Only post 1 uses video; posts 2–6 use static images, and post 7 has no attachment. Method and shared-motion explanations precede the results in posts 4–5. The architecture image retains the corrected Wan 2.2 5B DiT and scene-flow labels. Example motion fields are extracted **RGB scene flow**, not model predictions. The shared-motion image pairs human and robot oven demonstrations with their extracted RGB scene flow. The transfer image shows string-pulling and highlighter successes.
+Only post 1 uses video; posts 2–6 use static images, and post 7 has no attachment. Method and shared-motion explanations precede the results in posts 4–5. The architecture image retains the corrected Wan 2.2 5B DiT and scene-flow labels. Post 3 uses a purpose-built supervision schematic in the site's orange/teal theme: human video supplies RGB scene-flow targets, and robot demonstrations supply RGB scene-flow and action targets. Post 5 reuses the website's human-video ablation plot unchanged, with per-task results and aggregate trial counts. Neither image is a still from the overview video.
 
 Results come from the September 16, 2026 ICRA 2027 manuscript. Post 4 compares the same architecture and training protocol: motion + actions 91%, video + motion + actions 51%, and video + actions 40%, averaged across Oven, Toolbox, and Corn. Each task and method uses 15 trials (45 per method).
 

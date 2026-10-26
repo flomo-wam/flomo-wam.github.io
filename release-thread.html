@@ -100,7 +100,7 @@ Given an image and instruction, one pretrained backbone jointly predicts motion 
 Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/thread_shared_motion.jpg" width="1920" height="1080" alt="Matched human and robot oven demonstrations with their extracted RGB scene flow below" loading="lazy">
+              <img src="static/images/thread_shared_motion.png" width="1600" height="900" alt="Shared training target: human video supervises RGB scene flow; robot demonstrations supervise RGB scene flow and actions. Co-train on both, then fine-tune on robot demonstrations." loading="lazy">
             </div>
           </figure>
         </article>
@@ -142,7 +142,7 @@ Averages across three real-robot tasks.</div>
 Across three real-robot transfer tasks, success is 60% with human video (18/30 trials), versus 7% without it (1/15).</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/thread_transfer.jpg" width="1920" height="1080" alt="String-pulling and highlighter successes; average over three transfer tasks: 60 percent with human video, 18 of 30 trials, versus 7 percent without, 1 of 15" loading="lazy">
+              <img src="static/images/figure_ood_human_video.png" width="1779" height="1060" alt="Website human-video ablation plot: with human video, Close Cabinet 6/10, Pull String 7/10, Highlighter 5/10, 18/30 overall; without human video, 0/5, 1/5, 0/5, 1/15 overall. Labels show successes/trials." loading="lazy">
             </div>
           </figure>
         </article>
