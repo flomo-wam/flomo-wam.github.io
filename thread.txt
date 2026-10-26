@@ -16,25 +16,33 @@ Human clips supervise motion prediction. Robot demonstrations supervise motion a
 
 ---
 
-[4/7] Predicting motion gives the highest success on every evaluated real-robot task.
+[4/7] Predicting motion improves policy success and generalization.
 
-Motion + actions: 91%
-Video + motion + actions: 51%
-Video + actions: 40%
+Average success:
+ID: MA 91%, VMA 51%, VA 40%
+OOD: MA 60%, VMA 7%, VA 7%
 
-Average success on Oven, Toolbox and Corn.
-
----
-
-[5/7] Adding action-free human video improves generalization.
-
-Across three real-robot transfer tasks, success is 60% with human video, versus 7% without it.
+MA: motion + actions
+VMA: video + motion + actions
+VA: video + actions
 
 ---
 
-[6/7] When we train a model to predict video, motion and actions together, where do the action tokens attend?
+[5/7] FloMo leads on each of the five RoboTwin Easy tasks we evaluated.
 
-On held-out robot data, they allocate about 3x as much attention to motion as to video, averaged across layers.
+Average success:
+FloMo: 63.6%
+π0.5: 44.8%
+FAST-WAM: 41.0%
+Diffusion Policy: 19.2%
+
+Each method uses 50 demos per task and 100 evaluation episodes per task.
+
+---
+
+[6/7] Adding action-free human video improves generalization.
+
+On the OOD tasks, success is 60% with human video, versus 7% without it. Both models predict motion and actions.
 
 ---
 

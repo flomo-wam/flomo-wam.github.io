@@ -114,16 +114,23 @@ Human clips supervise motion prediction. Robot demonstrations supervise motion a
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[4/7] Predicting motion gives the highest success on every evaluated real-robot task.
+          <div class="post-body" data-post-body>[4/7] Predicting motion improves policy success and generalization.
 
-Motion + actions: 91%
-Video + motion + actions: 51%
-Video + actions: 40%
+Average success:
+ID: MA 91%, VMA 51%, VA 40%
+OOD: MA 60%, VMA 7%, VA 7%
 
-Average success on Oven, Toolbox and Corn.</div>
+MA: motion + actions
+VMA: video + motion + actions
+VA: video + actions</div>
           <figure class="evidence figure-evidence">
-            <div class="figure-frame">
-              <img src="static/images/thread_policy_results.png" alt="Success on Oven, Toolbox, and Corn for motion plus actions, video plus motion plus actions, and video plus actions; 15 trials per task and method" loading="lazy">
+            <div class="media-grid diagnostic-grid">
+              <div class="figure-frame">
+                <img src="static/images/thread_policy_results.png" alt="Image 1: in-distribution success for MA, VMA, and VA on Oven, Toolbox, and Corn; averages 91%, 51%, and 40%." loading="lazy">
+              </div>
+              <div class="figure-frame">
+                <img src="static/images/thread_ood_results.png" alt="Image 2: out-of-distribution success for MA, VMA, and VA on Close Cabinet, Pull String, and Highlighter; overall 60%, 7%, and 7%." loading="lazy">
+              </div>
             </div>
           </figure>
         </article>
@@ -137,12 +144,18 @@ Average success on Oven, Toolbox and Corn.</div>
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[5/7] Adding action-free human video improves generalization.
+          <div class="post-body" data-post-body>[5/7] FloMo leads on each of the five RoboTwin Easy tasks we evaluated.
 
-Across three real-robot transfer tasks, success is 60% with human video, versus 7% without it.</div>
+Average success:
+FloMo: 63.6%
+π0.5: 44.8%
+FAST-WAM: 41.0%
+Diffusion Policy: 19.2%
+
+Each method uses 50 demos per task and 100 evaluation episodes per task.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/thread_transfer_results.png" alt="Human-video transfer success: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
+              <img src="static/images/thread_robotwin_results.png" alt="RoboTwin Easy success across Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, and Handover Microphone, comparing FloMo, π0.5, FAST-WAM, and Diffusion Policy." loading="lazy">
             </div>
           </figure>
         </article>
@@ -156,12 +169,12 @@ Across three real-robot transfer tasks, success is 60% with human video, versus 
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[6/7] When we train a model to predict video, motion and actions together, where do the action tokens attend?
+          <div class="post-body" data-post-body>[6/7] Adding action-free human video improves generalization.
 
-On held-out robot data, they allocate about 3x as much attention to motion as to video, averaged across layers.</div>
+On the OOD tasks, success is 60% with human video, versus 7% without it. Both models predict motion and actions.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/figure_attention_share.png" alt="Action-query attention across layers in the video-motion-action variant; motion receives about three times the attention of video averaged over layers" loading="lazy">
+              <img src="static/images/thread_transfer_results.png" alt="Human-data ablation on OOD tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
             </div>
           </figure>
         </article>
