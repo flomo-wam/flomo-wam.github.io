@@ -4,25 +4,25 @@ FloMo adapts a pretrained video model to predict 3D motion and robot actions. Ac
 
 ---
 
-[2/7] We compared three prediction targets with the same architecture and training protocol.
+[2/7] We render 3D motion as RGB and encode it with the frozen video VAE, reusing the tokenizer learned during large-scale video pretraining.
+
+Given an image and instruction, one pretrained backbone jointly predicts motion and robot actions.
+
+---
+
+[3/7] Motion gives us a common training target for human and robot video.
+
+Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.
+
+---
+
+[4/7] We compared three prediction targets with the same architecture and training protocol.
 
 Motion + actions: 91% success
 Video + motion + actions: 51%
 Video + actions: 40%
 
 Averages across three real-robot tasks.
-
----
-
-[3/7] We render 3D motion as RGB and encode it with the frozen video VAE, reusing the tokenizer learned during large-scale video pretraining.
-
-Given an image and instruction, one pretrained backbone jointly predicts motion and robot actions.
-
----
-
-[4/7] Motion gives us a common training target for human and robot video.
-
-Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.
 
 ---
 

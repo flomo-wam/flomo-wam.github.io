@@ -76,16 +76,12 @@ FloMo adapts a pretrained video model to predict 3D motion and robot actions. Ac
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 2 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[2/7] We compared three prediction targets with the same architecture and training protocol.
+          <div class="post-body" data-post-body>[2/7] We render 3D motion as RGB and encode it with the frozen video VAE, reusing the tokenizer learned during large-scale video pretraining.
 
-Motion + actions: 91% success
-Video + motion + actions: 51%
-Video + actions: 40%
-
-Averages across three real-robot tasks.</div>
+Given an image and instruction, one pretrained backbone jointly predicts motion and robot actions.</div>
           <figure class="evidence figure-evidence">
-            <div class="figure-frame">
-              <img src="static/images/thread_policy_results.png" alt="Success on Oven, Toolbox, and Corn for motion plus actions, video plus motion plus actions, and video plus actions; 15 trials per task and method" loading="lazy">
+            <div class="figure-frame architecture-frame">
+              <img src="static/images/thread_method.png" width="1603" height="720" alt="3D displacement rendered as RGB scene flow and encoded by a frozen video VAE; one backbone jointly predicts motion and actions" loading="lazy">
             </div>
           </figure>
         </article>
@@ -99,12 +95,12 @@ Averages across three real-robot tasks.</div>
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 3 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[3/7] We render 3D motion as RGB and encode it with the frozen video VAE, reusing the tokenizer learned during large-scale video pretraining.
+          <div class="post-body" data-post-body>[3/7] Motion gives us a common training target for human and robot video.
 
-Given an image and instruction, one pretrained backbone jointly predicts motion and robot actions.</div>
+Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.</div>
           <figure class="evidence figure-evidence">
-            <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_method.mp4" poster="static/images/posters/thread_method.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="3D displacement rendered as RGB scene flow and encoded by a frozen video VAE; one backbone jointly predicts motion and actions"></video>
+            <div class="figure-frame">
+              <img src="static/images/thread_shared_motion.jpg" width="1920" height="1080" alt="Matched human and robot oven demonstrations with their extracted RGB scene flow below" loading="lazy">
             </div>
           </figure>
         </article>
@@ -118,12 +114,16 @@ Given an image and instruction, one pretrained backbone jointly predicts motion 
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[4/7] Motion gives us a common training target for human and robot video.
+          <div class="post-body" data-post-body>[4/7] We compared three prediction targets with the same architecture and training protocol.
 
-Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.</div>
+Motion + actions: 91% success
+Video + motion + actions: 51%
+Video + actions: 40%
+
+Averages across three real-robot tasks.</div>
           <figure class="evidence figure-evidence">
-            <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_shared_motion.mp4" poster="static/images/posters/thread_shared_motion.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="Matched human and robot oven demonstrations with their extracted RGB scene flow below"></video>
+            <div class="figure-frame">
+              <img src="static/images/thread_policy_results.png" alt="Success on Oven, Toolbox, and Corn for motion plus actions, video plus motion plus actions, and video plus actions; 15 trials per task and method" loading="lazy">
             </div>
           </figure>
         </article>
@@ -141,8 +141,8 @@ Human clips supervise motion prediction. Robot demonstrations supervise motion a
 
 Across three real-robot transfer tasks, success is 60% with human video (18/30 trials), versus 7% without it (1/15).</div>
           <figure class="evidence figure-evidence">
-            <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_transfer.mp4" poster="static/images/posters/thread_transfer.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="String-pulling and highlighter successes; average over three transfer tasks: 60 percent with human video, 18 of 30 trials, versus 7 percent without, 1 of 15"></video>
+            <div class="figure-frame">
+              <img src="static/images/thread_transfer.jpg" width="1920" height="1080" alt="String-pulling and highlighter successes; average over three transfer tasks: 60 percent with human video, 18 of 30 trials, versus 7 percent without, 1 of 15" loading="lazy">
             </div>
           </figure>
         </article>

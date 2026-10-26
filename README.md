@@ -13,16 +13,16 @@ The header also links to [FloMo-release-thread.zip](FloMo-release-thread.zip), t
 | Post | Topic | Attachment | Poster |
 | --- | --- | --- | --- |
 | 1 | Motion versus video prediction | `static/videos/thread_overview.mp4` | `static/images/posters/thread_overview.jpg` |
-| 2 | Matched prediction-target results | `static/images/thread_policy_results.png` | — |
-| 3 | RGB scene flow, frozen video VAE, joint prediction | `static/videos/thread_method.mp4` | `static/images/posters/thread_method.jpg` |
-| 4 | Shared human/robot motion target | `static/videos/thread_shared_motion.mp4` | `static/images/posters/thread_shared_motion.jpg` |
-| 5 | Human-video transfer | `static/videos/thread_transfer.mp4` | `static/images/posters/thread_transfer.jpg` |
+| 2 | RGB scene flow, frozen video VAE, joint prediction | `static/images/thread_method.png` | — |
+| 3 | Shared human/robot motion target | `static/images/thread_shared_motion.jpg` | — |
+| 4 | Matched prediction-target results | `static/images/thread_policy_results.png` | — |
+| 5 | Human-video transfer | `static/images/thread_transfer.jpg` | — |
 | 6 | Action-token attention | `static/images/figure_attention_share.png` | — |
 | 7 | Collaborators and links | None | — |
 
-The copy and attachment mapping follow the approved seven-post proposal. The overview and method media illustrate the representation and prediction setup. Example motion fields are extracted **RGB scene flow**, not model predictions. The shared-motion attachment pairs human and robot oven demonstrations with their extracted RGB scene flow. The transfer attachment shows string-pulling and highlighter successes.
+Only post 1 uses video; posts 2–6 use static images, and post 7 has no attachment. Method and shared-motion explanations precede the results in posts 4–5. The architecture image retains the corrected Wan 2.2 5B DiT and scene-flow labels. Example motion fields are extracted **RGB scene flow**, not model predictions. The shared-motion image pairs human and robot oven demonstrations with their extracted RGB scene flow. The transfer image shows string-pulling and highlighter successes.
 
-Results come from the September 16, 2026 ICRA 2027 manuscript. Post 2 compares the same architecture and training protocol: motion + actions 91%, video + motion + actions 51%, and video + actions 40%, averaged across Oven, Toolbox, and Corn. Each task and method uses 15 trials (45 per method).
+Results come from the September 16, 2026 ICRA 2027 manuscript. Post 4 compares the same architecture and training protocol: motion + actions 91%, video + motion + actions 51%, and video + actions 40%, averaged across Oven, Toolbox, and Corn. Each task and method uses 15 trials (45 per method).
 
 Post 5 reports the different transfer trial counts: with human video, 18/30 overall (cabinet 6/10, string 7/10, highlighter 5/10); without human video, 1/15 overall (0/5, 1/5, 0/5). Rounded success is 60% versus 7%. Post 6 uses the existing attention-share figure for the video–motion–action variant on held-out robot data: action tokens allocate about three times as much attention to motion as video, averaged across layers.
 
