@@ -16,21 +16,21 @@ Given an image and instruction, the pretrained backbone jointly predicts scene f
 
 ---
 
-[4/7] Does the prediction target matter?
+[4/7] Predicting motion improves robot control.
 
-In our controlled real-robot comparison, motion + actions reaches 91% average success, versus 51% for video + motion + actions and 40% for video + actions.
-
----
-
-[5/7] The same motion representation also connects human video and robot demonstrations.
-
-A human hand and a robot gripper look different, but can produce similar scene flow for the same task. Human clips can therefore supervise motion without robot action labels.
+FloMo outperforms the video-predicting variants on familiar and unfamiliar real-robot tasks. It also performs best among the policies we compare in simulation.
 
 ---
 
-[6/7] Does that human video help the robot?
+[5/7] A human hand and a robot gripper look different, but can produce similar motion.
 
-On out-of-distribution tasks, success rises from 7% without human video to 60% with it. Both models predict motion and actions; the difference is human-video training data.
+Scene flow gives us a shared way to describe that motion, so human videos can teach the model even without robot action labels.
+
+---
+
+[6/7] Human video helps robots handle unfamiliar tasks.
+
+Training with human video improves performance on tasks beyond the robot demonstrations. The shared motion representation makes that experience useful for learning to act.
 
 ---
 
