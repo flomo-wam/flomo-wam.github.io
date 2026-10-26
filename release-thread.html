@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FloMo Release Thread</title>
-  <meta name="description" content="A seven-post FloMo collaborator release draft: motion prediction, robot results, and human-video transfer.">
+  <meta name="description" content="A narrative-first FloMo release draft: 3D motion, video-pretrained modeling, and learning from human video, with two experimental comparisons.">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta property="og:type" content="article">
   <meta property="og:title" content="FloMo Release Thread">
-  <meta property="og:description" content="A seven-post thread introducing FloMo, its method, results, and analysis.">
+  <meta property="og:description" content="How FloMo connects video pretraining to robot control through 3D motion, and why human video helps.">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="FloMo Release Thread">
-  <meta name="twitter:description" content="A seven-post thread introducing FloMo, its method, results, and analysis.">
+  <meta name="twitter:description" content="How FloMo connects video pretraining to robot control through 3D motion, and why human video helps.">
   <!-- Anonymous submission: intentionally no author or institution metadata. -->
 
   <!-- Fully self-contained: all display assets are bundled locally. -->
@@ -76,12 +76,12 @@ Introducing FloMo: a world action model that uses 3D motion as the link between 
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 2 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[2/7] We render 3D motion as RGB and encode it with the frozen video VAE, reusing the tokenizer learned during large-scale video pretraining.
+          <div class="post-body" data-post-body>[2/7] What should a robot predict about the future?
 
-Given an image and instruction, one pretrained backbone jointly predicts motion and robot actions.</div>
+FloMo predicts how points in the scene move in 3D. We render that motion as RGB scene flow, focusing the prediction target on movement rather than future appearance.</div>
           <figure class="evidence figure-evidence">
-            <div class="figure-frame architecture-frame">
-              <img src="static/images/thread_method.png" width="1603" height="720" alt="3D displacement rendered as RGB scene flow and encoded by a frozen video VAE; one backbone jointly predicts motion and actions" loading="lazy">
+            <div class="figure-frame">
+              <img src="static/images/thread_scene_flow.png" width="1600" height="640" alt="A lift-board example from the project website: the RGB observation, its 2D point tracks, and the corresponding RGB scene flow." loading="lazy">
             </div>
           </figure>
         </article>
@@ -95,12 +95,12 @@ Given an image and instruction, one pretrained backbone jointly predicts motion 
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 3 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[3/7] Motion gives us a common training target for human and robot video.
+          <div class="post-body" data-post-body>[3/7] Encoding motion as RGB lets us reuse the frozen video VAE—the tokenizer learned during large-scale video pretraining.
 
-Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.</div>
+Given an image and instruction, the pretrained backbone jointly predicts scene flow and robot actions.</div>
           <figure class="evidence figure-evidence">
-            <div class="figure-frame">
-              <img src="static/images/thread_shared_motion.png" alt="Human hand and robot gripper carrying a croissant from the oven: matched RGB images with point tracks above, and their extracted RGB scene flow below." loading="lazy">
+            <div class="figure-frame architecture-frame">
+              <img src="static/images/thread_method.png" width="1603" height="720" alt="3D displacement rendered as RGB scene flow and encoded by a frozen video VAE; one backbone jointly predicts motion and actions" loading="lazy">
             </div>
           </figure>
         </article>
@@ -114,23 +114,12 @@ Human clips supervise motion prediction. Robot demonstrations supervise motion a
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[4/7] Predicting motion improves policy success and generalization.
+          <div class="post-body" data-post-body>[4/7] Does the prediction target matter?
 
-Average success:
-ID: MA 91%, VMA 51%, VA 40%
-OOD: MA 60%, VMA 7%, VA 7%
-
-MA: motion + actions
-VMA: video + motion + actions
-VA: video + actions</div>
+In our controlled real-robot comparison, motion + actions reaches 91% average success, versus 51% for video + motion + actions and 40% for video + actions.</div>
           <figure class="evidence figure-evidence">
-            <div class="media-grid diagnostic-grid">
-              <div class="figure-frame">
-                <img src="static/images/thread_policy_results.png" alt="Image 1: in-distribution success for MA, VMA, and VA on Oven, Toolbox, and Corn; averages 91%, 51%, and 40%." loading="lazy">
-              </div>
-              <div class="figure-frame">
-                <img src="static/images/thread_ood_results.png" alt="Image 2: out-of-distribution success for MA, VMA, and VA on Close Cabinet, Pull String, and Highlighter; overall 60%, 7%, and 7%." loading="lazy">
-              </div>
+            <div class="figure-frame">
+              <img src="static/images/thread_policy_results.png" width="1600" height="1000" alt="In-distribution success for MA (motion and actions), VMA (video, motion and actions), and VA (video and actions) on Oven, Toolbox, and Corn; averages 91%, 51%, and 40%." loading="lazy">
             </div>
           </figure>
         </article>
@@ -144,18 +133,12 @@ VA: video + actions</div>
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[5/7] FloMo leads on each of the five RoboTwin Easy tasks we evaluated.
+          <div class="post-body" data-post-body>[5/7] The same motion representation also connects human video and robot demonstrations.
 
-Average success:
-FloMo: 63.6%
-π0.5: 44.8%
-FAST-WAM: 41.0%
-Diffusion Policy: 19.2%
-
-Each method uses 50 demos per task and 100 evaluation episodes per task.</div>
+A human hand and a robot gripper look different, but can produce similar scene flow for the same task. Human clips can therefore supervise motion without robot action labels.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
-              <img src="static/images/thread_robotwin_results.png" alt="RoboTwin Easy success across Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, and Handover Microphone, comparing FloMo, π0.5, FAST-WAM, and Diffusion Policy." loading="lazy">
+              <img src="static/images/thread_shared_motion.png" width="2208" height="1560" alt="Human hand and robot gripper carrying a croissant from the oven: matched RGB images with point tracks above, and their extracted RGB scene flow below." loading="lazy">
             </div>
           </figure>
         </article>
@@ -169,9 +152,9 @@ Each method uses 50 demos per task and 100 evaluation episodes per task.</div>
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[6/7] Adding action-free human video improves generalization.
+          <div class="post-body" data-post-body>[6/7] Does that human video help the robot?
 
-On the OOD tasks, success is 60% with human video, versus 7% without it. Both models predict motion and actions.</div>
+On out-of-distribution tasks, success rises from 7% without human video to 60% with it. Both models predict motion and actions; the difference is human-video training data.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
               <img src="static/images/thread_transfer_results.png" alt="Human-data ablation on OOD tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">

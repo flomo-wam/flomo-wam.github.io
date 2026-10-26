@@ -4,45 +4,33 @@ Introducing FloMo: a world action model that uses 3D motion as the link between 
 
 ---
 
-[2/7] We render 3D motion as RGB and encode it with the frozen video VAE, reusing the tokenizer learned during large-scale video pretraining.
+[2/7] What should a robot predict about the future?
 
-Given an image and instruction, one pretrained backbone jointly predicts motion and robot actions.
-
----
-
-[3/7] Motion gives us a common training target for human and robot video.
-
-Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.
+FloMo predicts how points in the scene move in 3D. We render that motion as RGB scene flow, focusing the prediction target on movement rather than future appearance.
 
 ---
 
-[4/7] Predicting motion improves policy success and generalization.
+[3/7] Encoding motion as RGB lets us reuse the frozen video VAE—the tokenizer learned during large-scale video pretraining.
 
-Average success:
-ID: MA 91%, VMA 51%, VA 40%
-OOD: MA 60%, VMA 7%, VA 7%
-
-MA: motion + actions
-VMA: video + motion + actions
-VA: video + actions
+Given an image and instruction, the pretrained backbone jointly predicts scene flow and robot actions.
 
 ---
 
-[5/7] FloMo leads on each of the five RoboTwin Easy tasks we evaluated.
+[4/7] Does the prediction target matter?
 
-Average success:
-FloMo: 63.6%
-π0.5: 44.8%
-FAST-WAM: 41.0%
-Diffusion Policy: 19.2%
-
-Each method uses 50 demos per task and 100 evaluation episodes per task.
+In our controlled real-robot comparison, motion + actions reaches 91% average success, versus 51% for video + motion + actions and 40% for video + actions.
 
 ---
 
-[6/7] Adding action-free human video improves generalization.
+[5/7] The same motion representation also connects human video and robot demonstrations.
 
-On the OOD tasks, success is 60% with human video, versus 7% without it. Both models predict motion and actions.
+A human hand and a robot gripper look different, but can produce similar scene flow for the same task. Human clips can therefore supervise motion without robot action labels.
+
+---
+
+[6/7] Does that human video help the robot?
+
+On out-of-distribution tasks, success rises from 7% without human video to 60% with it. Both models predict motion and actions; the difference is human-video training data.
 
 ---
 

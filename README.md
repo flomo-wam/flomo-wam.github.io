@@ -1,6 +1,6 @@
 # flomo-wam.github.io
 
-The seven-post collaborator release draft is at [release-thread.html](https://flomo-wam.github.io/release-thread.html). It links to the [project page](https://flomo-wam.github.io/) and preserves the existing paper link. The approved copy replaces the earlier eight-post draft.
+The seven-post collaborator release draft is at [release-thread.html](https://flomo-wam.github.io/release-thread.html). It links to the [project page](https://flomo-wam.github.io/) and preserves the existing paper link. The narrative-first revision explains the representation and method, then uses two experimental posts to support the story.
 
 ## Collaborator review
 
@@ -13,20 +13,20 @@ The header also links to [FloMo-release-thread.zip](FloMo-release-thread.zip), t
 | Post | Topic | Attachment | Poster |
 | --- | --- | --- | --- |
 | 1 | Motion versus video prediction | `static/videos/thread_overview.mp4` | `static/images/posters/thread_overview.jpg` |
-| 2 | RGB scene flow, frozen video VAE, joint prediction | `static/images/thread_method.png` | — |
-| 3 | Shared human/robot motion target | `static/images/thread_shared_motion.png` | — |
-| 4 | MA / VMA / VA on ID and OOD tasks | `static/images/thread_policy_results.png` + `static/images/thread_ood_results.png` (two attachments) | — |
-| 5 | Task-level RoboTwin Easy results | `static/images/thread_robotwin_results.png` | — |
+| 2 | What 3D motion means: RGB observation, tracks, RGB scene flow | `static/images/thread_scene_flow.png` | — |
+| 3 | Frozen video VAE reuse and joint motion/action prediction | `static/images/thread_method.png` | — |
+| 4 | Controlled prediction-target comparison on ID robot tasks | `static/images/thread_policy_results.png` | — |
+| 5 | Shared human/robot motion representation | `static/images/thread_shared_motion.png` | — |
 | 6 | Human-video ablation on OOD tasks | `static/images/thread_transfer_results.png` | — |
 | 7 | Collaborators and links | None | — |
 
-Only post 1 uses video; posts 2–6 use static images, and post 7 has no attachment. The opening introduces motion as the link between video pretraining and robot control; it makes no broader empirical claim. Method and shared-motion explanations precede the three experiment posts: prediction-target comparison, RoboTwin simulation, then human-data ablation. Post 4 attaches two plots: ID first, OOD second. X permits up to four photos per post/reply ([official guidance](https://help.x.com/en/using-x/posting-gifs-and-pictures)). The preview shows these side by side on desktop and stacked on mobile. Plots keep only legends, axes, categories and percentage labels, without subtitles, protocol notes or figure-number footers. Attention analysis is no longer part of the thread; the homepage figure is unchanged.
+Only post 1 uses video; posts 2–6 use static images, and post 7 has no attachment. The story is: motivating question → scene-flow representation → reuse of video pretraining → prediction-target evidence → shared human/robot representation → human-video transfer evidence → resources. Only posts 4 and 6 present experiments. RoboTwin, the full OOD method comparison, and attention analysis remain on the project website rather than in the thread. Each illustrated reply has one attachment. Plots keep only legends, axes, categories and percentage labels, without subtitles, protocol notes or figure-number footers.
+
+Post 2's static scene-flow image uses the existing website poster `static/videos/sceneflow/sceneflow_0201.jpg` (Lift board), resized as one intact strip and labeled RGB observation / 2D tracks / RGB scene flow. It is an extracted-data visualization from the website, not a frame taken from the release video or a model prediction.
 
 The paired motion image uses stored window step 11: human `demo_67` frame 66 and robot `demo_36` frame 461. Tracks and flow use the same time within each embodiment. The displayed flow is a four-frame mean-velocity visualization with one shared color scale and deadband, not a model prediction or an exact rendering of the cumulative training target.
 
-Results come from the September 16, 2026 ICRA 2027 manuscript and the [project page](https://flomo-wam.github.io/). Post 4 compares matched prediction targets: MA (motion + actions), VMA (video + motion + actions), and VA (video + actions). ID averages are 91%, 51%, and 40%, respectively, across Oven, Toolbox and Corn, with 15 trials per task and method. OOD percentages on Close Cabinet / Pull String / Highlighter are MA 60 / 70 / 50, VMA 0 / 0 / 20, and VA 0 / 10 / 10. OOD aggregates are 18/30 for MA and 2/30 for each video-predicting variant, displayed as 60%, 7%, and 7%; bars use unrounded aggregate values.
-
-Post 5 shows all five RoboTwin Easy tasks, in order: Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, Handover Microphone. Success percentages are FloMo [76, 72, 71, 7, 92], π0.5 [49, 46, 58, 1, 70], FAST-WAM [20, 27, 68, 5, 85], and Diffusion Policy [25, 0, 66, 0, 5]. Averages are 63.6%, 44.8%, 41.0%, and 19.2%. Each method uses 50 demonstrations and 100 evaluation episodes per task.
+Results come from the September 16, 2026 ICRA 2027 manuscript and the [project page](https://flomo-wam.github.io/). Post 4 compares matched prediction targets: MA (motion + actions), VMA (video + motion + actions), and VA (video + actions). ID averages are 91%, 51%, and 40%, respectively, across Oven, Toolbox and Corn, with 15 trials per task and method. The post uses only this comparison, not the separate OOD method leaderboard or RoboTwin simulation benchmark.
 
 Post 6's human-video ablation uses different trial counts: with human video, 18/30 overall (cabinet 6/10, string 7/10, highlighter 5/10); without human video, 1/15 overall (0/5, 1/5, 0/5). The post and chart show rounded percentages only: 60%, 70%, 50% (60% overall) with human video, and 0%, 20%, 0% (7% overall) without it. The overall no-human-video bar uses the unrounded 100/15% value; only the label is rounded.
 
