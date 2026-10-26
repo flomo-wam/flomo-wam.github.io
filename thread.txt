@@ -1,0 +1,45 @@
+[1/7] Are videos the right objective for World Action Models?
+
+FloMo adapts a pretrained video model to predict 3D motion and robot actions. Across three real-robot tasks, predicting motion gives higher success than predicting video.
+
+---
+
+[2/7] We compared three prediction targets with the same architecture and training protocol.
+
+Motion + actions: 91% success
+Video + motion + actions: 51%
+Video + actions: 40%
+
+Averages across three real-robot tasks.
+
+---
+
+[3/7] We render 3D motion as RGB and encode it with the frozen video VAE, reusing the tokenizer learned during large-scale video pretraining.
+
+Given an image and instruction, one pretrained backbone jointly predicts motion and robot actions.
+
+---
+
+[4/7] Motion gives us a common training target for human and robot video.
+
+Human clips supervise motion prediction. Robot demonstrations supervise motion and actions. We then fine-tune on robot data.
+
+---
+
+[5/7] Adding action-free human video improves generalization.
+
+Across three real-robot transfer tasks, success is 60% with human video (18/30 trials), versus 7% without it (1/15).
+
+---
+
+[6/7] When we train a model to predict video, motion and actions together, where do the action tokens attend?
+
+On held-out robot data, they allocate about 3x as much attention to motion as to video, averaged across layers.
+
+---
+
+[7/7] Work with [collaborator handles].
+
+arXiv: [link]
+
+Project page: https://flomo-wam.github.io/
