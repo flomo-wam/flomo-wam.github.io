@@ -1,42 +1,41 @@
-[1/7] World action models typically learn to act by predicting video.
+[1/7] Most world action models learn to act by predicting videos.
 
-We find that predicting 3D motion works better.
+We find that predicting how the scene moves in 3D performs better.
 
-Introducing FloMo: a world action model that connects video pretraining to robot control through motion.
-
----
-
-[2/7] Predicting video also means predicting textures and lighting.
-
-FloMo focuses on how the scene moves: it predicts 3D scene flow—the displacement of points in the scene—and renders it as RGB video.
+Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control.
 
 ---
 
-[3/7] Render motion as RGB, reuse the frozen Wan 2.2 video VAE. No new tokenizer needed.
+[2/7] Videos contain extraneous features like texture and lighting. The action that produces the next state depends only on how the scene moves.
 
-Given an image and instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.
-
----
-
-[4/7] On the bimanual YAM robot, predicting motion beats predicting video—or both—on trained tasks.
-
-FloMo also leads the policies we compare on each evaluated RoboTwin 2.0 task, and transfers better to unfamiliar real-robot tasks.
+So FloMo predicts 3D scene flow, the motion of all points in the scene, and renders it as an RGB video.
 
 ---
 
-[5/7] A human hand and a robot gripper look nothing alike, but can move an object in similar ways.
+[3/7] Here's how FloMo works. Because scene flow is rendered as RGB, the frozen VAE from Wan 2.2 encodes it into the same latent space as video, so no new tokenizer is needed.
 
-Scene flow captures that shared motion, letting FloMo learn from human videos without robot action labels.
-
----
-
-[6/7] Human video teaches motion the robot never demonstrated.
-
-FloMo transfers to pulling a yoyo string (unseen task) and moving a highlighter (unseen object). Removing human video sharply reduces success on these unfamiliar tasks.
+Given an image and an instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.
 
 ---
 
-[7/7] Paper: [link]
+[4/7] On a bimanual YAM robot, FloMo succeeded in 91% of trials on trained tasks. The same model got 40% when predicting video instead of motion, and 51% when predicting both.
+
+In RoboTwin simulation it averages 63.6%, vs 44.8% for π0.5.
+
+---
+
+[5/7] A human hand and a robot gripper look nothing alike, but they can move an object in the same manner.
+
+The object's scene flow is the same in both cases, so FloMo can learn from human videos that have no robot action labels.
+
+---
+
+[6/7] That's how FloMo handles tasks it never saw on the robot. Pulling a string to a mark appears only in human video, and FloMo completed it in 70% of trials vs 10% for DreamZero.
+
+Without human video, success on these tasks drops to 7%.
+
+---
+
+[7/7] Paper: [arXiv link]
 Videos: https://flomo-wam.github.io/
-
 Joint work with [collaborator handles].
