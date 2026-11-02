@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Cut the archived 61-second overview to 44.6 seconds with a diagram-based architecture scene.
+"""Cut the archived 61-second overview to 47.2 seconds with a cold open and a diagram-based
+architecture scene.
 
 Requires the already-installed Pillow and imageio_ffmpeg packages and the Inter
 SemiBold font used by the original slides. Run against an archive of the
-original, never against the rendered 44.6-second release.
+original, never against the rendered 47.2-second release.
 """
 
 import argparse
@@ -19,13 +20,24 @@ from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFo
 
 WIDTH, HEIGHT, FPS = 1920, 1080, 30
 FOOTAGE_FILTER = f'scale={WIDTH}:{HEIGHT}:flags=lanczos,fps={FPS},setpts=PTS-STARTPTS'
-TOTAL_FRAMES = 1338
-ARCHITECTURE_FRAMES = 291
-# Output order as (source start, seconds); None inserts the animated paper
-# diagram. Footage is only trimmed, never retimed.
-# Starts at 14.4 and 33.4 skip the original's crossfades from the prior slide.
-CUTS = ((8, 5), (3.3, 2.7), (14.4, 3.6), (None, 9.7), (33.4, 6.6), (41.5, 6),
-        (49.5, 8), (57.5, 3))
+TOTAL_FRAMES = 1416
+ARCHITECTURE_FRAMES = 408
+PACE = 1.4  # The architecture choreography (9.7 s of timings) plays 1.4x slower.
+INTRO = 'intro'
+INTRO_SECONDS, TRANSITION = 2.9, .6
+SLIDE_START = 8.6  # Scene-flow slide; the intro crossfades over the 0.6 s before it.
+# Output order as (source start, seconds); INTRO inserts the cold open and None
+# the animated paper diagram. Footage is only trimmed, never retimed.
+# The start at 33.4 skips the original's crossfade from the prior slide.
+CUTS = ((INTRO, INTRO_SECONDS), (SLIDE_START, 4.4), (3.3, 2.7), (None, 13.6), (33.4, 6.6),
+        (41.5, 6), (49.5, 8), (57.5, 3))
+# Cold open: the website scene-flow examples slide (from 14.4 s, past its
+# crossfade) tiled edge to edge. 384-px source panels, human row then robot row.
+WALL_START = 14.4
+WALL_PANELS = [(x, y) for y in (248, 652) for x in (200, 596, 1044, 1440)]
+TILE, GUTTER = (474, 536), 8
+SLIDE_LOGO = (1660, 84, 1824, 124)  # Logo on the scene-flow slide.
+INTRO_LOGO_WIDTH = 520
 WHITE = (255, 255, 255)
 INK = (32, 38, 48)
 ORANGE = (240, 143, 23)
@@ -393,7 +405,7 @@ class Architecture:
                     (TITLE_XY[0], TITLE_XY[1] + offset), level)
 
     def frame(self, number):
-        time = self.time = number / FPS
+        time = self.time = number / FPS / PACE
         canvas = Image.new('RGBA', (WIDTH, HEIGHT), (*WHITE, 255))
         canvas.paste(self.diagram(time), (DIAGRAM_X, DIAGRAM_Y))
 
@@ -476,6 +488,66 @@ class Badge:
         return frame
 
 
+def intro(ffmpeg, source):
+    """Scene-flow examples edge to edge; the logo then flies onto the scene-flow slide."""
+    logo = Image.open(REPO / 'static/images/flomo_logo.png').convert('RGBA')
+    logo = logo.resize((INTRO_LOGO_WIDTH, round(logo.height * INTRO_LOGO_WIDTH / logo.width)),
+                       Image.Resampling.LANCZOS)
+    margin = 40
+    pill_box = (margin, margin, margin + logo.width + 104, margin + logo.height + 72)
+    shadow = Image.new('L', (pill_box[2] + margin, pill_box[3] + margin), 0)
+    ImageDraw.Draw(shadow).rounded_rectangle(
+        (pill_box[0], pill_box[1] + 6, pill_box[2], pill_box[3] + 6), radius=36, fill=70)
+    pill = Image.new('RGBA', shadow.size, (0, 0, 0, 0))
+    pill.putalpha(shadow.filter(ImageFilter.GaussianBlur(16)))
+    ImageDraw.Draw(pill).rounded_rectangle(pill_box, radius=36, fill=(*WHITE, 255))
+    labels = Image.new('RGBA', (WIDTH, HEIGHT), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(labels)
+    for row, text in enumerate(('Human', 'Robot')):
+        x, y = 20, 20 + row * (TILE[1] + GUTTER)
+        draw.rounded_rectangle((x, y, x + font(28).getlength(text) + 32, y + 48), radius=10,
+                               fill=(*WHITE, 235))
+        draw.text((x + 16, y + 24), text, font=font(28), fill=INK, anchor='lm')
+    trim = (384 - 384 * TILE[0] / TILE[1]) / 2  # Square panels to the tile aspect.
+    hide = (SLIDE_LOGO[0] - 4, SLIDE_LOGO[1] - 4, SLIDE_LOGO[2] + 4, SLIDE_LOGO[3] + 4)
+    blank = Image.new('RGB', (hide[2] - hide[0], hide[3] - hide[1]), (253, 253, 253))
+    count, fade = frames(INTRO_SECONDS), frames(TRANSITION)
+    start = INTRO_SECONDS - TRANSITION
+    slide = source_frames(ffmpeg, source, SLIDE_START - TRANSITION, fade)
+    for number, image in enumerate(source_frames(ffmpeg, source, WALL_START, count)):
+        time = number / FPS
+        wall = Image.new('RGB', (WIDTH, HEIGHT), WHITE)
+        for index, (x, y) in enumerate(WALL_PANELS):
+            panel = image.resize(TILE, Image.Resampling.LANCZOS,
+                                 box=(x + trim, y, x + 384 - trim, y + 384))
+            wall.paste(panel, ((index % 4) * (TILE[0] + GUTTER), (index // 4) * (TILE[1] + GUTTER)))
+        inset = .02 * time / INTRO_SECONDS  # Slow push-in.
+        wall = wall.resize((WIDTH, HEIGHT), Image.Resampling.BICUBIC,
+                           box=(WIDTH * inset, HEIGHT * inset,
+                                WIDTH * (1 - inset), HEIGHT * (1 - inset)))
+        wall.paste(labels, (0, 0), labels)
+        blend = rise(time, start, TRANSITION - 1 / FPS)
+        flight = rise(time, start, TRANSITION - .2)
+        land = rise(time, INTRO_SECONDS - .2, .2 - 1 / FPS)
+        if number >= count - fade:
+            target = next(slide)
+            # The slide's own logo stays hidden until the flying logo reaches it.
+            target.paste(Image.blend(target.crop(hide), blank, 1 - land), hide[:2])
+            wall = Image.blend(wall, target, blend)
+        canvas = wall.convert('RGBA')
+        settle = 1 + .05 * (1 - rise(time, 0, .6))
+        size = (round(pill.width * settle), round(pill.height * settle))
+        overlay(canvas, pill.resize(size, Image.Resampling.LANCZOS),
+                ((WIDTH - size[0]) / 2, (HEIGHT - size[1]) / 2), 1 - blend)
+        width, height = logo.width * settle, logo.height * settle
+        centre = ((WIDTH - width) / 2, (HEIGHT - height) / 2,
+                  (WIDTH + width) / 2, (HEIGHT + height) / 2)
+        x0, y0, x1, y1 = lerp_box(centre, SLIDE_LOGO, flight)
+        overlay(canvas, logo.resize((round(x1 - x0), round(y1 - y0)), Image.Resampling.LANCZOS),
+                (x0, y0), 1 - land)
+        yield canvas.convert('RGB')
+
+
 def encoder_args():
     return ['-an', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18',
             '-pix_fmt', 'yuv420p', '-r', str(FPS), '-video_track_timescale', '15360']
@@ -506,7 +578,7 @@ def encode_architecture(ffmpeg, source, output):
                   output)
 
 
-def footage(ffmpeg, source, start, count, badge):
+def source_frames(ffmpeg, source, start, count):
     command = [ffmpeg, '-hide_banner', '-loglevel', 'error', '-ss', str(start), '-i', str(source),
                '-vf', FOOTAGE_FILTER,
                '-frames:v', str(count), '-r', str(FPS), '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-']
@@ -515,7 +587,7 @@ def footage(ffmpeg, source, start, count, badge):
             raw = process.stdout.read(WIDTH * HEIGHT * 3)
             if len(raw) < WIDTH * HEIGHT * 3:
                 raise RuntimeError(f'Source ended {number} frames into the cut at {start}s')
-            yield badge(Image.frombytes('RGB', (WIDTH, HEIGHT), raw), start + number / FPS)
+            yield Image.frombytes('RGB', (WIDTH, HEIGHT), raw)
 
 
 def frames(duration):
@@ -541,11 +613,14 @@ def render(source, output):
         segments = []
         for index, (start, duration) in enumerate(CUTS):
             segment = directory / f'{index:02d}.mp4'
-            if start is None:
+            if start == INTRO:
+                encode_frames(ffmpeg, intro(ffmpeg, source), segment)
+            elif start is None:
                 encode_architecture(ffmpeg, source, segment)
             elif start < BADGE_SECONDS[1] and start + duration > BADGE_SECONDS[0]:
-                encode_frames(ffmpeg, footage(ffmpeg, source, start, frames(duration), badge),
-                              segment)
+                images = source_frames(ffmpeg, source, start, frames(duration))
+                encode_frames(ffmpeg, (badge(image, start + number / FPS)
+                                       for number, image in enumerate(images)), segment)
             else:
                 subprocess.run(
                     [ffmpeg, '-hide_banner', '-loglevel', 'error', '-y',

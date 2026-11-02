@@ -30,12 +30,12 @@ Results come from the paper ([static/paper/flomo.pdf](static/paper/flomo.pdf); t
 
 Post 6's human-video ablation uses different trial counts: with human video, 18/30 overall (cabinet 6/10, string 7/10, highlighter 5/10); without human video, 1/15 overall (0/5, 1/5, 0/5). The chart shows rounded percentages only: 60%, 70%, 50% (60% overall) with human video, and 0%, 20%, 0% (7% overall) without it. The overall no-human-video bar uses the unrounded 100/15% value; only the label is rounded. The post text states the conclusion without quoting these scores.
 
-The homepage (`index.html`) presents the ICRA 2027 paper in the original homepage design; its wording and numbers follow the paper. The current overview is 44.6 seconds (1,338 frames at 30 fps), down from 61 seconds. It opens directly on the complete RGB-tracks/scene-flow visualization, followed by the “Robot policies should learn from motion.” slide. The architecture section animates the paper diagram itself in four steps: flow tokenization into RGB, frozen-VAE encoding, instruction and noisy-action conditioning, and joint motion/action prediction by one backbone. The representation, real-robot comparison, matched human/robot motion, and eight-second human-video transfer-results section remain. Following the paper's OOD axes, the yoyo (Pull String) clip is labeled `Unseen task` (the renderer replaces the archived `Unseen motion` text) and the highlighter clip `Unseen object`. Results keep one headline and percentage-only bars, with no secondary subtitle or trial counts. The real-robot comparison identifies `Motion + actions (FloMo)`. [release-video.html](release-video.html) uses the same overview and opening-frame poster as post 1. Existing rollout excerpts are trimmed, not accelerated.
+The homepage (`index.html`) presents the ICRA 2027 paper in the original homepage design; its wording and numbers follow the paper. The current overview is 47.2 seconds (1,416 frames at 30 fps), down from 61 seconds. It opens cold on the website's human and robot scene-flow examples, tiled edge to edge under the FloMo logo; the logo then flies into the corner of the complete RGB-tracks/scene-flow visualization, followed by the “Robot policies should learn from motion.” slide. The architecture section animates the paper diagram itself in four steps, at 1.4x the earlier duration: flow tokenization into RGB, frozen-VAE encoding, instruction and noisy-action conditioning, and joint motion/action prediction by one backbone. The real-robot comparison, matched human/robot motion, and eight-second human-video transfer-results section remain. Following the paper's OOD axes, the yoyo (Pull String) clip is labeled `Unseen task` (the renderer replaces the archived `Unseen motion` text) and the highlighter clip `Unseen object`. Results keep one headline and percentage-only bars, with no secondary subtitle or trial counts. The real-robot comparison identifies `Motion + actions (FloMo)`. [release-video.html](release-video.html) uses the same overview as post 1, with a poster taken from its cold open. Existing rollout excerpts are trimmed, not accelerated.
 Task captions appear below the Oven, Toolbox, Pull String (yoyo), and Highlighter rollout clips, outside the video images and above the success bars, and match the homepage rollout captions. Oven (“Open the oven and put the croissant on the plate”), Toolbox (“Open the lid of the toolbox and put the screwdriver inside”), and Corn (“Put the corn in the bowl”) were verified from the UTF-8 `text` dataset in `/storage/project/r-agarg35-0/shared/v2r/real_yam/raw/{croissant_oven/demo_0,screwdriver_toolbox/demo_0,corn_bowl_fixed/demo_1}.hdf5`. The yoyo wording (“Pull the string on the toy in the air”) was verified from `inference_server.task` in `/storage/project/r-agarg35-0/sgovil9/flomo_release_tracks/rollouts/flomo_20260919_203651_1/metadata.json`. Cabinet (“Close the cabinet”) and Highlighter (“Put the highlighter in the bowl”) are concise task descriptions, not recovered verbatim policy prompts. Video line breaks are layout-only. The task-name and unseen-condition labels remain visible.
 
 ## Re-rendering the overview
 
-`scripts/render_release_overview.py` uses Pillow, `imageio_ffmpeg`, and the Inter SemiBold font of the original slides (`Inter-SemiBold.ttf` in `scripts/fonts/`, `~/Library/Fonts/`, or `/Library/Fonts/`). Supply the original 61-second overview from commit `d64da858040f665f66732a26c241012a361d431d`, not the current 44.6-second output:
+`scripts/render_release_overview.py` uses Pillow, `imageio_ffmpeg`, and the Inter SemiBold font of the original slides (`Inter-SemiBold.ttf` in `scripts/fonts/`, `~/Library/Fonts/`, or `/Library/Fonts/`). Supply the original 61-second overview from commit `d64da858040f665f66732a26c241012a361d431d`, not the current 47.2-second output:
 
 ```sh
 python3 scripts/render_release_overview.py --source /path/to/original_overview.mp4 --output /path/to/revised_overview.mp4
@@ -43,12 +43,12 @@ python3 scripts/render_release_overview.py --source /path/to/original_overview.m
 
 | Output time | Source |
 | --- | --- |
-| 0–5 s | Original 8–13 s: complete scene-flow visualization |
-| 5–7.7 s | Original 3.3–6.0 s: thesis slide, “Robot policies should learn from motion.” |
-| 7.7–11.3 s | Original 14.4–18 s: website scene-flow examples |
-| 11.3–21 s | New four-step walkthrough of the paper architecture diagram (`static/images/thread_method.png`) |
-| 21–27.6 s | Original 33.4–40 s: trained-task comparison |
-| 27.6–33.6 s | Original 41.5–47.5 s: shared human/robot motion |
-| 33.6–41.6 s | Original 49.5–57.5 s: human-video transfer |
-| 41.6–44.6 s | Original 57.5–60.5 s: closing |
+| 0–2.9 s | New cold open: original 14.4–17.3 s website scene-flow examples, tiled full-frame; crossfades into the next slide |
+| 2.9–7.3 s | Original 8.6–13 s: complete scene-flow visualization |
+| 7.3–10 s | Original 3.3–6.0 s: thesis slide, “Robot policies should learn from motion.” |
+| 10–23.6 s | New four-step walkthrough of the paper architecture diagram (`static/images/thread_method.png`) |
+| 23.6–30.2 s | Original 33.4–40 s: trained-task comparison |
+| 30.2–36.2 s | Original 41.5–47.5 s: shared human/robot motion |
+| 36.2–44.2 s | Original 49.5–57.5 s: human-video transfer |
+| 44.2–47.2 s | Original 57.5–60.5 s: closing |
 
