@@ -57,9 +57,11 @@
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 1 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[1/7] Are videos the right objective for World Action Models?
+          <div class="post-body" data-post-body>[1/7] World action models typically learn to act by predicting video.
 
-Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control. It jointly predicts scene flow and robot actions.</div>
+We find that predicting 3D motion works better.
+
+Introducing FloMo: a world action model that connects video pretraining to robot control through motion.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
               <video src="static/videos/thread_overview.mp4" poster="static/images/posters/thread_overview.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo overview: RGB scene flow, joint motion and action prediction, real-robot results, shared human/robot motion, and human-video transfer to unseen motion and objects"></video>
@@ -76,9 +78,9 @@ Introducing FloMo: a world action model that uses 3D motion as the link between 
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 2 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[2/7] What should a robot predict about the future?
+          <div class="post-body" data-post-body>[2/7] Predicting video also means predicting textures and lighting.
 
-FloMo predicts how points in the scene move in 3D. We render that motion as RGB scene flow, focusing the prediction target on movement rather than future appearance.</div>
+FloMo focuses on how the scene moves: it predicts 3D scene flow—the displacement of points in the scene—and renders it as RGB video.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
               <img src="static/images/thread_scene_flow.png" width="1600" height="640" alt="A lift-board example from the project website: the RGB observation, its 2D point tracks, and the corresponding RGB scene flow." loading="lazy">
@@ -95,9 +97,9 @@ FloMo predicts how points in the scene move in 3D. We render that motion as RGB 
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 3 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[3/7] Encoding motion as RGB lets us reuse the frozen video VAE—the tokenizer learned during large-scale video pretraining.
+          <div class="post-body" data-post-body>[3/7] Render motion as RGB, reuse the frozen Wan 2.2 video VAE. No new tokenizer needed.
 
-Given an image and instruction, the pretrained backbone jointly predicts scene flow and robot actions.</div>
+Given an image and instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame architecture-frame">
               <img src="static/images/thread_method.png" width="1603" height="720" alt="3D displacement rendered as RGB scene flow and encoded by a frozen video VAE; one backbone jointly predicts motion and actions" loading="lazy">
@@ -114,9 +116,9 @@ Given an image and instruction, the pretrained backbone jointly predicts scene f
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[4/7] Predicting motion improves robot control.
+          <div class="post-body" data-post-body>[4/7] On the bimanual YAM robot, predicting motion beats predicting video—or both—on trained tasks.
 
-FloMo outperforms the video-predicting variants on familiar and unfamiliar real-robot tasks. It also performs best among the policies we compare in simulation.</div>
+FloMo also leads the policies we compare on each evaluated RoboTwin 2.0 task, and transfers better to unfamiliar real-robot tasks.</div>
           <figure class="evidence figure-evidence">
             <div class="media-grid">
               <div class="figure-frame">
@@ -141,9 +143,9 @@ FloMo outperforms the video-predicting variants on familiar and unfamiliar real-
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[5/7] A human hand and a robot gripper look different, but can produce similar motion.
+          <div class="post-body" data-post-body>[5/7] A human hand and a robot gripper look nothing alike, but can move an object in similar ways.
 
-Scene flow gives us a shared way to describe that motion, so human videos can teach the model even without robot action labels.</div>
+Scene flow captures that shared motion, letting FloMo learn from human videos without robot action labels.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
               <img src="static/images/thread_shared_motion.png" width="2208" height="1560" alt="Human hand and robot gripper carrying a croissant from the oven: matched RGB images with point tracks above, and their extracted RGB scene flow below." loading="lazy">
@@ -160,9 +162,9 @@ Scene flow gives us a shared way to describe that motion, so human videos can te
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[6/7] Human video helps robots handle unfamiliar tasks.
+          <div class="post-body" data-post-body>[6/7] Human video teaches motion the robot never demonstrated.
 
-Training with human video improves performance on tasks beyond the robot demonstrations. The shared motion representation makes that experience useful for learning to act.</div>
+FloMo transfers to pulling a yoyo string (unseen motion) and moving a highlighter (unseen object). Removing human video sharply reduces success on these unfamiliar tasks.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
               <img src="static/images/thread_transfer_results.png" alt="Human-video transfer performance on unfamiliar tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
@@ -179,11 +181,10 @@ Training with human video improves performance on tasks beyond the robot demonst
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 7 of 7">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[7/7] Work with [collaborator handles].
+          <div class="post-body" data-post-body>[7/7] Paper: [link]
+Videos: https://flomo-wam.github.io/
 
-arXiv: [link]
-
-Project page: https://flomo-wam.github.io/</div>
+Joint work with [collaborator handles].</div>
         </article>
       </li>
 
