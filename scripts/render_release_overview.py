@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Cut the archived 61-second overview to 45 seconds with a diagram-based architecture scene.
+"""Cut the archived 61-second overview to 44.6 seconds with a diagram-based architecture scene.
 
 Requires the already-installed Pillow and imageio_ffmpeg packages and the Inter
 SemiBold font used by the original slides. Run against an archive of the
-original, never against the rendered 45-second release.
+original, never against the rendered 44.6-second release.
 """
 
 import argparse
@@ -15,9 +15,10 @@ from functools import lru_cache
 from pathlib import Path
 
 import imageio_ffmpeg
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageStat
 
 WIDTH, HEIGHT, FPS = 1920, 1080, 30
+FOOTAGE_FILTER = f'scale={WIDTH}:{HEIGHT}:flags=lanczos,fps={FPS},setpts=PTS-STARTPTS'
 TOTAL_FRAMES = 1338
 ARCHITECTURE_FRAMES = 291
 # Output order as (source start, seconds); None inserts the animated paper
@@ -104,6 +105,11 @@ TITLES = [(0, '1', 'Turn 3D motion into RGB video'),
           (4.8, '3', 'Add the instruction and noisy actions'),
           (6.4, '4', 'One backbone predicts motion + actions')]
 FINALE = 8.4
+# The paper calls Pull String an unseen task; the archived slide says "Unseen motion".
+BADGE_SECONDS = (49.5, 57.8)  # transfer slide, including its fade in and crossfade out
+BADGE_PILL = (113, 258, 291, 293)  # opaque pill at the top left of the yoyo clip
+BADGE_TEXT = (8, 5, 170, 28)  # old text area, relative to BADGE_PILL
+BADGE_FILL = (18, 23, 27)
 
 
 @lru_cache(maxsize=None)
@@ -432,29 +438,84 @@ class Architecture:
         return canvas
 
 
+class Badge:
+    """Swaps the badge text as a difference image, so fades stay intact."""
+
+    def __init__(self, ffmpeg, source):
+        steady = [frame_from_video(ffmpeg, source, 50 + index / 2).crop(BADGE_PILL)
+                  for index in range(15)]
+        old = steady[0]
+        for count, image in enumerate(steady[1:], 2):
+            old = Image.blend(old, image, 1 / count)
+        new = old.copy()
+        draw = ImageDraw.Draw(new)
+        draw.rectangle(BADGE_TEXT, fill=BADGE_FILL)
+        left, _, right, _ = draw.textbbox((0, 0), 'Unseen task', font=font(22))
+        draw.text(((new.width - left - right) / 2, 3), 'Unseen task', font=font(22), fill=WHITE)
+        self.add = ImageChops.subtract(new, old)
+        self.remove = ImageChops.subtract(old, new)
+        gray = old.convert('L')
+        self.text = gray.point(lambda value: 255 if value > 200 else 0)
+        self.body = gray.point(lambda value: 255 if value < 40 else 0)
+        self.full = self.contrast(old)
+
+    def contrast(self, image):
+        gray = image.convert('L')
+        return ImageStat.Stat(gray, self.text).mean[0] - ImageStat.Stat(gray, self.body).mean[0]
+
+    def __call__(self, frame, seconds):
+        if not BADGE_SECONDS[0] <= seconds < BADGE_SECONDS[1]:
+            return frame
+        crop = frame.crop(BADGE_PILL)
+        # The old text's contrast over the pill measures how visible the slide is.
+        level = max(0.0, min(1.0, self.contrast(crop) / self.full))
+        if level > .01:
+            crop = ImageChops.add(crop, self.add.point(lambda value: round(value * level)))
+            crop = ImageChops.subtract(crop, self.remove.point(lambda value: round(value * level)))
+            frame.paste(crop, BADGE_PILL[:2])
+        return frame
+
+
 def encoder_args():
     return ['-an', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18',
             '-pix_fmt', 'yuv420p', '-r', str(FPS), '-video_track_timescale', '15360']
 
 
-def encode_architecture(ffmpeg, source, output):
-    architecture = Architecture(ffmpeg, source)
+def encode_frames(ffmpeg, images, output):
     command = [ffmpeg, '-hide_banner', '-loglevel', 'error', '-y',
                '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{WIDTH}x{HEIGHT}',
                '-r', str(FPS), '-i', '-', *encoder_args(), str(output)]
     process = subprocess.Popen(command, stdin=subprocess.PIPE)
     try:
-        for number in range(ARCHITECTURE_FRAMES):
-            process.stdin.write(architecture.frame(number).tobytes())
+        for image in images:
+            process.stdin.write(image.tobytes())
         process.stdin.close()
         if process.wait():
-            raise RuntimeError('FFmpeg could not encode the architecture segment')
+            raise RuntimeError(f'FFmpeg could not encode {output.name}')
     except BaseException:
         process.stdin.close()
         if process.poll() is None:
             process.terminate()
         process.wait()
         raise
+
+
+def encode_architecture(ffmpeg, source, output):
+    architecture = Architecture(ffmpeg, source)
+    encode_frames(ffmpeg, (architecture.frame(number) for number in range(ARCHITECTURE_FRAMES)),
+                  output)
+
+
+def footage(ffmpeg, source, start, count, badge):
+    command = [ffmpeg, '-hide_banner', '-loglevel', 'error', '-ss', str(start), '-i', str(source),
+               '-vf', FOOTAGE_FILTER,
+               '-frames:v', str(count), '-r', str(FPS), '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-']
+    with subprocess.Popen(command, stdout=subprocess.PIPE) as process:
+        for number in range(count):
+            raw = process.stdout.read(WIDTH * HEIGHT * 3)
+            if len(raw) < WIDTH * HEIGHT * 3:
+                raise RuntimeError(f'Source ended {number} frames into the cut at {start}s')
+            yield badge(Image.frombytes('RGB', (WIDTH, HEIGHT), raw), start + number / FPS)
 
 
 def frames(duration):
@@ -473,6 +534,7 @@ def render(source, output):
     assert next(frames(duration) for start, duration in CUTS
                 if start is None) == ARCHITECTURE_FRAMES
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+    badge = Badge(ffmpeg, source)
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='flomo-overview-') as temporary:
         directory = Path(temporary)
@@ -481,11 +543,14 @@ def render(source, output):
             segment = directory / f'{index:02d}.mp4'
             if start is None:
                 encode_architecture(ffmpeg, source, segment)
+            elif start < BADGE_SECONDS[1] and start + duration > BADGE_SECONDS[0]:
+                encode_frames(ffmpeg, footage(ffmpeg, source, start, frames(duration), badge),
+                              segment)
             else:
                 subprocess.run(
                     [ffmpeg, '-hide_banner', '-loglevel', 'error', '-y',
                      '-ss', str(start), '-i', str(source),
-                     '-vf', f'scale={WIDTH}:{HEIGHT}:flags=lanczos,fps={FPS},setpts=PTS-STARTPTS',
+                     '-vf', FOOTAGE_FILTER,
                      '-frames:v', str(frames(duration)),
                      *encoder_args(), str(segment)], check=True)
             segments.append(segment)

@@ -12,7 +12,6 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="FloMo Release Thread">
   <meta name="twitter:description" content="How FloMo connects video pretraining to robot control through 3D motion, and why human video helps.">
-  <!-- Anonymous submission: intentionally no author or institution metadata. -->
 
   <!-- Fully self-contained: all display assets are bundled locally. -->
   <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png">
@@ -31,7 +30,7 @@
         </a>
         <nav class="header-actions" aria-label="Release thread links">
           <a href="https://flomo-wam.github.io/">Project page</a>
-          <a href="https://drive.google.com/file/d/1yYZM2zidAS6CNFfW-2Dvza13XOHD43Sf/view" target="_blank" rel="noopener">Paper</a>
+          <a href="https://flomo-wam.github.io/static/paper/flomo.pdf" target="_blank" rel="noopener">Paper</a>
           <a href="thread.txt" download>Thread text</a>
           <a href="FloMo-release-thread.zip" download>Download bundle</a>
           <button class="copy-control copy-thread" type="button" data-copy-thread data-tooltip="Copy all seven posts" aria-label="Copy the complete release thread">Copy thread</button>
@@ -64,7 +63,7 @@ We find that predicting 3D motion works better.
 Introducing FloMo: a world action model that connects video pretraining to robot control through motion.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_overview.mp4" poster="static/images/posters/thread_overview.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo overview: RGB scene flow, joint motion and action prediction, real-robot results, shared human/robot motion, and human-video transfer to unseen motion and objects"></video>
+              <video src="static/videos/thread_overview.mp4" poster="static/images/posters/thread_overview.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo overview: RGB scene flow, joint motion and action prediction, real-robot results, shared human/robot motion, and human-video transfer to unseen tasks and objects"></video>
             </div>
           </figure>
         </article>
@@ -125,7 +124,7 @@ FloMo also leads the policies we compare on each evaluated RoboTwin 2.0 task, an
                 <img src="static/images/thread_policy_results.png" width="1600" height="1000" alt="Familiar real-robot tasks: Motion + actions (FloMo), video + motion + actions, and video + actions on Oven, Toolbox, and Corn. Success rates are shown as percentages." loading="lazy">
               </div>
               <div class="figure-frame">
-                <img src="static/images/thread_robotwin_results.png" width="1600" height="1000" alt="Single-task RoboTwin 2.0 performance: FloMo, π0.5, FAST-WAM, and Diffusion Policy on Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, and Handover Microphone. Success rates are shown as percentages." loading="lazy">
+                <img src="static/images/thread_robotwin_results.png" width="1600" height="1000" alt="Single-task RoboTwin 2.0 performance: FloMo, π0.5, FAST-WAM, and BC on Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, and Handover Microphone. Success rates are shown as percentages." loading="lazy">
               </div>
               <div class="figure-frame">
                 <img src="static/images/thread_ood_results.png" width="1600" height="1000" alt="Unfamiliar real-robot tasks: Motion + actions (FloMo), video + motion + actions, and video + actions on Close Cabinet, Pull String, and Highlighter, with overall success. Values are percentages." loading="lazy">
@@ -164,7 +163,7 @@ Scene flow captures that shared motion, letting FloMo learn from human videos wi
 
           <div class="post-body" data-post-body>[6/7] Human video teaches motion the robot never demonstrated.
 
-FloMo transfers to pulling a yoyo string (unseen motion) and moving a highlighter (unseen object). Removing human video sharply reduces success on these unfamiliar tasks.</div>
+FloMo transfers to pulling a yoyo string (unseen task) and moving a highlighter (unseen object). Removing human video sharply reduces success on these unfamiliar tasks.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
               <img src="static/images/thread_transfer_results.png" alt="Human-video transfer performance on unfamiliar tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">

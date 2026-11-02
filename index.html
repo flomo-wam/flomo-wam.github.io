@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FloMo: 3D Scene Flow as a World Action Model Intermediate</title>
+  <title>FloMo: 3D Scene Flow as a World Action Model Intermediate for Learning from Human Video</title>
   <meta name="description" content="FloMo: 3D Scene Flow as a World Action Model Intermediate for Learning from Human Video. ICRA 2027 submission.">
   <meta name="author" content="Jeremy A. Collins, Namra Patel, Ayush Agarwal, Shitij Govil, Animesh Garg">
 
@@ -44,7 +44,7 @@
     </script>
 
     <div class="link-buttons">
-      <a class="button is-flomo is-medium" href="https://drive.google.com/file/d/1yYZM2zidAS6CNFfW-2Dvza13XOHD43Sf/view?usp=sharing" target="_blank" rel="noopener">
+      <a class="button is-flomo is-medium" href="static/paper/flomo.pdf" target="_blank" rel="noopener">
         <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span>
       </a>
       <span class="button is-flomo is-medium is-disabled" title="Released upon acceptance">
@@ -110,7 +110,7 @@
       <div class="column">
         <div class="contrib-card">
           <span class="num">1</span>
-          <h4>Motion prediction as RGB video prediction</h4>
+          <h4>Motion as a WAM prediction target</h4>
           <p>We render 3D scene flow as RGB and encode it with the frozen video VAE, so motion shares the video latent space.
           A single backbone flow-matches motion and action with no new tokenizer.</p>
         </div>
@@ -259,7 +259,7 @@
       <p class="content-narrow has-text-centered" style="color:var(--muted);">
         FloMo is the only method that generalizes consistently across all three OOD axes: an unseen primitive
         (<em>Close Cabinet</em>), task (<em>Pull String</em>), and object (<em>Highlighter</em>). Every method that
-        predicts pixels, through video or image-space 2D tracks, degrades sharply.
+        predicts pixels, through video or image-space 2D tracks, degrades in performance.
       </p>
       <div class="results-table table-container" style="margin-top:1rem; max-width:900px;">
         <table class="table is-fullwidth is-hoverable">
@@ -310,7 +310,7 @@
       </div>
       <div class="content-narrow content" style="margin-top:1.2rem;">
         <p>FloMo averages <b>63.6%</b> success against <b>44.8%</b> for the pretrained VLA &pi;<sub>0.5</sub>, <b>41.0%</b> for
-        the video-predicting world action model FAST-WAM (same rank-64 Wan-backbone LoRA as FloMo), and <b>19.2%</b> for a
+        the video-based world action model FAST-WAM (same rank-64 Wan-backbone LoRA as FloMo), and <b>19.2%</b> for a
         20M-parameter diffusion-policy BC baseline without video pretraining.</p>
       </div>
       <div class="results-table table-container" style="margin-top:1rem; max-width:900px;">
@@ -336,7 +336,7 @@
     <div style="margin-top:2.6rem;">
       <h4 class="title is-5 has-text-centered">Why motion works</h4>
       <p class="content-narrow has-text-centered" style="color:var(--muted);">
-        The action signal is both easier to learn and easier to find. Two controlled probes point to the same conclusion:
+        The action signal is both easier to learn and easier to find. Two analyses point to the same conclusion:
         motion is a more direct bridge from observation to action than pixels.
       </p>
       <div class="columns" style="margin-top:1rem;">
@@ -347,8 +347,8 @@
             </div>
             <img src="static/images/figure_id_scaling.png" alt="Inverse-dynamics scaling">
             <figcaption class="figure-caption">
-              <b>Motion contains the information necessary to predict actions.</b> It reaches the same performance ceiling
-              as video despite containing less information, and is slightly more sample-efficient.
+              <b>Motion contains the information necessary to predict actions.</b> It is the more sample-efficient
+              conditioning signal: the gap to video is largest at 1% of the action data and narrows as data grows.
             </figcaption>
           </figure>
         </div>
@@ -375,7 +375,7 @@
     <p class="section-kicker">Generalization from human video</p>
     <h2 class="section-title">Scene flow transfers from human video</h2>
     <p class="content-narrow has-text-centered" style="color:var(--muted); margin-top:.6rem;">
-      3D scene flow is embodiment-agnostic: a human hand and a robot gripper produce a similar motion field. FloMo learns
+      3D scene flow is invariant to appearance and shared across embodiments. FloMo learns
       motions from action-free human video and carries them to the robot.
     </p>
 
@@ -472,7 +472,7 @@
     <p class="content-narrow has-text-centered" style="color:var(--muted); margin-top:-.5rem;">
       FloMo succeeds on 7/10 Pull String rollouts; no baseline exceeds 1/10. Prompt: “Pull the string on the toy in the air”
     </p>
-    <div class="columns is-multiline" style="margin-top:.6rem;">
+    <div class="columns is-multiline is-centered" style="margin-top:.6rem;">
       <div class="column is-one-third">
         <div class="video-card">
           <video src="static/videos/ma10h_yoyo_success.mp4" poster="static/images/posters/string.jpg" autoplay muted loop playsinline preload="none"></video>
@@ -483,12 +483,6 @@
         <div class="video-card">
           <video src="static/videos/dreamzero_yoyo_failure.mp4" poster="static/images/posters/string_dreamzero.jpg" autoplay muted loop playsinline preload="none"></video>
           <div class="vcap"><span class="task">DreamZero</span><span class="vbadge fail">Failure</span></div>
-        </div>
-      </div>
-      <div class="column is-one-third">
-        <div class="video-card">
-          <video src="static/videos/bc_yoyo_failure.mp4" poster="static/images/posters/string_bc.jpg" autoplay muted loop playsinline preload="none"></video>
-          <div class="vcap"><span class="task">BC (no pretraining)</span><span class="vbadge fail">Failure</span></div>
         </div>
       </div>
     </div>

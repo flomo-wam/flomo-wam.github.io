@@ -32,7 +32,7 @@ Scene flow captures that shared motion, letting FloMo learn from human videos wi
 
 [6/7] Human video teaches motion the robot never demonstrated.
 
-FloMo transfers to pulling a yoyo string (unseen motion) and moving a highlighter (unseen object). Removing human video sharply reduces success on these unfamiliar tasks.
+FloMo transfers to pulling a yoyo string (unseen task) and moving a highlighter (unseen object). Removing human video sharply reduces success on these unfamiliar tasks.
 
 ---
 
