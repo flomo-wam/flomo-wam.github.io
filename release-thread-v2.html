@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FloMo Release Thread (video version)</title>
+  <meta name="description" content="Video version of the FloMo release thread: animated 3D scene flow on real-robot footage, the architecture walkthrough, and shared human/robot motion.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="FloMo Release Thread (video version)">
+  <meta property="og:description" content="How FloMo connects video pretraining to robot control through 3D motion, and why human video helps.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="FloMo Release Thread (video version)">
+  <meta name="twitter:description" content="How FloMo connects video pretraining to robot control through 3D motion, and why human video helps.">
+
+  <!-- Fully self-contained: all display assets are bundled locally. -->
+  <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="static/images/favicon.png">
+  <link rel="stylesheet" href="static/css/release-thread.css">
+  <script defer src="static/js/release-thread.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#thread">Skip to thread</a>
+
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="header-bar">
+        <a class="brand" href="https://flomo-wam.github.io/" aria-label="FloMo project page">
+          <img src="static/images/flomo_logo.png" width="686" height="168" alt="FloMo">
+        </a>
+        <nav class="header-actions" aria-label="Release thread links">
+          <a href="https://flomo-wam.github.io/">Project page</a>
+          <a href="https://flomo-wam.github.io/static/paper/flomo.pdf" target="_blank" rel="noopener">Paper</a>
+          <a href="https://flomo-wam.github.io/release-thread.html">Image version</a>
+          <a href="thread.txt" download>Thread text</a>
+          <a href="FloMo-release-thread-v2.zip" download>Download bundle</a>
+          <button class="copy-control copy-thread" type="button" data-copy-thread data-tooltip="Copy all seven posts" aria-label="Copy the complete release thread">Copy thread</button>
+        </nav>
+      </div>
+
+      <div class="title-block">
+        <p class="review-status">Collaborator review · Not published to X</p>
+        <h1>Release thread · video version</h1>
+        <p class="paper-name">3D Scene Flow as a World Action Model Intermediate for Learning from Human Video</p>
+        <p class="paper-name">Same text as the image version. Posts 1, 2, 3, and 5 carry videos; posts 4 and 6 keep the result figures. Collaborator handles and arXiv link remain to fill in post 7.</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="thread">
+    <ol class="thread-list" aria-label="Seven-post FloMo release thread">
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-one">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">01</span>
+            <h2 id="post-one">1 / 7</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 1 of 7">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[1/7] Most world action models learn to act by predicting videos.
+
+We find that predicting how the scene moves in 3D performs better.
+
+Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control.</div>
+          <figure class="evidence figure-evidence">
+            <div class="media-frame rollout-frame">
+              <video src="static/videos/thread_v2_teaser.mp4" poster="static/images/posters/thread_v2_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser: tracked points on a real-robot rollout, one point's 3D motion turned into a color, the RGB scene-flow video, the model diagram, the croissant rollout, and the headline results"></video>
+            </div>
+            <figcaption>Teaser · 27 s · overlays use SpatialTrackerV2 3D tracks on a FloMo real-robot rollout · <a href="static/videos/thread_v2_teaser.mp4" download>Download MP4</a></figcaption>
+          </figure>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-two">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">02</span>
+            <h2 id="post-two">2 / 7</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 2 of 7">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[2/7] Videos contain extraneous features like texture and lighting. The action that produces the next state depends only on how the scene moves.
+
+So FloMo predicts 3D scene flow, the motion of all points in the scene, and renders it as an RGB video.</div>
+          <figure class="evidence figure-evidence">
+            <div class="media-frame rollout-frame">
+              <video src="static/videos/thread_v2_sceneflow.mp4" poster="static/images/posters/thread_v2_sceneflow.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="Scene flow explained on a real-robot rollout: one point on the croissant moves by delta x, y, z, which maps to red, green, blue; static points stay gray; the RGB video and the RGB scene flow play side by side"></video>
+            </div>
+            <figcaption>17 s · 3D tracks become RGB scene flow, with the color scale FloMo uses for real-robot data · <a href="static/videos/thread_v2_sceneflow.mp4" download>Download MP4</a></figcaption>
+          </figure>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-three">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">03</span>
+            <h2 id="post-three">3 / 7</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 3 of 7">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[3/7] Here's how FloMo works. Because scene flow is rendered as RGB, the frozen VAE from Wan 2.2 encodes it into the same latent space as video, so no new tokenizer is needed.
+
+Given an image and an instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.</div>
+          <figure class="evidence figure-evidence">
+            <div class="media-frame rollout-frame">
+              <video src="static/videos/thread_v2_architecture.mp4" poster="static/images/posters/thread_v2_architecture.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="The paper architecture diagram, animated step by step: 3D motion rendered as RGB video, encoded by the frozen video VAE, and one backbone predicting motion and actions"></video>
+            </div>
+            <figcaption>14 s · the paper architecture diagram, animated step by step · <a href="static/videos/thread_v2_architecture.mp4" download>Download MP4</a></figcaption>
+          </figure>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-four">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">04</span>
+            <h2 id="post-four">4 / 7</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 7">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[4/7] On a bimanual YAM robot, FloMo succeeded in 91% of trials on trained tasks. The same model got 40% when predicting video instead of motion, and 51% when predicting both.
+
+In RoboTwin simulation it averages 63.6%, vs 44.8% for π0.5.</div>
+          <figure class="evidence figure-evidence">
+            <div class="media-grid">
+              <div class="figure-frame">
+                <img src="static/images/thread_policy_results.png" width="1600" height="1000" alt="Familiar real-robot tasks: Motion + actions (FloMo), video + motion + actions, and video + actions on Oven, Toolbox, and Corn. Success rates are shown as percentages." loading="lazy">
+              </div>
+              <div class="figure-frame">
+                <img src="static/images/thread_robotwin_results.png" width="1600" height="1000" alt="Single-task RoboTwin 2.0 performance: FloMo, π0.5, FAST-WAM, and BC on Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, and Handover Microphone. Success rates are shown as percentages." loading="lazy">
+              </div>
+              <div class="figure-frame">
+                <img src="static/images/thread_ood_results.png" width="1600" height="1000" alt="Unfamiliar real-robot tasks: Motion + actions (FloMo), video + motion + actions, and video + actions on Close Cabinet, Pull String, and Highlighter, with overall success. Values are percentages." loading="lazy">
+              </div>
+            </div>
+          </figure>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-five">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">05</span>
+            <h2 id="post-five">5 / 7</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 7">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[5/7] A human hand and a robot gripper look nothing alike, but they can move an object in the same manner.
+
+The object's scene flow is the same in both cases, so FloMo can learn from human videos that have no robot action labels.</div>
+          <figure class="evidence figure-evidence">
+            <div class="media-frame rollout-frame">
+              <video src="static/videos/thread_v2_shared_motion.mp4" poster="static/images/posters/thread_v2_shared_motion.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="A human hand and a robot gripper pull the croissant out of the oven: their 3D tracks point the same way with the same green color, and their RGB scene flow matches"></video>
+            </div>
+            <figcaption>12 s · matched human and robot training demos from the front camera, time-aligned on the croissant pull · <a href="static/videos/thread_v2_shared_motion.mp4" download>Download MP4</a></figcaption>
+          </figure>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-six">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">06</span>
+            <h2 id="post-six">6 / 7</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 7">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[6/7] That's how FloMo handles tasks it never saw on the robot. Pulling a string to a mark appears only in human video, and FloMo completed it in 70% of trials vs 10% for DreamZero.
+
+Without human video, success on these tasks drops to 7%.</div>
+          <figure class="evidence figure-evidence">
+            <div class="figure-frame">
+              <img src="static/images/thread_transfer_results.png" alt="Human-video transfer performance on unfamiliar tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
+            </div>
+          </figure>
+        </article>
+      </li>
+
+      <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-seven">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">07</span>
+            <h2 id="post-seven">7 / 7</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 7 of 7">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[7/7] Paper: [arXiv link]
+Videos: https://flomo-wam.github.io/
+Joint work with [collaborator handles].</div>
+        </article>
+      </li>
+
+    </ol>
+  </main>
+
+  <p class="sr-only" id="copy-status" aria-live="polite"></p>
+</body>
+</html>
