@@ -64,9 +64,9 @@ We find that predicting how the scene moves in 3D performs better.
 Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v3_teaser.mp4" poster="static/images/posters/thread_v3_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on the robot head camera: tracked points on a real-robot rollout, one point's 3D motion placed in an RGB color cube to give its color, the RGB scene-flow video, the model diagram, the croissant rollout, and a comparison of prediction targets: video and actions 40%, video, motion and actions 51%, motion and actions (FloMo) 91%"></video>
+              <video src="static/videos/thread_v4_teaser.mp4" poster="static/images/posters/thread_v4_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on teleoperated robot data: two arms drop cloths into a container while tracked points follow the motion; the video pauses once while one point's 3D motion is placed in an RGB color cube to give its color, then every moving point takes its own color; the view wipes to the RGB scene-flow video, then the model diagram, then real-robot success rates: video and actions 40%, video, motion and actions 51%, motion and actions (FloMo) 91%"></video>
             </div>
-            <figcaption>Teaser · 27 s · head camera on a FloMo real-robot rollout · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v3_teaser.mp4" download>Download MP4</a></figcaption>
+            <figcaption>Teaser · 22 s · teleoperated robot data from MolmoAct2 · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v4_teaser.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -84,9 +84,9 @@ Introducing FloMo: a world action model that uses 3D motion as the link between 
 So FloMo predicts 3D scene flow, the motion of all points in the scene, and renders it as an RGB video.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v3_sceneflow.mp4" poster="static/images/posters/thread_v3_sceneflow.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="Scene flow explained on the robot head camera: one point on the croissant; the color cube shows that moving right adds red, moving down adds green, and moving away from the camera adds blue; the point's own motion splits into x, y and z parts and becomes its color; static points stay gray; then human videos and robot rollouts with their RGB scene flow"></video>
+              <video src="static/videos/thread_v4_sceneflow.mp4" poster="static/images/posters/thread_v4_sceneflow.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="Human videos, then teleoperated robot videos, each above its RGB scene flow"></video>
             </div>
-            <figcaption>24 s · the XYZ → RGB color cube one axis at a time, then the same color code on human videos and robot rollouts · tracks from SpatialTrackerV2 · <a href="static/videos/thread_v3_sceneflow.mp4" download>Download MP4</a></figcaption>
+            <figcaption>8 s · human videos, then teleoperated robot videos from MolmoAct2, each above its RGB scene flow · tracks from SpatialTrackerV2 · <a href="static/videos/thread_v4_sceneflow.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -151,9 +151,9 @@ In RoboTwin simulation it averages 63.6%, vs 44.8% for π0.5.</div>
 The object's scene flow is the same in both cases, so FloMo can learn from human videos that have no robot action labels.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v3_shared_motion.mp4" poster="static/images/posters/thread_v3_shared_motion.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="A human hand and a robot gripper carry the croissant from the oven toward the plate: their 3D tracks point the same way with the same green color, and their RGB scene flow matches"></video>
+              <video src="static/videos/thread_v4_shared_motion.mp4" poster="static/images/posters/thread_v4_shared_motion.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="A human hand and a robot gripper carry the croissant from the oven to the plate, side by side, with their RGB scene flow below"></video>
             </div>
-            <figcaption>8 s · matched human and robot training demos from the head camera; the human clip is slowed about 4× to match the robot · <a href="static/videos/thread_v3_shared_motion.mp4" download>Download MP4</a></figcaption>
+            <figcaption>6 s · matched human and robot demos, time-aligned · scene flow from SpatialTrackerV2 tracks · <a href="static/videos/thread_v4_shared_motion.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
