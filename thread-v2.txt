@@ -18,15 +18,15 @@ Given an image and an instruction, the pretrained 5B backbone jointly predicts s
 
 ---
 
-[4/8] On a bimanual YAM robot, FloMo succeeded in 91% of trials on trained tasks. The same model got 40% when predicting video instead of motion, and 51% when predicting both.
+[4/8] On a bimanual YAM robot, FloMo outperforms SOTA baselines that predict video (DreamZero) or 2D point tracks (AMPLIFY) on tasks it never saw in robot data.
 
-In RoboTwin simulation it averages 63.6%, vs 44.8% for π0.5.
+In RoboTwin simulation, it also outperforms SOTA WAM and VLA baselines.
 
 ---
 
-[5/8] Why does motion work better? Actions are easier to read from it. Given the true future, actions recovered from motion have 22% lower error than from video with only 1% of the action data.
+[5/8] Why does motion work better than video? Future motion is easier to predict but still contains action info.
 
-When the model predicts both, action tokens attend to motion 3× more than to video.
+These two analyses point to the same conclusion: motion is a more direct bridge from observation to action than pixels.
 
 ---
 
@@ -36,9 +36,9 @@ The object's scene flow is the same in both cases, so FloMo can learn from human
 
 ---
 
-[7/8] That's how FloMo handles tasks it never saw on the robot. Pulling a string to a mark appears only in human video, and FloMo completed it in 70% of trials vs 10% for DreamZero.
+[7/8] Removing only the human video drops average OOD success from 60% to 7%.
 
-Without human video, success on these tasks drops to 7%.
+The robot data contains none of the tasks, while the human video covers all three motion classes. The generalization comes from human video, made transferable by our representation of 3D motion.
 
 ---
 

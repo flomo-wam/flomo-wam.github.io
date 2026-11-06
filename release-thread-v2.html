@@ -64,9 +64,9 @@ We find that predicting how the scene moves in 3D performs better.
 Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v6_teaser.mp4" poster="static/images/posters/thread_v6_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on teleoperated robot data: the FloMo logo turns into colored dots that become tracked points as two arms drop cloths into a container; the video pauses once while one point's motion along x, y and z is placed in an RGB color cube, so x sets red, y sets green and z sets blue; every moving point then takes the color of its motion; the view wipes to the RGB scene-flow video, then the model diagram, then real-robot success rates: video and actions 40%, video, motion and actions 51%, motion and actions (FloMo) 91%; the dots then form the FloMo logo again"></video>
+              <video src="static/videos/thread_v7_teaser.mp4" poster="static/images/posters/thread_v7_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on teleoperated robot data: the FloMo logo turns into colored dots that become tracked points as two arms drop cloths into a container; the video pauses once while one point's motion along x, y and z is placed in an RGB color cube, so x sets red, y sets green and z sets blue; every moving point then takes the color of its motion; the view wipes to the RGB scene-flow video, then the model diagram, then real-robot success rates: video and actions 40%, video, motion and actions 51%, motion and actions (FloMo) 91%; the dots then form the FloMo logo again. Subtitles: Track points in 3D; xyz to RGB; 3D scene flow as RGB video; Joint prediction of scene flow and actions."></video>
             </div>
-            <figcaption>Teaser · 27 s · teleoperated robot data from MolmoAct2 · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v6_teaser.mp4" download>Download MP4</a></figcaption>
+            <figcaption>Teaser · 24 s · teleoperated robot data from MolmoAct2 · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v7_teaser.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -104,9 +104,9 @@ So FloMo predicts 3D scene flow, the motion of all points in the scene, and rend
 Given an image and an instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v6_architecture.mp4" poster="static/images/posters/thread_v6_architecture.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="The paper architecture diagram. The view zooms into each step while dots of data move along the diagram's arrows: 3D motion rendered as RGB video, encoded by the frozen video VAE, the instruction and noisy actions added, and one backbone predicting motion and actions. It ends on the full diagram."></video>
+              <video src="static/videos/thread_v7_architecture.mp4" poster="static/images/posters/thread_v7_architecture.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="The paper architecture diagram, step by step. It opens zoomed in on video frames turned into 3D scene flow, then the view moves through each step while dots of data travel along the diagram's arrows: 3D motion rendered as RGB video, encoded by the frozen video VAE, the instruction and noisy actions added, and one backbone predicting motion and actions. The predicted motion and actions start as noise, denoise step by step, then play out. The view zooms out to the full diagram and back to the start."></video>
             </div>
-            <figcaption>15 s · the paper architecture diagram, step by step · <a href="static/videos/thread_v6_architecture.mp4" download>Download MP4</a></figcaption>
+            <figcaption>23 s · the paper architecture diagram, step by step · <a href="static/videos/thread_v7_architecture.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -119,19 +119,19 @@ Given an image and an instruction, the pretrained 5B backbone jointly predicts s
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 4 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[4/8] On a bimanual YAM robot, FloMo succeeded in 91% of trials on trained tasks. The same model got 40% when predicting video instead of motion, and 51% when predicting both.
+          <div class="post-body" data-post-body>[4/8] On a bimanual YAM robot, FloMo outperforms SOTA baselines that predict video (DreamZero) or 2D point tracks (AMPLIFY) on tasks it never saw in robot data.
 
-In RoboTwin simulation it averages 63.6%, vs 44.8% for π0.5.</div>
+In RoboTwin simulation, it also outperforms SOTA WAM and VLA baselines.</div>
           <figure class="evidence figure-evidence">
             <div class="media-grid">
               <div class="figure-frame">
-                <img src="static/images/thread_policy_results.png" width="1600" height="1000" alt="Familiar real-robot tasks: Motion + actions (FloMo), video + motion + actions, and video + actions on Oven, Toolbox, and Corn. Success rates are shown as percentages." loading="lazy">
+                <img src="static/images/thread_ood_baselines_results.png" width="1600" height="1000" alt="Unfamiliar real-robot tasks: FloMo, DreamZero (predicts video), and AMPLIFY (predicts 2D tracks). Close Cabinet 60%, 50%, 60%; Pull String 70%, 10%, 0%; Highlighter 50%, 0%, 0%; overall 60%, 20%, 20%." loading="lazy">
               </div>
               <div class="figure-frame">
                 <img src="static/images/thread_robotwin_results.png" width="1600" height="1000" alt="Single-task RoboTwin 2.0 performance: FloMo, π0.5, FAST-WAM, and BC on Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, and Handover Microphone. Success rates are shown as percentages." loading="lazy">
               </div>
               <div class="figure-frame">
-                <img src="static/images/thread_ood_results.png" width="1600" height="1000" alt="Unfamiliar real-robot tasks: Motion + actions (FloMo), video + motion + actions, and video + actions on Close Cabinet, Pull String, and Highlighter, with overall success. Values are percentages." loading="lazy">
+                <img src="static/images/thread_policy_results.png" width="1600" height="1000" alt="Familiar real-robot tasks: Motion + actions (FloMo), video + motion + actions, and video + actions on Oven, Toolbox, and Corn. Success rates are shown as percentages." loading="lazy">
               </div>
             </div>
           </figure>
@@ -146,9 +146,9 @@ In RoboTwin simulation it averages 63.6%, vs 44.8% for π0.5.</div>
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[5/8] Why does motion work better? Actions are easier to read from it. Given the true future, actions recovered from motion have 22% lower error than from video with only 1% of the action data.
+          <div class="post-body" data-post-body>[5/8] Why does motion work better than video? Future motion is easier to predict but still contains action info.
 
-When the model predicts both, action tokens attend to motion 3× more than to video.</div>
+These two analyses point to the same conclusion: motion is a more direct bridge from observation to action than pixels.</div>
           <figure class="evidence figure-evidence">
             <div class="media-grid">
               <div class="figure-frame">
@@ -175,9 +175,9 @@ When the model predicts both, action tokens attend to motion 3× more than to vi
 The object's scene flow is the same in both cases, so FloMo can learn from human videos that have no robot action labels.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v5_shared_motion.mp4" poster="static/images/posters/thread_v5_shared_motion.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="A human hand and a robot gripper carry the croissant from the oven toward the plate: their 3D tracks point the same way with the same green color, and their RGB scene flow matches"></video>
+              <video src="static/videos/thread_v7_shared_motion.mp4" poster="static/images/posters/thread_v7_shared_motion.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="A human hand and a robot gripper carry the croissant from the oven toward the plate. Subtitle: In pixel space, the embodiment gap is large. Their 3D tracks then point the same way with the same green color, and their RGB scene flow matches. Subtitle: However, the motion is nearly identical."></video>
             </div>
-            <figcaption>8 s · matched human and robot training demos; the human clip is time-aligned to the robot · <a href="static/videos/thread_v5_shared_motion.mp4" download>Download MP4</a></figcaption>
+            <figcaption>8 s · matched human and robot training demos; the human clip is time-aligned to the robot · <a href="static/videos/thread_v7_shared_motion.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -190,9 +190,9 @@ The object's scene flow is the same in both cases, so FloMo can learn from human
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 7 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[7/8] That's how FloMo handles tasks it never saw on the robot. Pulling a string to a mark appears only in human video, and FloMo completed it in 70% of trials vs 10% for DreamZero.
+          <div class="post-body" data-post-body>[7/8] Removing only the human video drops average OOD success from 60% to 7%.
 
-Without human video, success on these tasks drops to 7%.</div>
+The robot data contains none of the tasks, while the human video covers all three motion classes. The generalization comes from human video, made transferable by our representation of 3D motion.</div>
           <figure class="evidence figure-evidence">
             <div class="figure-frame">
               <img src="static/images/thread_transfer_results.png" alt="Human-video transfer performance on unfamiliar tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
