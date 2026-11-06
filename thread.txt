@@ -42,6 +42,6 @@ These two analyses point to the same conclusion: motion is a more direct bridge 
 
 ---
 
-[8/8] Paper: [arXiv link]
+[8/8] Paper: https://arxiv.org/abs/2611.05062
 Videos: https://flomo-wam.github.io/
 Joint work with [collaborator handles].
