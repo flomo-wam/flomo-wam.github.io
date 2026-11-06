@@ -1,0 +1,47 @@
+[1/8] Most world action models learn to act by predicting videos.
+
+We find that predicting how the scene moves in 3D performs better.
+
+Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control.
+
+---
+
+[2/8] Videos contain extraneous features like texture and lighting. The action that produces the next state depends only on how the scene moves.
+
+So FloMo predicts 3D scene flow, the motion of all points in the scene, and renders it as an RGB video.
+
+---
+
+[3/8] Here's how FloMo works. Because scene flow is rendered as RGB, the frozen VAE from Wan 2.2 encodes it into the same latent space as video, so no new tokenizer is needed.
+
+Given an image and an instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.
+
+---
+
+[4/8] On a bimanual YAM robot, FloMo succeeded in 91% of trials on trained tasks. The same model got 40% when predicting video instead of motion, and 51% when predicting both.
+
+In RoboTwin simulation it averages 63.6%, vs 44.8% for π0.5.
+
+---
+
+[5/8] Why does motion work better? Actions are easier to read from it. Given the true future, actions recovered from motion have 22% lower error than from video with only 1% of the action data.
+
+When the model predicts both, action tokens attend to motion 3× more than to video.
+
+---
+
+[6/8] A human hand and a robot gripper look nothing alike, but they can move an object in the same manner.
+
+The object's scene flow is the same in both cases, so FloMo can learn from human videos that have no robot action labels.
+
+---
+
+[7/8] That's how FloMo handles tasks it never saw on the robot. Pulling a string to a mark appears only in human video, and FloMo completed it in 70% of trials vs 10% for DreamZero.
+
+Without human video, success on these tasks drops to 7%.
+
+---
+
+[8/8] Paper: [arXiv link]
+Videos: https://flomo-wam.github.io/
+Joint work with [collaborator handles].
