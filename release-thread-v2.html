@@ -64,9 +64,9 @@ We find that predicting how the scene moves in 3D performs better.
 Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v7_teaser.mp4" poster="static/images/posters/thread_v7_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on teleoperated robot data: the FloMo logo turns into colored dots that become tracked points as two arms drop cloths into a container; the video pauses once while one point's motion along x, y and z is placed in an RGB color cube, so x sets red, y sets green and z sets blue; every moving point then takes the color of its motion; the view wipes to the RGB scene-flow video, then the model diagram, then real-robot success rates: video and actions 40%, video, motion and actions 51%, motion and actions (FloMo) 91%; the dots then form the FloMo logo again. Subtitles: Track points in 3D; xyz to RGB; 3D scene flow as RGB video; Joint prediction of scene flow and actions."></video>
+              <video src="static/videos/thread_v8_teaser.mp4" poster="static/images/posters/thread_v8_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on teleoperated robot data: the FloMo logo turns into colored dots that become tracked points as two arms drop cloths into a container; the video pauses once while one point's motion along x, y and z is placed in an RGB color cube, so x sets red, y sets green and z sets blue; every moving point then takes the color of its motion; the view wipes to the RGB scene-flow video, then the model diagram, then out-of-distribution real-robot success rates: DreamZero 20%, AMPLIFY 20%, video and actions 7%, video, motion and actions 7%, motion and actions (FloMo) 60%; the dots then form the FloMo logo again. Subtitles: Track points in 3D; xyz to RGB; 3D scene flow as RGB video; Joint prediction of scene flow and actions."></video>
             </div>
-            <figcaption>Teaser · 24 s · teleoperated robot data from MolmoAct2 · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v7_teaser.mp4" download>Download MP4</a></figcaption>
+            <figcaption>Teaser · 24 s · teleoperated robot data from MolmoAct2 · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v8_teaser.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -104,9 +104,9 @@ So FloMo predicts 3D scene flow, the motion of all points in the scene, and rend
 Given an image and an instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v7_architecture.mp4" poster="static/images/posters/thread_v7_architecture.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="The paper architecture diagram, step by step. It opens zoomed in on video frames turned into 3D scene flow, then the view moves through each step while dots of data travel along the diagram's arrows: 3D motion rendered as RGB video, encoded by the frozen video VAE, the instruction and noisy actions added, and one backbone predicting motion and actions. The predicted motion and actions start as noise, denoise step by step, then play out. The view zooms out to the full diagram and back to the start."></video>
+              <video src="static/videos/thread_v8_architecture.mp4" poster="static/images/posters/thread_v8_architecture.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="The paper architecture diagram, step by step. It opens zoomed in on video frames turned into 3D scene flow, then the view moves through each step while dots of data travel along the diagram's arrows: 3D motion rendered as RGB video, encoded by the frozen video VAE, the instruction and noisy actions added, and one backbone predicting motion and actions. The predicted motion and actions start as noise, denoise step by step, then play out. The view zooms out to the full diagram and back to the start."></video>
             </div>
-            <figcaption>23 s · the paper architecture diagram, step by step · <a href="static/videos/thread_v7_architecture.mp4" download>Download MP4</a></figcaption>
+            <figcaption>23 s · the paper architecture diagram, step by step · <a href="static/videos/thread_v8_architecture.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -125,7 +125,7 @@ In RoboTwin simulation, it also outperforms SOTA WAM and VLA baselines.</div>
           <figure class="evidence figure-evidence">
             <div class="media-grid">
               <div class="figure-frame">
-                <img src="static/images/thread_ood_baselines_results.png" width="1600" height="1000" alt="Unfamiliar real-robot tasks: FloMo, DreamZero (predicts video), and AMPLIFY (predicts 2D tracks). Close Cabinet 60%, 50%, 60%; Pull String 70%, 10%, 0%; Highlighter 50%, 0%, 0%; overall 60%, 20%, 20%." loading="lazy">
+                <img src="static/images/thread_ood_compare_results.png" width="1600" height="1000" alt="Unfamiliar real-robot tasks: Motion + actions (FloMo), video + motion + actions, video + actions, DreamZero (predicts video), and AMPLIFY (predicts 2D tracks). Close Cabinet 60%, 0%, 0%, 50%, 60%; Pull String 70%, 0%, 10%, 10%, 0%; Highlighter 50%, 20%, 10%, 0%, 0%; overall 60%, 7%, 7%, 20%, 20%." loading="lazy">
               </div>
               <div class="figure-frame">
                 <img src="static/images/thread_robotwin_results.png" width="1600" height="1000" alt="Single-task RoboTwin 2.0 performance: FloMo, π0.5, FAST-WAM, and BC on Pick Dual Bottles, Stack Two Bowls, Open Laptop, Hang Mug, and Handover Microphone. Success rates are shown as percentages." loading="lazy">
