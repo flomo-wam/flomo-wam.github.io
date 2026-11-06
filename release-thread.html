@@ -100,7 +100,7 @@ So FloMo predicts 3D scene flow, the motion of all points in the scene, and rend
 
           <div class="post-body" data-post-body>[3/8] Here's how FloMo works. Because scene flow is rendered as RGB, the frozen VAE from Wan 2.2 encodes it into the same latent space as video, so no new tokenizer is needed.
 
-Given an image and an instruction, the pretrained 5B backbone jointly predicts scene flow and robot actions.</div>
+Given an image and an instruction, the pretrained 5B backbone jointly predicts scene flow and actions.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
               <video src="static/videos/thread_v8_architecture.mp4" poster="static/images/posters/thread_v8_architecture.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="The paper architecture diagram, step by step. It opens zoomed in on video frames turned into 3D scene flow, then the view moves through each step while dots of data travel along the diagram's arrows: 3D motion rendered as RGB video, encoded by the frozen video VAE, the instruction and noisy actions added, and one backbone predicting motion and actions. The predicted motion and actions start as noise, denoise step by step, then play out. The view zooms out to the full diagram and back to the start."></video>
@@ -186,7 +186,8 @@ The robot data contains none of the tasks, while the human video covers all thre
 
           <div class="post-body" data-post-body>[7/8] Why does motion work better than video? Future motion is easier to predict but still contains action info.
 
-These two analyses point to the same conclusion: motion is a more direct bridge from observation to action than pixels.</div>
+Left: actions can be recovered from future motion as well as from future video.
+Right: a policy predicting both attends to motion 3× more than video.</div>
           <figure class="evidence figure-evidence">
             <div class="media-grid">
               <div class="figure-frame">
