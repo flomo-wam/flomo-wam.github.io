@@ -63,9 +63,9 @@ We find that predicting how the scene moves in 3D performs better.
 Introducing FloMo: a world action model that uses 3D motion as the link between video pretraining and robot control.</div>
           <figure class="evidence figure-evidence">
             <div class="media-frame rollout-frame">
-              <video src="static/videos/thread_v8_teaser.mp4" poster="static/images/posters/thread_v8_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on teleoperated robot data: the FloMo logo turns into colored dots that become tracked points as two arms drop cloths into a container; the video pauses once while one point's motion along x, y and z is placed in an RGB color cube, so x sets red, y sets green and z sets blue; every moving point then takes the color of its motion; the view wipes to the RGB scene-flow video, then the model diagram, then out-of-distribution real-robot success rates: DreamZero 20%, AMPLIFY 20%, video and actions 7%, video, motion and actions 7%, motion and actions (FloMo) 60%; the dots then form the FloMo logo again. Subtitles: Track points in 3D; xyz to RGB; 3D scene flow as RGB video; Joint prediction of scene flow and actions."></video>
+              <video src="static/videos/thread_v9_teaser.mp4" poster="static/images/posters/thread_v9_teaser.jpg" autoplay controls loop muted playsinline preload="metadata" aria-label="FloMo teaser on teleoperated robot data: the FloMo logo turns into colored dots that become tracked points as two arms drop cloths into a container; the video pauses once while one point's motion along x, y and z is placed in an RGB color cube, so x sets red, y sets green and z sets blue; every moving point then takes the color of its motion; the view wipes to the RGB scene-flow video, then the model diagram, then out-of-distribution real-robot success rates: DreamZero 20%, AMPLIFY 20%, video and actions 7%, video, motion and actions 7%, motion and actions (FloMo) 60%; the dots then form the FloMo logo again. Subtitles: Track points in 3D; XYZ to RGB; 3D scene flow as RGB video; Joint prediction of scene flow and actions."></video>
             </div>
-            <figcaption>Teaser · 24 s · teleoperated robot data from MolmoAct2 · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v8_teaser.mp4" download>Download MP4</a></figcaption>
+            <figcaption>Teaser · 24 s · teleoperated robot data from MolmoAct2 · overlays use SpatialTrackerV2 3D tracks · <a href="static/videos/thread_v9_teaser.mp4" download>Download MP4</a></figcaption>
           </figure>
         </article>
       </li>
@@ -145,31 +145,7 @@ In RoboTwin simulation, it also outperforms SOTA WAM and VLA baselines.</div>
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 5 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[5/8] Why does motion work better than video? Future motion is easier to predict but still contains action info.
-
-These two analyses point to the same conclusion: motion is a more direct bridge from observation to action than pixels.</div>
-          <figure class="evidence figure-evidence">
-            <div class="media-grid">
-              <div class="figure-frame">
-                <img src="static/images/thread_id_results.png" width="1600" height="1000" alt="Inverse-dynamics probe: action error when actions are recovered from the true future motion or the true future video, at 1%, 10%, and 100% of the action-labeled data. At 1%, motion gives 0.058 and video 0.074; the gap closes as data grows." loading="lazy">
-              </div>
-              <div class="figure-frame">
-                <img src="static/images/thread_attention_results.png" width="1600" height="1000" alt="Share of action-token attention to image, video, and motion tokens at each layer of the model that predicts video, motion, and actions. Motion rises to about 55% in the late-middle layers; video stays lowest. Averaged over layers, motion gets about 3 times the attention of video." loading="lazy">
-              </div>
-            </div>
-          </figure>
-        </article>
-      </li>
-
-      <li class="thread-item">
-        <article class="thread-post" aria-labelledby="post-six">
-          <header class="post-header">
-            <span class="thread-number" aria-hidden="true">06</span>
-            <h2 id="post-six">6 / 8</h2>
-            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 8">Copy</button>
-          </header>
-
-          <div class="post-body" data-post-body>[6/8] A human hand and a robot gripper look nothing alike, but they can move an object in the same manner.
+          <div class="post-body" data-post-body>[5/8] A human hand and a robot gripper look nothing alike, but they can move an object in the same manner.
 
 The object's scene flow is the same in both cases, so FloMo can learn from human videos that have no robot action labels.</div>
           <figure class="evidence figure-evidence">
@@ -182,6 +158,25 @@ The object's scene flow is the same in both cases, so FloMo can learn from human
       </li>
 
       <li class="thread-item">
+        <article class="thread-post" aria-labelledby="post-six">
+          <header class="post-header">
+            <span class="thread-number" aria-hidden="true">06</span>
+            <h2 id="post-six">6 / 8</h2>
+            <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 6 of 8">Copy</button>
+          </header>
+
+          <div class="post-body" data-post-body>[6/8] Removing only the human video drops average OOD success from 60% to 7%.
+
+The robot data contains none of the tasks, while the human video covers all three motion classes. The generalization comes from human video, made transferable by our representation of 3D motion.</div>
+          <figure class="evidence figure-evidence">
+            <div class="figure-frame">
+              <img src="static/images/thread_transfer_results.png" alt="Human-video transfer performance on unfamiliar tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
+            </div>
+          </figure>
+        </article>
+      </li>
+
+      <li class="thread-item">
         <article class="thread-post" aria-labelledby="post-seven">
           <header class="post-header">
             <span class="thread-number" aria-hidden="true">07</span>
@@ -189,12 +184,17 @@ The object's scene flow is the same in both cases, so FloMo can learn from human
             <button class="copy-control copy-post" type="button" data-copy-post data-tooltip="Copy this post" aria-label="Copy post 7 of 8">Copy</button>
           </header>
 
-          <div class="post-body" data-post-body>[7/8] Removing only the human video drops average OOD success from 60% to 7%.
+          <div class="post-body" data-post-body>[7/8] Why does motion work better than video? Future motion is easier to predict but still contains action info.
 
-The robot data contains none of the tasks, while the human video covers all three motion classes. The generalization comes from human video, made transferable by our representation of 3D motion.</div>
+These two analyses point to the same conclusion: motion is a more direct bridge from observation to action than pixels.</div>
           <figure class="evidence figure-evidence">
-            <div class="figure-frame">
-              <img src="static/images/thread_transfer_results.png" alt="Human-video transfer performance on unfamiliar tasks: with human video, Cabinet 60%, String 70%, Highlighter 50%, Overall 60%; without human video, 0%, 20%, 0%, Overall 7%." loading="lazy">
+            <div class="media-grid">
+              <div class="figure-frame">
+                <img src="static/images/thread_id_results.png" width="1600" height="1000" alt="Inverse-dynamics probe: action error when actions are recovered from the true future motion or the true future video, at 1%, 10%, and 100% of the action-labeled data. At 1%, motion gives 0.058 and video 0.074; the gap closes as data grows." loading="lazy">
+              </div>
+              <div class="figure-frame">
+                <img src="static/images/thread_attention_results.png" width="1600" height="1000" alt="Share of action-token attention to image, video, and motion tokens at each layer of the model that predicts video, motion, and actions. Motion rises to about 55% in the late-middle layers; video stays lowest. Averaged over layers, motion gets about 3 times the attention of video." loading="lazy">
+              </div>
             </div>
           </figure>
         </article>

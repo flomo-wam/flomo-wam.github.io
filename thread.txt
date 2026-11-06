@@ -24,21 +24,21 @@ In RoboTwin simulation, it also outperforms SOTA WAM and VLA baselines.
 
 ---
 
-[5/8] Why does motion work better than video? Future motion is easier to predict but still contains action info.
-
-These two analyses point to the same conclusion: motion is a more direct bridge from observation to action than pixels.
-
----
-
-[6/8] A human hand and a robot gripper look nothing alike, but they can move an object in the same manner.
+[5/8] A human hand and a robot gripper look nothing alike, but they can move an object in the same manner.
 
 The object's scene flow is the same in both cases, so FloMo can learn from human videos that have no robot action labels.
 
 ---
 
-[7/8] Removing only the human video drops average OOD success from 60% to 7%.
+[6/8] Removing only the human video drops average OOD success from 60% to 7%.
 
 The robot data contains none of the tasks, while the human video covers all three motion classes. The generalization comes from human video, made transferable by our representation of 3D motion.
+
+---
+
+[7/8] Why does motion work better than video? Future motion is easier to predict but still contains action info.
+
+These two analyses point to the same conclusion: motion is a more direct bridge from observation to action than pixels.
 
 ---
 
